@@ -12,7 +12,7 @@ Variables
 worldx = 960
 worldy = 720
 fps = 40
-ani = 9
+PLA_ANIMATIONS_NUMBER = 9
 world = pygame.display.set_mode([worldx, worldy])
 forwardx  = 600
 backwardx = 120
@@ -30,94 +30,32 @@ class Player(pygame.sprite.Sprite):
     Spawn a player
     """
 
-    def __init__(self):
+    def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.movex = 0
-        self.movey = 0
         self.location = [0, 30]
-        self.frame = 0
-        self.health = 10
-        self.damage = 0
-        self.score = 0
+        self.frame_counter = 0
         self.is_jumping = True
         self.is_falling = True
         self.images = []
-        for i in range(1, 9):
+        for i in range(1, PLA_ANIMATIONS_NUMBER):
             img = pygame.image.load(os.path.join('images', 'player', str(i) + '.png')).convert_alpha()
-            #img.convert_alpha()
-            #img.set_colorkey(ALPHA)
             self.images.append(img)
-            self.image = self.images[0]
-            self.rect = self.image.get_rect()
+        self.image = self.images[0]
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
-    def gravity(self):
-        if self.is_jumping:
-            self.movey += 3.2
-
-    def control(self, x, y):
-        """
-        control player movement
-        """
-        self.movex = x
-
-    def jump(self):
-        if self.is_jumping is False:
-            self.is_falling = False
-            self.is_jumping = True
-
-    def update(self):
-        """
-        Update sprite position
-        """
-
-        # moving left
-        if self.movex < 0:
-            self.is_jumping = True
-            self.frame += 1
-            if self.frame > ani:
-                self.frame = 0
-            self.image = pygame.transform.flip(self.images[self.frame // ani], True, False)
-
-        # moving right
-        if self.movex > 0:
-            self.is_jumping = True
-            self.frame += 1
-            if self.frame > ani:
-                self.frame = 0
-            self.image = self.images[self.frame // ani]
-
-        ground_hit_list = pygame.sprite.spritecollide(self, ground_list, False)
-        for g in ground_hit_list:
-            self.movey = 0
-            self.rect.bottom = g.rect.top
-            self.is_jumping = False  # stop jumping
-
-        # fall off the world
-        if self.rect.y > worldy:
-            self.health -=1
-            print(self.health)
-            self.rect.x = tx
-            self.rect.y = ty
-
-        plat_hit_list = pygame.sprite.spritecollide(self, plat_list, False)
-        for p in plat_hit_list:
-            self.is_jumping = False  # stop jumping
-            self.movey = 0
-            if self.rect.bottom <= p.rect.bottom:
-               self.rect.bottom = p.rect.top
-            else:
-               self.movey += 3.2
-
-        if self.is_jumping and self.is_falling is False:
-            self.is_falling = True
-            self.movey -= 33  # how high to jump
-
-        plat_hit_list = pygame.sprite.spritecollide(self, plat_list, False)
-
-        self.rect.x += self.movex
-        self.movex = 0
-        self.rect.y += self.movey
-        self.movey = 0
+    def update(self, dx, dy):
+        self.rect.x += dx
+        self.rect.y += dy
+        if self.frame_counter > 100:
+            self.frame_counter = 0
+        if dx > 0:
+            self.image = self.images[self.frame_counter % 8]
+        else:
+            self.image = pygame.transform.flip(self.images[self.frame_counter % 8], True, False)
 
 
 # x location, y location, img width, img height, img file
@@ -181,9 +119,9 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     pygame.init()
     backdropbox = world.get_rect()
-    main = True
+    run = True
 
-    player = Player()  # spawn player
+    player = Player(0, 30)  # spawn player
     player.rect.x = 0  # go to x
     player.rect.y = 30  # go to y
     player_list = pygame.sprite.Group()
@@ -206,7 +144,7 @@ if __name__ == '__main__':
     Main Loop
     '''
 
-    while main:
+    while run:
         if BGX < BG.get_width() * -1:  # If our bg is at the -width then reset its position
             BGX = BG.get_width()
 
@@ -219,37 +157,28 @@ if __name__ == '__main__':
                 try:
                     sys.exit()
                 finally:
-                    main = False
-            if pygame.key.get_pressed()[pygame.K_d]:
-                player.control(steps, 0)
-                BGX -= 1.4  # Move both background images back
-                BGX2 -= 1.4
+                    run = False
 
-            if pygame.key.get_pressed()[pygame.K_a]:
-                player.control(-steps, 0)
-                BGX += 1.4  # Move both background images back
-                BGX2 += 1.4
+        key = pygame.key.get_pressed()
+        if key[pygame.K_d]:
+            player.frame_counter += 1
+            player.update(5, 0)
+            BGX -= 1.4  # Move both background images back
+            BGX2 -= 1.4
 
-            if pygame.key.get_pressed()[pygame.K_SPACE]:
-                player.jump()
+        if key[pygame.K_a]:
+            player.frame_counter += 1
+            player.update(-5, 0)
+            BGX += 1.4  # Move both background images back
+            BGX2 += 1.4
 
-        # scroll the world forward
-        if player.rect.x >= forwardx:
-            scroll = player.rect.x - forwardx
-            player.rect.x = forwardx
-            for p in plat_list:
-                p.rect.x -= scroll
+        if key[pygame.K_SPACE]:
+            player.jump()
 
-        # scroll the world backward
-        if player.rect.x <= backwardx:
-            scroll = backwardx - player.rect.x
-            player.rect.x = backwardx
-            for p in plat_list:
-                p.rect.x += scroll
+        if key[pygame.K_a] is False and key[pygame.K_d] is False:
+            player.frame_counter = 0
 
         world.blit(BG, backdropbox)
-        player.update()
-        player.gravity()
         player_list.draw(world)
         ground_list.draw(world)
         plat_list.draw(world)
