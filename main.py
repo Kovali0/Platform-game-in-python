@@ -8,7 +8,7 @@ import random
 '''
 Variables
 '''
-
+ground_list = []
 worldx = 960
 worldy = 720
 fps = 40
@@ -34,8 +34,10 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.location = [0, 30]
         self.frame_counter = 0
+        self.direction = "right"
         self.is_jumping = True
         self.is_falling = True
+        self.in_air = True
         self.images = []
         for i in range(1, PLA_ANIMATIONS_NUMBER):
             img = pygame.image.load(os.path.join('images', 'player', str(i) + '.png')).convert_alpha()
@@ -46,17 +48,33 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.vel_y = 0
 
-    def update(self, dx, dy):
+    def move(self, dx, dy):
         self.rect.x += dx
         self.rect.y += dy
+
+    def update(self):
+        self.is_jumping = False
         if self.frame_counter > 100:
             self.frame_counter = 0
-        if dx > 0:
+        if self.direction == 'right':
             self.image = self.images[self.frame_counter % 8]
         else:
             self.image = pygame.transform.flip(self.images[self.frame_counter % 8], True, False)
 
+    def gravity(self):
+        self.vel_y += 1
+        if self.vel_y > 10:
+            self.vel_y = 10
+        self.rect.y += self.vel_y
+
+    def collision_checker(self):
+        ground_hit_list = pygame.sprite.spritecollide(self, ground_list, False)
+        for g in ground_hit_list:
+            self.vel_y = 0
+            self.rect.bottom = g.rect.top
+            self.in_air = False
 
 # x location, y location, img width, img height, img file
 class Platform(pygame.sprite.Sprite):
@@ -122,8 +140,6 @@ if __name__ == '__main__':
     run = True
 
     player = Player(0, 30)  # spawn player
-    player.rect.x = 0  # go to x
-    player.rect.y = 30  # go to y
     player_list = pygame.sprite.Group()
     player_list.add(player)
     steps = 10
@@ -159,26 +175,30 @@ if __name__ == '__main__':
                 finally:
                     run = False
 
+        player.collision_checker()
+
         key = pygame.key.get_pressed()
         if key[pygame.K_d]:
             player.frame_counter += 1
-            player.update(5, 0)
-            BGX -= 1.4  # Move both background images back
-            BGX2 -= 1.4
+            player.direction = "right"
+            player.move(5, 0)
 
         if key[pygame.K_a]:
             player.frame_counter += 1
-            player.update(-5, 0)
-            BGX += 1.4  # Move both background images back
-            BGX2 += 1.4
+            player.direction = "left"
+            player.move(-5, 0)
 
-        if key[pygame.K_SPACE]:
-            player.jump()
+        if key[pygame.K_SPACE] and player.is_jumping == False and player.in_air == False:
+            player.vel_y = -20
+            player.is_jumping = True
+            player.in_air = True
 
         if key[pygame.K_a] is False and key[pygame.K_d] is False:
             player.frame_counter = 0
 
         world.blit(BG, backdropbox)
+        player.gravity()
+        player.update()
         player_list.draw(world)
         ground_list.draw(world)
         plat_list.draw(world)
