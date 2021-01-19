@@ -1,144 +1,23 @@
 import os
-
 import pygame
-from pygame.locals import *
 import sys
+from pygame.locals import *
 import random
+from Player import Player
+from Level import Level, Platform
 
 '''
-Variables
+Global Variables
 '''
-ground_list = []
-worldx = 960
-worldy = 720
-fps = 40
-PLA_ANIMATIONS_NUMBER = 9
-world = pygame.display.set_mode([worldx, worldy])
-forwardx  = 600
-backwardx = 120
-
-BLUE = (80, 80, 155)
-BLACK = (23, 23, 23)
-WHITE = (254, 254, 254)
-ALPHA = (0, 0, 0)
-
-tx = 64
-ty = 64
-
-class Player(pygame.sprite.Sprite):
-    """
-    Spawn a player
-    """
-
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        self.location = [0, 30]
-        self.frame_counter = 0
-        self.direction = "right"
-        self.is_jumping = True
-        self.is_falling = True
-        self.in_air = True
-        self.images = []
-        for i in range(1, PLA_ANIMATIONS_NUMBER):
-            img = pygame.image.load(os.path.join('images', 'player', str(i) + '.png')).convert_alpha()
-            self.images.append(img)
-        self.image = self.images[0]
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-        self.vel_y = 0
-
-    def move(self, dx, dy):
-        self.rect.x += dx
-        self.rect.y += dy
-
-    def update(self):
-        self.is_jumping = False
-        if self.frame_counter > 100:
-            self.frame_counter = 0
-        if self.direction == 'right':
-            self.image = self.images[self.frame_counter % 8]
-        else:
-            self.image = pygame.transform.flip(self.images[self.frame_counter % 8], True, False)
-
-    def gravity(self):
-        self.vel_y += 1
-        if self.vel_y > 10:
-            self.vel_y = 10
-        self.rect.y += self.vel_y
-
-    def collision_checker(self):
-        ground_hit_list = pygame.sprite.spritecollide(self, ground_list, False)
-        for g in ground_hit_list:
-            self.vel_y = 0
-            self.rect.bottom = g.rect.top
-            self.in_air = False
-
-        plat_hit_list = pygame.sprite.spritecollide(self, plat_list, False)
-        for p in plat_hit_list:
-            self.in_air = False
-            self.vel_y = 0
-            if self.rect.bottom <= p.rect.bottom:
-               self.rect.bottom = p.rect.top
-            else:
-                self.vel_y += 3.2
-
-# x location, y location, img width, img height, img file
-class Platform(pygame.sprite.Sprite):
-    def __init__(self, xloc, yloc, imgw, imgh, img):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(os.path.join('images', 'tiles', img)).convert()
-        self.image.convert_alpha()
-        self.image.set_colorkey(ALPHA)
-        self.rect = self.image.get_rect()
-        self.rect.y = yloc
-        self.rect.x = xloc
-
-
-class Level:
-    def ground(lvl, gloc, tx, ty):
-        ground_list = pygame.sprite.Group()
-        i = 0
-        if lvl == 1:
-            while i < len(gloc):
-                ground = Platform(gloc[i], worldy - ty, tx, ty, 'green_tile_1.png')
-                ground_list.add(ground)
-                i = i + 1
-
-        if lvl == 2:
-            print("Level " + str(lvl))
-
-        return ground_list
-
-    # x location, y location, img width, img height, img file
-    def platform(lvl, tx, ty):
-        plat_list = pygame.sprite.Group()
-        ploc = []
-        i = 0
-        if lvl == 1:
-            ploc.append((64 * 3, worldy - ty - 192, 3))
-            ploc.append((64 * 8, worldy - ty - 384, 3))
-            ploc.append((64 * 13, worldy - ty - 576, 6))
-            ploc.append((64 * 21, worldy - ty - 384, 2))
-            ploc.append((64 * 28, worldy - ty - 192, 1))
-            ploc.append((64 * 31, worldy - ty - 384, 1))
-            ploc.append((64 * 34, worldy - ty - 576, 3))
-            while i < len(ploc):
-                j = 0
-                while j <= ploc[i][2]:
-                    plat = Platform((ploc[i][0] + (j * tx)), ploc[i][1], tx, ty, 'green_tile_2.png')
-                    plat_list.add(plat)
-                    j = j + 1
-                print('run' + str(i) + str(ploc[i]))
-                i = i + 1
-
-        if lvl == 2:
-            print("Level " + str(lvl))
-
-        return plat_list
-
+FPS = 50
+WORLD_X = 960
+WORLD_Y = 780
+WORLD = pygame.display.set_mode([WORLD_X, WORLD_Y])
+FORWARD_X = 600
+BACKWARD_X = 120
+# Tiles size x-width y-high
+TX = 64
+TY = 64
 
 if __name__ == '__main__':
     '''
@@ -149,36 +28,35 @@ if __name__ == '__main__':
     BGX2 = BG.get_width()
     clock = pygame.time.Clock()
     pygame.init()
-    backdropbox = world.get_rect()
+    backdropbox = WORLD.get_rect()
     run = True
 
-    player = Player(0, 30)  # spawn player
+    player = Player(0, WORLD_Y - TY)  # spawn player
     player_list = pygame.sprite.Group()
     player_list.add(player)
     steps = 10
 
-    eloc = []
-    eloc = [300, worldy - ty - 80]
-    gloc = []
+    p_loc = [(TX * 3, WORLD_Y - TY - 192, 3),
+             (TX * 8, WORLD_Y - TY - 384, 3),
+             (TX * 13, WORLD_Y - TY - 576, 6),
+             (TX * 21, WORLD_Y - TY - 384, 2),
+             (TX * 28, WORLD_Y - TY - 192, 1),
+             (TX * 31, WORLD_Y - TY - 384, 1),
+             (TX * 34, WORLD_Y - TY - 576, 3),
+             (TX * 39, WORLD_Y - TY - 192, 2),
+             (TX * 43, WORLD_Y - TY - 384, 2),
+             (TX * 49, WORLD_Y - TY - 384, 1)]
+    water_points = [-10, -9, -8, -7, -6, 17, 18, 19, 20, 25, 26, 27, 28, 29, 30, 31, 60, 61, 62, 63, 64, 65]
+    first_level = Level(1, TX, TY, WORLD_Y, water_points, 65, p_loc)
 
-    i = 0
-    while i <= (worldx / tx) + tx:
-        gloc.append(i * tx)
-        i = i + 1
-
-    ground_list = Level.ground(1, gloc, tx, ty)
-    plat_list = Level.platform(1, tx, ty)
+    ground_list = first_level.ground_list
+    water_list = first_level.water_list
+    plat_list = first_level.plat_list
 
     '''
-    Main Loop
+    Game Loop
     '''
-
     while run:
-        if BGX < BG.get_width() * -1:  # If our bg is at the -width then reset its position
-            BGX = BG.get_width()
-
-        if BGX2 < BG.get_width() * -1:
-            BGX2 = BG.get_width()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -188,22 +66,18 @@ if __name__ == '__main__':
                 finally:
                     run = False
 
-        player.collision_checker()
+        player.collision_checker(ground_list, plat_list)
 
         key = pygame.key.get_pressed()
         if key[pygame.K_d]:
             player.frame_counter += 1
             player.direction = "right"
             player.move(5, 0)
-            BGX -= 1.4  # Move both background images back
-            BGX2 -= 1.4
 
         if key[pygame.K_a]:
             player.frame_counter += 1
             player.direction = "left"
             player.move(-5, 0)
-            BGX += 1.4  # Move both background images back
-            BGX2 += 1.4
 
         if key[pygame.K_SPACE] and player.is_jumping == False and player.in_air == False:
             player.vel_y = -25
@@ -213,27 +87,32 @@ if __name__ == '__main__':
         if key[pygame.K_a] is False and key[pygame.K_d] is False:
             player.frame_counter = 0
 
-        # scroll the world forward
-        if player.rect.x >= forwardx:
-            scroll = player.rect.x - forwardx
-            player.rect.x = forwardx
+        if player.rect.x >= FORWARD_X:
+            scroll = player.rect.x - FORWARD_X
+            player.rect.x = FORWARD_X
             for p in plat_list:
                 p.rect.x -= scroll
+            for g in ground_list:
+                g.rect.x -= scroll
+            for w in water_list:
+                w.rect.x -= scroll
 
-        # scroll the world backward
-        if player.rect.x <= backwardx:
-            scroll = backwardx - player.rect.x
-            player.rect.x = backwardx
+        if player.rect.x <= BACKWARD_X:
+            scroll = BACKWARD_X - player.rect.x
+            player.rect.x = BACKWARD_X
             for p in plat_list:
                 p.rect.x += scroll
+            for g in ground_list:
+                g.rect.x += scroll
+            for w in water_list:
+                w.rect.x += scroll
 
-        world.blit(BG, backdropbox)
+        WORLD.blit(BG, backdropbox)
         player.gravity()
         player.update()
-        player_list.draw(world)
-        ground_list.draw(world)
-        plat_list.draw(world)
+        player_list.draw(WORLD)
+        ground_list.draw(WORLD)
+        water_list.draw(WORLD)
+        plat_list.draw(WORLD)
         pygame.display.flip()
-        clock.tick(fps)
-
-
+        clock.tick(FPS)
