@@ -76,6 +76,15 @@ class Player(pygame.sprite.Sprite):
             self.rect.bottom = g.rect.top
             self.in_air = False
 
+        plat_hit_list = pygame.sprite.spritecollide(self, plat_list, False)
+        for p in plat_hit_list:
+            self.in_air = False
+            self.vel_y = 0
+            if self.rect.bottom <= p.rect.bottom:
+               self.rect.bottom = p.rect.top
+            else:
+                self.vel_y += 3.2
+
 # x location, y location, img width, img height, img file
 class Platform(pygame.sprite.Sprite):
     def __init__(self, xloc, yloc, imgw, imgh, img):
@@ -109,9 +118,13 @@ class Level:
         ploc = []
         i = 0
         if lvl == 1:
-            ploc.append((200, worldy - ty - 128, 3))
-            ploc.append((300, worldy - ty - 256, 3))
-            ploc.append((550, worldy - ty - 128, 4))
+            ploc.append((64 * 3, worldy - ty - 192, 3))
+            ploc.append((64 * 8, worldy - ty - 384, 3))
+            ploc.append((64 * 13, worldy - ty - 576, 6))
+            ploc.append((64 * 21, worldy - ty - 384, 2))
+            ploc.append((64 * 28, worldy - ty - 192, 1))
+            ploc.append((64 * 31, worldy - ty - 384, 1))
+            ploc.append((64 * 34, worldy - ty - 576, 3))
             while i < len(ploc):
                 j = 0
                 while j <= ploc[i][2]:
@@ -182,19 +195,37 @@ if __name__ == '__main__':
             player.frame_counter += 1
             player.direction = "right"
             player.move(5, 0)
+            BGX -= 1.4  # Move both background images back
+            BGX2 -= 1.4
 
         if key[pygame.K_a]:
             player.frame_counter += 1
             player.direction = "left"
             player.move(-5, 0)
+            BGX += 1.4  # Move both background images back
+            BGX2 += 1.4
 
         if key[pygame.K_SPACE] and player.is_jumping == False and player.in_air == False:
-            player.vel_y = -20
+            player.vel_y = -25
             player.is_jumping = True
             player.in_air = True
 
         if key[pygame.K_a] is False and key[pygame.K_d] is False:
             player.frame_counter = 0
+
+        # scroll the world forward
+        if player.rect.x >= forwardx:
+            scroll = player.rect.x - forwardx
+            player.rect.x = forwardx
+            for p in plat_list:
+                p.rect.x -= scroll
+
+        # scroll the world backward
+        if player.rect.x <= backwardx:
+            scroll = backwardx - player.rect.x
+            player.rect.x = backwardx
+            for p in plat_list:
+                p.rect.x += scroll
 
         world.blit(BG, backdropbox)
         player.gravity()
