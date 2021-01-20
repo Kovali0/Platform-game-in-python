@@ -14,12 +14,14 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.location = [0, 30]
+        self.start_location = (x, y)
         self.frame_counter = 0
         self.direction = "right"
         self.is_jumping = True
         self.is_falling = True
         self.in_air = True
+        self.life = 3
+        self.score = 0
         self.images = []
         for i in range(1, PLA_ANIMATIONS_NUMBER):
             img = pygame.image.load(os.path.join('images', 'player', str(i) + '.png')).convert_alpha()
@@ -51,7 +53,7 @@ class Player(pygame.sprite.Sprite):
             self.vel_y = 10
         self.rect.y += self.vel_y
 
-    def collision_checker(self, ground_list, plat_list):
+    def collision_checker(self, ground_list, plat_list, coins):
         ground_hit_list = pygame.sprite.spritecollide(self, ground_list, False)
         for g in ground_hit_list:
             self.vel_y = 0
@@ -66,3 +68,22 @@ class Player(pygame.sprite.Sprite):
                self.rect.bottom = p.rect.top
             else:
                 self.vel_y += 3
+
+        if pygame.sprite.spritecollide(self, coins, True):
+            self.score += 1
+            print(str(self.score))
+
+    def fall_off_the_world(self):
+        self.life -= 1
+        self.reset()
+
+    def reset(self):
+        self.frame_counter = 0
+        self.direction = "right"
+        self.is_jumping = True
+        self.is_falling = True
+        self.in_air = True
+        self.rect.x = self.start_location[0]
+        self.rect.y = self.start_location[1]
+        self.vel_y = 0
+        self.update()

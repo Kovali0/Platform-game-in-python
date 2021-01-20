@@ -39,13 +39,14 @@ class Level:
         self.ground_list = pygame.sprite.Group()
         self.water_list = pygame.sprite.Group()
         self.plat_list = pygame.sprite.Group()
+        self.coins_list = pygame.sprite.Group()
         self.water_points = water_points
         self.plat_locations = plat_locations
         self.ground_len = ground_len
-        self.gen_ground()
+        self.ground()
         self.platforms()
 
-    def gen_ground(self):
+    def ground(self):
         i = -10
         while i < self.ground_len:
             if i in self.water_points:
@@ -65,3 +66,19 @@ class Level:
                 self.plat_list.add(plat)
                 j = j + 1
             i = i + 1
+
+    def coins(self, locations):
+        for i in range(len(locations)):
+            x, y = locations[i]
+            coin = Coin(x * self.tx, y)
+            self.coins_list.add(coin)
+
+
+class Coin(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join('images', 'items', 'gold_coin.png')).convert()
+        self.image.convert_alpha()
+        self.image.set_colorkey(ALPHA)
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)

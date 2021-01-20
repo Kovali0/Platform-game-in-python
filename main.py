@@ -5,6 +5,7 @@ from pygame.locals import *
 import random
 from Player import Player
 from Level import Level, Platform
+from HUD import Hud
 
 '''
 Global Variables
@@ -21,11 +22,9 @@ TY = 64
 
 if __name__ == '__main__':
     '''
-    Setup
+    Setup game
     '''
     BG = pygame.image.load(os.path.join('images', 'backgrounds', 'clouds_background.png'))
-    BGX = 0
-    BGX2 = BG.get_width()
     clock = pygame.time.Clock()
     pygame.init()
     backdropbox = WORLD.get_rect()
@@ -36,6 +35,8 @@ if __name__ == '__main__':
     player_list.add(player)
     steps = 10
 
+    hud = Hud(0, 0)
+
     p_loc = [(TX * 3, WORLD_Y - TY - 192, 3),
              (TX * 8, WORLD_Y - TY - 384, 3),
              (TX * 13, WORLD_Y - TY - 576, 6),
@@ -45,13 +46,25 @@ if __name__ == '__main__':
              (TX * 34, WORLD_Y - TY - 576, 3),
              (TX * 39, WORLD_Y - TY - 192, 2),
              (TX * 43, WORLD_Y - TY - 384, 2),
-             (TX * 49, WORLD_Y - TY - 384, 1)]
+             (TX * 49, WORLD_Y - TY - 384, 1),
+             (TX * 62, WORLD_Y - TY - 192, 0)]
     water_points = [-10, -9, -8, -7, -6, 17, 18, 19, 20, 25, 26, 27, 28, 29, 30, 31, 60, 61, 62, 63, 64, 65]
     first_level = Level(1, TX, TY, WORLD_Y, water_points, 65, p_loc)
+    coins_locations = [(-3, WORLD_Y - TY * 1.5),
+                       (4, WORLD_Y - TY * 4.5),
+                       (10, WORLD_Y - TY * 1.5),
+                       (18, WORLD_Y - TY * 10.5),
+                       (22, WORLD_Y - TY * 1.5),
+                       (29, WORLD_Y - TY * 4.5),
+                       (36, WORLD_Y - TY * 10.5),
+                       (50, WORLD_Y - TY * 7.5),
+                       (62.5, WORLD_Y - TY * 4.5)]
+    first_level.coins(coins_locations)
 
     ground_list = first_level.ground_list
     water_list = first_level.water_list
     plat_list = first_level.plat_list
+    coins = first_level.coins_list
 
     '''
     Game Loop
@@ -66,7 +79,9 @@ if __name__ == '__main__':
                 finally:
                     run = False
 
-        player.collision_checker(ground_list, plat_list)
+        player.collision_checker(ground_list, plat_list, coins)
+        if player.rect.y > WORLD_Y + TY:
+            player.fall_off_the_world()
 
         key = pygame.key.get_pressed()
         if key[pygame.K_d]:
@@ -96,6 +111,8 @@ if __name__ == '__main__':
                 g.rect.x -= scroll
             for w in water_list:
                 w.rect.x -= scroll
+            for c in coins:
+                c.rect.x -= scroll
 
         if player.rect.x <= BACKWARD_X:
             scroll = BACKWARD_X - player.rect.x
@@ -106,13 +123,18 @@ if __name__ == '__main__':
                 g.rect.x += scroll
             for w in water_list:
                 w.rect.x += scroll
+            for c in coins:
+                c.rect.x += scroll
 
         WORLD.blit(BG, backdropbox)
+        hud.set_score(player.score)
+        hud.status(WORLD)
         player.gravity()
         player.update()
         player_list.draw(WORLD)
         ground_list.draw(WORLD)
         water_list.draw(WORLD)
         plat_list.draw(WORLD)
+        coins.draw(WORLD)
         pygame.display.flip()
         clock.tick(FPS)
