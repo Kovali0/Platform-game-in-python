@@ -40,6 +40,8 @@ class Level:
         self.water_list = pygame.sprite.Group()
         self.plat_list = pygame.sprite.Group()
         self.coins_list = pygame.sprite.Group()
+        self.key = pygame.sprite.Group()
+        self.doors = pygame.sprite.Group()
         self.water_points = water_points
         self.plat_locations = plat_locations
         self.ground_len = ground_len
@@ -67,11 +69,21 @@ class Level:
                 j = j + 1
             i = i + 1
 
-    def coins(self, locations):
+    def set_coins(self, locations):
         for i in range(len(locations)):
             x, y = locations[i]
             coin = Coin(x * self.tx, y)
             self.coins_list.add(coin)
+
+    def set_key(self, location):
+        x, y = location
+        key = Key(x * self.tx, y)
+        self.key.add(key)
+
+    def set_doors(self, location):
+        x, y = location
+        doors = Doors(x * self.tx, y)
+        self.doors.add(doors)
 
 
 class Coin(pygame.sprite.Sprite):
@@ -82,3 +94,28 @@ class Coin(pygame.sprite.Sprite):
         self.image.set_colorkey(ALPHA)
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+
+
+class Key(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join('images', 'items', 'key.png')).convert()
+        self.image.convert_alpha()
+        self.image.set_colorkey(ALPHA)
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+
+
+class Doors(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.doors = []
+        self.doors.append(pygame.image.load(os.path.join('images', 'tiles', 'closed_doors.png')).convert_alpha())
+        self.doors.append(pygame.image.load(os.path.join('images', 'tiles', 'open_doors.png')).convert_alpha())
+        self.image = self.doors[0]
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    def open_doors(self):
+        self.image = self.doors[1]

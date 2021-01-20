@@ -59,12 +59,16 @@ if __name__ == '__main__':
                        (36, WORLD_Y - TY * 10.5),
                        (50, WORLD_Y - TY * 7.5),
                        (62.5, WORLD_Y - TY * 4.5)]
-    first_level.coins(coins_locations)
+    first_level.set_coins(coins_locations)
+    first_level.set_key((55, WORLD_Y - TY * 1.5))
+    first_level.set_doors((44, WORLD_Y - TY * 9))
 
     ground_list = first_level.ground_list
     water_list = first_level.water_list
     plat_list = first_level.plat_list
     coins = first_level.coins_list
+    gold_key = first_level.key
+    doors = first_level.doors
 
     '''
     Game Loop
@@ -79,7 +83,7 @@ if __name__ == '__main__':
                 finally:
                     run = False
 
-        player.collision_checker(ground_list, plat_list, coins)
+        player.collision_checker(ground_list, plat_list, coins, gold_key, doors)
         if player.rect.y > WORLD_Y + TY:
             player.fall_off_the_world()
 
@@ -113,6 +117,10 @@ if __name__ == '__main__':
                 w.rect.x -= scroll
             for c in coins:
                 c.rect.x -= scroll
+            for k in gold_key:
+                k.rect.x -= scroll
+            for d in doors:
+                d.rect.x -= scroll
 
         if player.rect.x <= BACKWARD_X:
             scroll = BACKWARD_X - player.rect.x
@@ -125,16 +133,23 @@ if __name__ == '__main__':
                 w.rect.x += scroll
             for c in coins:
                 c.rect.x += scroll
+            for k in gold_key:
+                k.rect.x += scroll
+            for d in doors:
+                d.rect.x += scroll
+
+        key_status = 1 if player.has_key else 0
 
         WORLD.blit(BG, backdropbox)
-        hud.set_score(player.score)
-        hud.status(WORLD)
         player.gravity()
         player.update()
+        doors.draw(WORLD)
         player_list.draw(WORLD)
         ground_list.draw(WORLD)
         water_list.draw(WORLD)
         plat_list.draw(WORLD)
         coins.draw(WORLD)
+        gold_key.draw(WORLD)
+        hud.status(WORLD, player.score, player.life, key_status)
         pygame.display.flip()
         clock.tick(FPS)

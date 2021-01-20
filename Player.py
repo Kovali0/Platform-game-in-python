@@ -20,8 +20,9 @@ class Player(pygame.sprite.Sprite):
         self.is_jumping = True
         self.is_falling = True
         self.in_air = True
-        self.life = 3
+        self.life = 2
         self.score = 0
+        self.has_key = False
         self.images = []
         for i in range(1, PLA_ANIMATIONS_NUMBER):
             img = pygame.image.load(os.path.join('images', 'player', str(i) + '.png')).convert_alpha()
@@ -53,7 +54,7 @@ class Player(pygame.sprite.Sprite):
             self.vel_y = 10
         self.rect.y += self.vel_y
 
-    def collision_checker(self, ground_list, plat_list, coins):
+    def collision_checker(self, ground_list, plat_list, coins, key, doors):
         ground_hit_list = pygame.sprite.spritecollide(self, ground_list, False)
         for g in ground_hit_list:
             self.vel_y = 0
@@ -65,13 +66,24 @@ class Player(pygame.sprite.Sprite):
             self.in_air = False
             self.vel_y = 0
             if self.rect.bottom <= p.rect.bottom:
-               self.rect.bottom = p.rect.top
+                self.rect.bottom = p.rect.top
             else:
                 self.vel_y += 3
 
         if pygame.sprite.spritecollide(self, coins, True):
             self.score += 1
             print(str(self.score))
+
+        if pygame.sprite.spritecollide(self, key, True):
+            self.has_key = True
+            try:
+                doors.sprites()[0].open_doors()
+            except IndexError:
+                pass
+            print("Get key!")
+
+        if pygame.sprite.spritecollide(self, doors, False) and self.has_key:
+            print("Win game!")
 
     def fall_off_the_world(self):
         self.life -= 1
