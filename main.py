@@ -6,6 +6,7 @@ import random
 from Player import Player
 from Level import Level, Platform
 from HUD import Hud
+from Menu import Menu
 
 '''
 Global Variables
@@ -21,14 +22,51 @@ TX = 64
 TY = 64
 
 if __name__ == '__main__':
+    clock = pygame.time.Clock()
+    pygame.init()
+    in_menu = True
+    in_game = False
+
+    '''
+    Menu part
+    '''
+    menu = Menu(WORLD)
+    while in_menu:
+        WORLD.blit(menu.bg, menu.bg.get_rect())
+        menu.show_controllers()
+        mouse_pos = (0, 0)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                try:
+                    sys.exit()
+                finally:
+                    run = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+
+                if menu.start_btn.show(mouse_pos):
+                    in_game = True
+                    in_menu = False
+
+                if menu.exit_btn.show(mouse_pos):
+                    pygame.quit()
+                    try:
+                        sys.exit()
+                    finally:
+                        run = False
+
+        pygame.display.flip()
+        clock.tick(FPS)
+
     '''
     Setup game
     '''
     BG = pygame.image.load(os.path.join('images', 'backgrounds', 'clouds_background.png'))
-    clock = pygame.time.Clock()
-    pygame.init()
     backdropbox = WORLD.get_rect()
     run = True
+
 
     player = Player(0, WORLD_Y - TY)  # spawn player
     player_list = pygame.sprite.Group()
@@ -73,8 +111,7 @@ if __name__ == '__main__':
     '''
     Game Loop
     '''
-    while run:
-
+    while in_game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -139,7 +176,6 @@ if __name__ == '__main__':
                 d.rect.x += scroll
 
         key_status = 1 if player.has_key else 0
-
         WORLD.blit(BG, backdropbox)
         player.gravity()
         player.update()
