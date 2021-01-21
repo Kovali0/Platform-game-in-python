@@ -13,19 +13,16 @@ class Button:
         self.rect.x = x
         self.rect.y = y
         self.clicked = False
+        self.respond = False
 
     def show(self, pos):
-        action = False
+        self.respond = False
+        self.clicked = False
         if self.rect.collidepoint(pos):
             if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
-                print("clicked in")
-                action = True
+                self.respond = True
                 self.clicked = True
-
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
-
-        return action
+        return self.respond
 
 
 class Menu:
@@ -41,3 +38,16 @@ class Menu:
     def show_controllers(self):
         self.world.blit(self.start_btn.image, self.start_btn.rect)
         self.world.blit(self.exit_btn.image, self.exit_btn.rect)
+
+
+class GameOverScreen:
+    def __init__(self, world):
+        self.world = world
+        self.bg = pygame.image.load(os.path.join('images', 'menu', 'game_over_background.png'))
+        self.bg_rect = self.bg.get_rect()
+        self.bg_x = self.bg_rect.width
+        self.bg_y = self.bg_rect.height
+        self.back_btn = Button(256, self.bg_y - 384, 'back.png')
+
+    def show_controllers(self):
+        self.world.blit(self.back_btn.image, self.back_btn.rect)

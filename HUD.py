@@ -32,7 +32,7 @@ class Hud(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
 
-    def status(self, world, score, life, key_status):
+    def print_status(self, world, score, life, key_status):
         world.blit(self.coin_image, (self.rect.x, self.rect.y))
         world.blit(self.x_image, (self.rect.x + 40, self.rect.y))
         world.blit(self.digits_images[score], (self.rect.x + 70, self.rect.y))

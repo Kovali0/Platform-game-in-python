@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.is_jumping = True
         self.is_falling = True
         self.in_air = True
-        self.life = 2
+        self.life = 0
         self.score = 0
         self.has_key = False
         self.images = []
@@ -84,6 +84,9 @@ class Player(pygame.sprite.Sprite):
 
         if pygame.sprite.spritecollide(self, doors, False) and self.has_key:
             print("Win game!")
+            return True
+
+        return False
 
     def fall_off_the_world(self):
         self.life -= 1
