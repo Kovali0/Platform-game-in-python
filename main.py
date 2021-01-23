@@ -159,13 +159,19 @@ if __name__ == '__main__':
                 player.direction = "left"
                 player.move(-5, 0)
 
-            if key[pygame.K_SPACE] and player.is_jumping == False and player.in_air == False:
+            if key[pygame.K_SPACE] and not player.is_jumping and not player.in_air:
                 player.vel_y = -25
                 player.is_jumping = True
                 player.in_air = True
 
-            if key[pygame.K_a] is False and key[pygame.K_d] is False:
+            if not key[pygame.K_a] and not key[pygame.K_d]:
                 player.frame_counter = 0
+
+            if pygame.mouse.get_pressed()[0]:
+                player.attack_counter = 0
+                player.in_attack = True
+
+            player.attack_update()
 
             if player.rect.x >= FORWARD_X:
                 scroll = player.rect.x - FORWARD_X

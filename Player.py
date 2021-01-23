@@ -21,32 +21,52 @@ class Player(pygame.sprite.Sprite):
         self.is_falling = True
         self.in_air = True
         self.life = 2
+        self.immortal_time = 20
         self.score = 0
         self.has_key = False
-        self.images = []
+        self.walk = []
         for i in range(1, PLA_ANIMATIONS_NUMBER):
-            img = pygame.image.load(os.path.join('images', 'player', str(i) + '.png')).convert_alpha()
-            self.images.append(img)
-        self.image = self.images[0]
+            img = pygame.image.load(os.path.join('images', 'player', 'walk', str(i) + '.png')).convert_alpha()
+            self.walk.append(img)
+        self.image = self.walk[0]
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.vel_y = 0
+        self.in_attack = False
+        self.attack_counter = 0
+        self.attack = []
+        for i in range(1, PLA_ANIMATIONS_NUMBER):
+            img = pygame.image.load(os.path.join('images', 'player', 'attack', str(i) + '.png')).convert_alpha()
+            self.attack.append(img)
 
     def move(self, dx, dy):
         self.rect.x += dx
         self.rect.y += dy
 
     def update(self):
-        self.is_jumping = False
-        if self.frame_counter > 100:
-            self.frame_counter = 0
-        if self.direction == 'right':
-            self.image = self.images[self.frame_counter % 8]
-        else:
-            self.image = pygame.transform.flip(self.images[self.frame_counter % 8], True, False)
+        if self.immortal_time > 0:
+            self.immortal_time -= 1
+        if not self.in_attack:
+            self.is_jumping = False
+            if self.frame_counter > 100:
+                self.frame_counter = 0
+            if self.direction == 'right':
+                self.image = self.walk[self.frame_counter % 8]
+            else:
+                self.image = pygame.transform.flip(self.walk[self.frame_counter % 8], True, False)
+
+    def attack_update(self):
+        if self.in_attack:
+            self.attack_counter += 1
+            if self.direction == 'right':
+                self.image = self.attack[self.attack_counter % PLA_ANIMATIONS_NUMBER - 1]
+            else:
+                self.image = pygame.transform.flip(self.attack[self.attack_counter % PLA_ANIMATIONS_NUMBER - 1], True, False)
+        if self.attack_counter == PLA_ANIMATIONS_NUMBER:
+            self.in_attack = False
 
     def gravity(self):
         self.vel_y += 1
@@ -86,23 +106,32 @@ class Player(pygame.sprite.Sprite):
             print("Win game!")
             return True
 
-        enemies_hit_list = pygame.sprite.spritecollide(self, enemies_list, True)
-        for en in enemies_hit_list:
-            self.life -= 1
+        if self.in_attack:
+            enemies_hit_list = pygame.sprite.spritecollide(self, enemies_list, True)
+        else:
+            enemies_hit_list = pygame.sprite.spritecollide(self, enemies_list, False)
+            for en in enemies_hit_list:
+                if self.immortal_time == 0:
+                    self.life -= 1
+                    self.immortal_time = 20
+                    if self.direction == 'right':
+                        self.reset(self.rect.x - 64 * 3)
+                    else:
+                        self.reset(self.rect.x + 64 * 3)
 
         return False
 
     def fall_off_the_world(self):
         self.life -= 1
-        self.reset()
+        self.reset(self.start_location[0])
 
-    def reset(self):
+    def reset(self, x=0):
         self.frame_counter = 0
         self.direction = "right"
         self.is_jumping = True
         self.is_falling = True
         self.in_air = True
-        self.rect.x = self.start_location[0]
+        self.rect.x = x
         self.rect.y = self.start_location[1] - 64 * 3
         self.vel_y = 0
         self.update()
