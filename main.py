@@ -1,12 +1,11 @@
 import os
 import pygame
 import sys
-from pygame.locals import *
-import random
 from Player import Player
-from Level import Level, Platform
+from Level import Level
 from HUD import Hud
 from Menu import Menu, GameOverScreen
+from Enemy import Slime
 
 '''
 Global Variables
@@ -75,9 +74,8 @@ if __name__ == '__main__':
         Setup game
         '''
         BG = pygame.image.load(os.path.join('images', 'backgrounds', 'clouds_background.png'))
-        backdropbox = WORLD.get_rect()
+        game_over_screen = GameOverScreen(WORLD)
         run = True
-
 
         player = Player(0, WORLD_Y - TY)  # spawn player
         player_list = pygame.sprite.Group()
@@ -112,12 +110,19 @@ if __name__ == '__main__':
         first_level.set_key((55, WORLD_Y - TY * 1.5))
         first_level.set_doors((44, WORLD_Y - TY * 9))
 
+        blue_slime_imgs = ["slimeBlue.png"]
+        blue_slime = Slime(blue_slime_imgs)
+        blue_slime.set_enemy_location(TX * 10, WORLD_Y - TY * 2, 128)
+
         ground_list = first_level.ground_list
         water_list = first_level.water_list
         plat_list = first_level.plat_list
         coins = first_level.coins_list
         gold_key = first_level.key
         doors = first_level.doors
+
+        enemies_list = pygame.sprite.Group()
+        enemies_list.add(blue_slime)
 
         '''
         Game Loop
@@ -134,12 +139,14 @@ if __name__ == '__main__':
                     finally:
                         run = False
 
-            win = player.collision_checker(ground_list, plat_list, coins, gold_key, doors)
+            win = player.collision_checker(ground_list, plat_list, coins, gold_key, doors, enemies_list)
             if player.life < 0:
                 lose = True
 
             if player.rect.y > WORLD_Y + TY:
                 player.fall_off_the_world()
+
+            blue_slime.controller()
 
             key = pygame.key.get_pressed()
             if key[pygame.K_d]:
@@ -169,6 +176,7 @@ if __name__ == '__main__':
                 scroll_elements(coins, True, scroll)
                 scroll_elements(gold_key, True, scroll)
                 scroll_elements(doors, True, scroll)
+                scroll_elements(enemies_list, True, scroll)
 
             if player.rect.x <= BACKWARD_X:
                 scroll = BACKWARD_X - player.rect.x
@@ -179,9 +187,10 @@ if __name__ == '__main__':
                 scroll_elements(coins, False, scroll)
                 scroll_elements(gold_key, False, scroll)
                 scroll_elements(doors, False, scroll)
+                scroll_elements(enemies_list, False, scroll)
 
             key_status = 1 if player.has_key else 0
-            WORLD.blit(BG, backdropbox)
+            WORLD.blit(BG, WORLD.get_rect())
             player.gravity()
             player.update()
             doors.draw(WORLD)
@@ -191,11 +200,11 @@ if __name__ == '__main__':
             plat_list.draw(WORLD)
             coins.draw(WORLD)
             gold_key.draw(WORLD)
+            enemies_list.draw(WORLD)
             hud.print_status(WORLD, player.score, player.life, key_status)
             pygame.display.flip()
             clock.tick(FPS)
 
-            game_over_screen = GameOverScreen(WORLD)
             while lose:
                 WORLD.blit(game_over_screen.bg, game_over_screen.bg.get_rect())
                 game_over_screen.show_controllers()

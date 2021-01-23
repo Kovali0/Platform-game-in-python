@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
         self.is_jumping = True
         self.is_falling = True
         self.in_air = True
-        self.life = 0
+        self.life = 2
         self.score = 0
         self.has_key = False
         self.images = []
@@ -54,7 +54,7 @@ class Player(pygame.sprite.Sprite):
             self.vel_y = 10
         self.rect.y += self.vel_y
 
-    def collision_checker(self, ground_list, plat_list, coins, key, doors):
+    def collision_checker(self, ground_list, plat_list, coins, key, doors, enemies_list):
         ground_hit_list = pygame.sprite.spritecollide(self, ground_list, False)
         for g in ground_hit_list:
             self.vel_y = 0
@@ -86,6 +86,10 @@ class Player(pygame.sprite.Sprite):
             print("Win game!")
             return True
 
+        enemies_hit_list = pygame.sprite.spritecollide(self, enemies_list, True)
+        for en in enemies_hit_list:
+            self.life -= 1
+
         return False
 
     def fall_off_the_world(self):
@@ -99,6 +103,6 @@ class Player(pygame.sprite.Sprite):
         self.is_falling = True
         self.in_air = True
         self.rect.x = self.start_location[0]
-        self.rect.y = self.start_location[1]
+        self.rect.y = self.start_location[1] - 64 * 3
         self.vel_y = 0
         self.update()
