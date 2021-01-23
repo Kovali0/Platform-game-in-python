@@ -4,7 +4,7 @@ import pygame
 '''
 Global Variables
 '''
-PLA_ANIMATIONS_NUMBER = 9
+PLA_ANIMATIONS = 9
 
 
 class Player(pygame.sprite.Sprite):
@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.score = 0
         self.has_key = False
         self.walk = []
-        for i in range(1, PLA_ANIMATIONS_NUMBER):
+        for i in range(1, PLA_ANIMATIONS):
             img = pygame.image.load(os.path.join('images', 'player', 'walk', str(i) + '.png')).convert_alpha()
             self.walk.append(img)
         self.image = self.walk[0]
@@ -38,9 +38,10 @@ class Player(pygame.sprite.Sprite):
         self.in_attack = False
         self.attack_counter = 0
         self.attack = []
-        for i in range(1, PLA_ANIMATIONS_NUMBER):
+        for i in range(1, PLA_ANIMATIONS):
             img = pygame.image.load(os.path.join('images', 'player', 'attack', str(i) + '.png')).convert_alpha()
             self.attack.append(img)
+        self.stamina = 300
 
     def move(self, dx, dy):
         self.rect.x += dx
@@ -62,10 +63,10 @@ class Player(pygame.sprite.Sprite):
         if self.in_attack:
             self.attack_counter += 1
             if self.direction == 'right':
-                self.image = self.attack[self.attack_counter % PLA_ANIMATIONS_NUMBER - 1]
+                self.image = self.attack[self.attack_counter % PLA_ANIMATIONS - 1]
             else:
-                self.image = pygame.transform.flip(self.attack[self.attack_counter % PLA_ANIMATIONS_NUMBER - 1], True, False)
-        if self.attack_counter == PLA_ANIMATIONS_NUMBER:
+                self.image = pygame.transform.flip(self.attack[self.attack_counter % PLA_ANIMATIONS - 1], True, False)
+        if self.attack_counter == PLA_ANIMATIONS:
             self.in_attack = False
 
     def gravity(self):
@@ -107,10 +108,9 @@ class Player(pygame.sprite.Sprite):
             return True
 
         if self.in_attack:
-            enemies_hit_list = pygame.sprite.spritecollide(self, enemies_list, True)
+            pygame.sprite.spritecollide(self, enemies_list, True)
         else:
-            enemies_hit_list = pygame.sprite.spritecollide(self, enemies_list, False)
-            for en in enemies_hit_list:
+            if pygame.sprite.spritecollide(self, enemies_list, False):
                 if self.immortal_time == 0:
                     self.life -= 1
                     self.immortal_time = 20

@@ -50,7 +50,7 @@ class Slime(Enemy):
     Simple nemey Slime class
     """
 
-    def controller(self, dx=0, dy=0):
+    def controller(self):
         self.update_sprite()
         self.move(self.current_direction, 0)
         self.move_counter += 1

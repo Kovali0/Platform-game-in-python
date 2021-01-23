@@ -143,6 +143,9 @@ if __name__ == '__main__':
             if player.life < 0:
                 lose = True
 
+            if player.stamina < 300:
+                player.stamina += 1
+
             if player.rect.y > WORLD_Y + TY:
                 player.fall_off_the_world()
 
@@ -168,8 +171,10 @@ if __name__ == '__main__':
                 player.frame_counter = 0
 
             if pygame.mouse.get_pressed()[0]:
-                player.attack_counter = 0
-                player.in_attack = True
+                if player.stamina >= 100 and not player.in_attack:
+                    player.stamina -= 100
+                    player.attack_counter = 0
+                    player.in_attack = True
 
             player.attack_update()
 
@@ -207,7 +212,7 @@ if __name__ == '__main__':
             coins.draw(WORLD)
             gold_key.draw(WORLD)
             enemies_list.draw(WORLD)
-            hud.print_status(WORLD, player.score, player.life, key_status)
+            hud.print_status(WORLD, player.score, player.life, key_status, player.stamina)
             pygame.display.flip()
             clock.tick(FPS)
 
