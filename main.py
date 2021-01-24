@@ -5,7 +5,7 @@ from Player import Player
 from Level import Level
 from HUD import Hud
 from Menu import Menu, GameOverScreen
-from Enemy import Slime
+from Enemy import Slime, Fish
 
 '''
 Global Variables
@@ -111,8 +111,22 @@ if __name__ == '__main__':
         first_level.set_doors((44, WORLD_Y - TY * 9))
 
         blue_slime_imgs = ["slimeBlue.png"]
-        blue_slime = Slime(blue_slime_imgs)
-        blue_slime.set_enemy_location(TX * 10, WORLD_Y - TY * 2, 128)
+        blue_slime_1 = Slime(blue_slime_imgs)
+        blue_slime_1.set_enemy_location(TX * 10, WORLD_Y - TY * 2, 128)
+        blue_slime_2 = Slime(blue_slime_imgs)
+        blue_slime_2.set_enemy_location(TX * 16, WORLD_Y - TY * 11, 100)
+        blue_slime_3 = Slime(blue_slime_imgs)
+        blue_slime_3.set_enemy_location(TX * 50, WORLD_Y - TY * 2, 192)
+
+        blue_fish_imgs = ["fishBlue.png"]
+        blue_fish = Fish(blue_fish_imgs)
+        blue_fish.set_enemy_location(TX * 18, WORLD_Y - TY * 1, 100)
+
+        enemies_list = pygame.sprite.Group()
+        enemies_list.add(blue_slime_1)
+        enemies_list.add(blue_slime_2)
+        enemies_list.add(blue_slime_3)
+        enemies_list.add(blue_fish)
 
         ground_list = first_level.ground_list
         water_list = first_level.water_list
@@ -120,9 +134,6 @@ if __name__ == '__main__':
         coins = first_level.coins_list
         gold_key = first_level.key
         doors = first_level.doors
-
-        enemies_list = pygame.sprite.Group()
-        enemies_list.add(blue_slime)
 
         '''
         Game Loop
@@ -149,7 +160,10 @@ if __name__ == '__main__':
             if player.rect.y > WORLD_Y + TY:
                 player.fall_off_the_world()
 
-            blue_slime.controller()
+            blue_slime_1.controller()
+            blue_slime_2.controller()
+            blue_slime_3.controller()
+            blue_fish.controller()
 
             key = pygame.key.get_pressed()
             if key[pygame.K_d]:
@@ -207,11 +221,11 @@ if __name__ == '__main__':
             doors.draw(WORLD)
             player_list.draw(WORLD)
             ground_list.draw(WORLD)
-            water_list.draw(WORLD)
             plat_list.draw(WORLD)
             coins.draw(WORLD)
             gold_key.draw(WORLD)
             enemies_list.draw(WORLD)
+            water_list.draw(WORLD)
             hud.print_status(WORLD, player.score, player.life, key_status, player.stamina)
             pygame.display.flip()
             clock.tick(FPS)

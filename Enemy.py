@@ -23,7 +23,6 @@ class Enemy(pygame.sprite.Sprite):
         self.current_direction = 2
         self.movement_direction = 'horizontal'
         self.move_counter = 0
-        self.vel_y = 0
         self.distance = 200
 
     def move(self, dx=0, dy=0):
@@ -31,13 +30,13 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.y += dy
         self.frame_counter += 1
 
-    def update_sprite(self):
+    def update_sprite(self, vertical=False):
         if self.frame_counter > len(self.images) * 20:
             self.frame_counter = 0
         if self.current_direction < 0:
             self.image = self.images[self.frame_counter % len(self.images) - 1]
         else:
-            self.image = pygame.transform.flip(self.images[self.frame_counter % len(self.images) - 1], True, False)
+            self.image = pygame.transform.flip(self.images[self.frame_counter % len(self.images) - 1], True, vertical)
 
     def set_enemy_location(self, x, y, distance):
         self.rect.x = x
@@ -47,12 +46,26 @@ class Enemy(pygame.sprite.Sprite):
 
 class Slime(Enemy):
     """
-    Simple nemey Slime class
+    Simple enemy Slime class
     """
 
     def controller(self):
         self.update_sprite()
         self.move(self.current_direction, 0)
+        self.move_counter += 1
+        if self.move_counter == self.distance:
+            self.current_direction *= -1
+            self.move_counter *= -1
+
+
+class Fish(Enemy):
+    """
+    Simple enemy Fish class
+    """
+
+    def controller(self):
+        self.update_sprite(True)
+        self.move(0, self.current_direction)
         self.move_counter += 1
         if self.move_counter == self.distance:
             self.current_direction *= -1
