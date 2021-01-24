@@ -119,7 +119,7 @@ if __name__ == '__main__':
         blue_slime_3.set_enemy_location(TX * 50, WORLD_Y - TY * 2, 192)
 
         blue_fish_imgs = ["fishBlue.png"]
-        blue_fish = Fish(blue_fish_imgs)
+        blue_fish = Fish(blue_fish_imgs, WORLD_Y)
         blue_fish.set_enemy_location(TX * 18, WORLD_Y - TY * 1, 100)
 
         enemies_list = pygame.sprite.Group()

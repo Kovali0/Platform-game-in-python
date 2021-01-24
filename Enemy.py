@@ -24,6 +24,7 @@ class Enemy(pygame.sprite.Sprite):
         self.movement_direction = 'horizontal'
         self.move_counter = 0
         self.distance = 200
+        self.gravity = 0
 
     def move(self, dx=0, dy=0):
         self.rect.x += dx
@@ -63,10 +64,18 @@ class Fish(Enemy):
     Simple enemy Fish class
     """
 
+    def __init__(self, img_list, world_y):
+        Enemy.__init__(self, img_list)
+        self.world_y = world_y
+
     def controller(self):
         self.update_sprite(True)
-        self.move(0, self.current_direction)
+        self.move(0, self.current_direction + self.gravity)
         self.move_counter += 1
+        if self.current_direction < 0 or self.rect.y > self.world_y:
+            self.gravity = 0
+        else:
+            self.gravity = 2
         if self.move_counter == self.distance:
             self.current_direction *= -1
             self.move_counter *= -1
