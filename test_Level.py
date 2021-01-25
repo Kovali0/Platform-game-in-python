@@ -1,5 +1,5 @@
 from unittest import TestCase
-from Level import Level
+from level import Level
 import pygame
 
 

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from Player import Player
+from player import Player
 import pygame
 
 

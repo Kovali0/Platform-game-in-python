@@ -1,9 +1,10 @@
+"""
+File with player class
+"""
 import os
 import pygame
 
-'''
-Global Variables
-'''
+# Global Variables
 PLA_ANIMATIONS = 10
 
 
@@ -12,9 +13,9 @@ class Player(pygame.sprite.Sprite):
     Player class
     """
 
-    def __init__(self, x, y):
+    def __init__(self, x_loc, y_loc):
         pygame.sprite.Sprite.__init__(self)
-        self.start_location = (x, y)
+        self.start_location = (x_loc, y_loc)
         self.frame_counter = 0
         self.direction = "right"
         self.is_jumping = True
@@ -32,8 +33,8 @@ class Player(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        self.rect.x = x_loc
+        self.rect.y = y_loc
         self.vel_y = 0
         self.in_attack = False
         self.attack_counter = 0
@@ -43,11 +44,19 @@ class Player(pygame.sprite.Sprite):
             self.attack.append(img)
         self.stamina = 300
 
-    def move(self, dx, dy):
-        self.rect.x += dx
-        self.rect.y += dy
+    def move(self, x_step=0, y_step=0):
+        """
+        This change the player position in game.
+        :param x_step: steps to move on x axis
+        :param y_step: steps to move on y axis
+        """
+        self.rect.x += x_step
+        self.rect.y += y_step
 
     def update(self):
+        """
+        Method for update current image and create animation for player.
+        """
         if self.immortal_time > 0:
             self.immortal_time -= 1
         if not self.in_attack:
@@ -60,6 +69,9 @@ class Player(pygame.sprite.Sprite):
                 self.image = pygame.transform.flip(self.walk[self.frame_counter % 8], True, False)
 
     def attack_update(self):
+        """
+        Method for attack animation.
+        """
         if self.in_attack:
             self.attack_counter += 1
             if self.direction == 'right':
@@ -70,24 +82,37 @@ class Player(pygame.sprite.Sprite):
             self.in_attack = False
 
     def gravity(self):
+        """
+        Add gravity for player model in game.
+        """
         self.vel_y += 1
         if self.vel_y > 10:
             self.vel_y = 10
         self.rect.y += self.vel_y
 
     def collision_checker(self, ground_list, plat_list, coins, key, doors, enemies_list):
+        """
+        Checker of player collision with anything in the game world.
+        :param ground_list: list of all ground sprites (created with tiles)
+        :param plat_list: list of sprites which represent platforms
+        :param coins: list of coins sprite
+        :param key: key sprite
+        :param doors: doors sprite
+        :param enemies_list: list of all enemies sprite
+        :return: bool
+        """
         ground_hit_list = pygame.sprite.spritecollide(self, ground_list, False)
-        for g in ground_hit_list:
+        for ground in ground_hit_list:
             self.vel_y = 0
-            self.rect.bottom = g.rect.top
+            self.rect.bottom = ground.rect.top
             self.in_air = False
 
         plat_hit_list = pygame.sprite.spritecollide(self, plat_list, False)
-        for p in plat_hit_list:
+        for plat in plat_hit_list:
             self.in_air = False
             self.vel_y = 0
-            if self.rect.bottom <= p.rect.bottom:
-                self.rect.bottom = p.rect.top
+            if self.rect.bottom <= plat.rect.bottom:
+                self.rect.bottom = plat.rect.top
             else:
                 self.vel_y += 3
 
@@ -122,16 +147,23 @@ class Player(pygame.sprite.Sprite):
         return False
 
     def fall_off_the_world(self):
+        """
+        Method to run when player fall fo the world and lose hp.
+        """
         self.life -= 1
         self.reset(self.start_location[0])
 
-    def reset(self, x=0):
+    def reset(self, x_loc=0):
+        """
+        Method which reset player status.
+        :param x_loc: param to set player location on X axis after reset
+        """
         self.frame_counter = 0
         self.direction = "right"
         self.is_jumping = True
         self.is_falling = True
         self.in_air = True
-        self.rect.x = x
+        self.rect.x = x_loc
         self.rect.y = self.start_location[1] - 64 * 3
         self.vel_y = 0
         self.update()
