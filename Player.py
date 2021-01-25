@@ -4,7 +4,7 @@ import pygame
 '''
 Global Variables
 '''
-PLA_ANIMATIONS = 9
+PLA_ANIMATIONS = 10
 
 
 class Player(pygame.sprite.Sprite):
@@ -25,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.score = 0
         self.has_key = False
         self.walk = []
-        for i in range(1, PLA_ANIMATIONS):
+        for i in range(PLA_ANIMATIONS):
             img = pygame.image.load(os.path.join('images', 'player', 'walk', str(i) + '.png')).convert_alpha()
             self.walk.append(img)
         self.image = self.walk[0]
@@ -38,7 +38,7 @@ class Player(pygame.sprite.Sprite):
         self.in_attack = False
         self.attack_counter = 0
         self.attack = []
-        for i in range(1, PLA_ANIMATIONS):
+        for i in range(PLA_ANIMATIONS):
             img = pygame.image.load(os.path.join('images', 'player', 'attack', str(i) + '.png')).convert_alpha()
             self.attack.append(img)
         self.stamina = 300

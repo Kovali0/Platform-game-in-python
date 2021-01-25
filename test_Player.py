@@ -26,12 +26,6 @@ class TestPlayer(TestCase):
         self.assertEqual(self.player.rect.x, 5)
         self.assertEqual(self.player.rect.y, 5)
 
-    #def test_update(self):
-    #    self.fail()
-
-    #def test_attack_update(self):
-    #    self.fail()
-
     def test_gravity(self):
         self.player.vel_y = 7
         self.player.gravity()

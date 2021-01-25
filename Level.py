@@ -15,14 +15,14 @@ class Platform(pygame.sprite.Sprite):
     Simple platform class
     """
 
-    def __init__(self, xloc, yloc, img, is_water=False):
+    def __init__(self, loc_x, loc_y, img, is_water=False):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(os.path.join('images', 'tiles', img)).convert()
         self.image.convert_alpha()
         self.image.set_colorkey(ALPHA)
         self.rect = self.image.get_rect()
-        self.rect.y = yloc
-        self.rect.x = xloc
+        self.rect.y = loc_y
+        self.rect.x = loc_x
         self.is_water = is_water
 
 

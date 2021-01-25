@@ -29,7 +29,7 @@ def scroll_elements(elements_list, forward, scroller):
             el.rect.x += scroller
 
 
-if __name__ == '__main__':
+def main():
     clock = pygame.time.Clock()
     pygame.init()
     run = True
@@ -249,3 +249,7 @@ if __name__ == '__main__':
                             in_menu = True
                 pygame.display.flip()
                 clock.tick(FPS)
+
+
+if __name__ == '__main__':
+    main()
