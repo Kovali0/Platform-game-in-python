@@ -148,3 +148,18 @@ class Doors(pygame.sprite.Sprite):
         Change doors sprite from closed to opened doors.
         """
         self.image = self.doors[1]
+
+
+class Decoration(pygame.sprite.Sprite):
+    """
+    Decoration for level in game world.
+    """
+    def __init__(self, x_loc, y_loc, img, to_flip=False):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join('images', 'tiles', img)).convert_alpha()
+        if to_flip:
+            self.image = pygame.transform.flip(self.image, True, False)
+        self.image.set_colorkey(ALPHA)
+        self.rect = self.image.get_rect()
+        self.rect.x = x_loc * 64
+        self.rect.y = y_loc

@@ -5,14 +5,13 @@ import os
 import sys
 import pygame
 from player import Player
-from level import Level
+from level import Level, Decoration
 from hud import Hud
 from menu import Menu, GameOverScreen, WinScreen
 from enemy import Slime, Fish
 
 
 # Global Variables
-
 FPS = 50
 WORLD_X = 960
 WORLD_Y = 780
@@ -65,6 +64,69 @@ def screen_loop(condition, screen, clock):
     return condition
 
 
+def decoration_level_1():
+    """
+    Setup decorations for first level
+    :return: list of back_decorations and front_decorations
+    """
+    back_decorations = pygame.sprite.Group()
+    back_decorations.add(Decoration(-4, WORLD_Y - TY * 2, "rock.png"))
+    back_decorations.add(Decoration(-3, WORLD_Y - TY * 2, "bush.png"))
+    back_decorations.add(Decoration(-2, WORLD_Y - TY * 2, "grass.png"))
+    back_decorations.add(Decoration(2, WORLD_Y - TY * 2, "fence.png"))
+    back_decorations.add(Decoration(3, WORLD_Y - TY * 2, "way_sign_right.png"))
+    back_decorations.add(Decoration(6, WORLD_Y - TY * 2, "bush.png"))
+    back_decorations.add(Decoration(7, WORLD_Y - TY * 2, "bush.png"))
+    back_decorations.add(Decoration(8, WORLD_Y - TY * 2, "mushroom_brown.png"))
+    back_decorations.add(Decoration(13, WORLD_Y - TY * 2, "mushroom_red.png"))
+    back_decorations.add(Decoration(17, WORLD_Y - TY * 11, "fence.png"))
+    back_decorations.add(Decoration(18, WORLD_Y - TY * 11, "fence.png"))
+    back_decorations.add(Decoration(19, WORLD_Y - TY * 11, "fence.png"))
+    back_decorations.add(Decoration(23, WORLD_Y - TY * 2, "rock.png"))
+    back_decorations.add(Decoration(24, WORLD_Y - TY * 2, "rock.png"))
+    back_decorations.add(Decoration(32, WORLD_Y - TY * 2, "fence.png"))
+    back_decorations.add(Decoration(32, WORLD_Y - TY * 2, "grass.png"))
+    back_decorations.add(Decoration(33, WORLD_Y - TY * 2, "fence.png"))
+    back_decorations.add(Decoration(38, WORLD_Y - TY * 2, "grass.png"))
+    back_decorations.add(Decoration(43, WORLD_Y - TY * 8, "stone_tile_1.png"))
+    back_decorations.add(Decoration(44, WORLD_Y - TY * 8, "stone_tile_1.png"))
+    back_decorations.add(Decoration(45, WORLD_Y - TY * 8, "stone_tile_1.png"))
+    back_decorations.add(Decoration(43, WORLD_Y - TY * 9, "stone_tile_1.png"))
+    back_decorations.add(Decoration(43, WORLD_Y - TY * 9, "torch.png"))
+    back_decorations.add(Decoration(44, WORLD_Y - TY * 9, "stone_tile_1.png"))
+    back_decorations.add(Decoration(45, WORLD_Y - TY * 9, "stone_tile_1.png"))
+    back_decorations.add(Decoration(45, WORLD_Y - TY * 9, "torch.png"))
+    back_decorations.add(Decoration(43, WORLD_Y - TY * 10, "stone_tile_2.png"))
+    back_decorations.add(Decoration(44, WORLD_Y - TY * 10, "stone_tile_3.png"))
+    back_decorations.add(Decoration(44, WORLD_Y - TY * 10, "window.png"))
+    back_decorations.add(Decoration(45, WORLD_Y - TY * 10, "stone_tile_2.png", True))
+    back_decorations.add(Decoration(52, WORLD_Y - TY * 2, "grass.png"))
+    back_decorations.add(Decoration(56, WORLD_Y - TY * 2, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(57, WORLD_Y - TY * 2, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(57, WORLD_Y - TY * 3, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(58, WORLD_Y - TY * 2, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(58, WORLD_Y - TY * 3, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(59, WORLD_Y - TY * 2, "wooden_box_crate.png"))
+    front_decorations = pygame.sprite.Group()
+    front_decorations.add(Decoration(3, WORLD_Y - TY * 2, "grass.png"))
+    front_decorations.add(Decoration(4, WORLD_Y - TY * 2, "grass.png"))
+    front_decorations.add(Decoration(16, WORLD_Y - TY * 2, "rock.png"))
+    front_decorations.add(Decoration(24, WORLD_Y - TY * 2, "grass.png"))
+    front_decorations.add(Decoration(34, WORLD_Y - TY * 2, "fence.png"))
+    front_decorations.add(Decoration(35, WORLD_Y - TY * 2, "fence.png"))
+    front_decorations.add(Decoration(36, WORLD_Y - TY * 2, "fence.png"))
+    front_decorations.add(Decoration(36, WORLD_Y - TY * 11, "fence.png"))
+    front_decorations.add(Decoration(37, WORLD_Y - TY * 11, "fence.png"))
+    front_decorations.add(Decoration(44, WORLD_Y - TY * 2, "mushroom_brown.png"))
+    front_decorations.add(Decoration(45, WORLD_Y - TY * 2, "bush.png"))
+    front_decorations.add(Decoration(55, WORLD_Y - TY * 2, "mushroom_red.png"))
+    front_decorations.add(Decoration(57, WORLD_Y - TY * 2, "wooden_box_crate.png"))
+    front_decorations.add(Decoration(58, WORLD_Y - TY * 2, "wooden_box_crate.png"))
+    front_decorations.add(Decoration(58, WORLD_Y - TY * 3, "wooden_box_crate.png"))
+
+    return back_decorations, front_decorations
+
+
 def design_first_level() -> Level:
     """
     Function for designing and creating first level.
@@ -102,30 +164,43 @@ def design_first_level() -> Level:
     blue_slime_2 = Slime(blue_slime_imgs)
     blue_slime_2.set_enemy_location(TX * 16, WORLD_Y - TY * 11, 100)
     blue_slime_3 = Slime(blue_slime_imgs)
-    blue_slime_3.set_enemy_location(TX * 50, WORLD_Y - TY * 2, 192)
+    blue_slime_3.set_enemy_location(TX * 35, WORLD_Y - TY * 11, 40)
+    blue_slime_4 = Slime(blue_slime_imgs)
+    blue_slime_4.set_enemy_location(TX * 50, WORLD_Y - TY * 2, 192)
+    blue_slime_5 = Slime(blue_slime_imgs)
+    blue_slime_5.set_enemy_location(TX * 52, WORLD_Y - TY * 2, 192)
 
     blue_fish_imgs = ["fishBlue.png"]
-    blue_fish = Fish(blue_fish_imgs, WORLD_Y)
-    blue_fish.set_enemy_location(TX * 18, WORLD_Y - TY * 1, 100)
+    blue_fish_1 = Fish(blue_fish_imgs, WORLD_Y)
+    blue_fish_1.set_enemy_location(TX * 18, WORLD_Y - TY * 1, 100)
+    blue_fish_2 = Fish(blue_fish_imgs, WORLD_Y)
+    blue_fish_2.set_enemy_location(TX * 28, WORLD_Y - TY * 1, 100)
+    blue_fish_3 = Fish(blue_fish_imgs, WORLD_Y)
+    blue_fish_3.set_enemy_location(TX * 61, WORLD_Y - TY * 1, 100)
 
     ENEMIES_LIST.add(blue_slime_1)
     ENEMIES_LIST.add(blue_slime_2)
     ENEMIES_LIST.add(blue_slime_3)
-    ENEMIES_LIST.add(blue_fish)
+    ENEMIES_LIST.add(blue_slime_4)
+    ENEMIES_LIST.add(blue_slime_5)
+    ENEMIES_LIST.add(blue_fish_1)
+    ENEMIES_LIST.add(blue_fish_2)
+    ENEMIES_LIST.add(blue_fish_3)
     return first_level
 
 
 def main():
     """
     Program main function
-    :return:
     """
     clock = pygame.time.Clock()
     pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load(os.path.join('music', 'music.mp3'))
+    pygame.mixer.music.play(-1, 0.0)
     run = True
     in_menu = True
     in_game = False
-    mouse_pos = (0, 0)
 
     while run:
 
@@ -165,7 +240,7 @@ def main():
         win_screen = WinScreen(WORLD)
         run = True
 
-        player = Player(0, WORLD_Y - TY)  # spawn player
+        player = Player(0, WORLD_Y - TY)
         player_list = pygame.sprite.Group()
         player_list.add(player)
 
@@ -173,6 +248,7 @@ def main():
 
         ENEMIES_LIST.empty()
         first_level = design_first_level()
+        back_decorations, front_decorations = decoration_level_1()
 
         ground_list = first_level.ground_list
         water_list = first_level.water_list
@@ -245,6 +321,8 @@ def main():
                 scroll_elements(gold_key, True, scroll)
                 scroll_elements(doors, True, scroll)
                 scroll_elements(ENEMIES_LIST, True, scroll)
+                scroll_elements(back_decorations, True, scroll)
+                scroll_elements(front_decorations, True, scroll)
 
             if player.rect.x <= BACKWARD_X:
                 scroll = BACKWARD_X - player.rect.x
@@ -256,11 +334,14 @@ def main():
                 scroll_elements(gold_key, False, scroll)
                 scroll_elements(doors, False, scroll)
                 scroll_elements(ENEMIES_LIST, False, scroll)
+                scroll_elements(back_decorations, False, scroll)
+                scroll_elements(front_decorations, False, scroll)
 
             key_status = 1 if player.has_key else 0
             WORLD.blit(background, WORLD.get_rect())
             player.gravity()
             player.update()
+            back_decorations.draw(WORLD)
             doors.draw(WORLD)
             player_list.draw(WORLD)
             ground_list.draw(WORLD)
@@ -268,6 +349,7 @@ def main():
             coins.draw(WORLD)
             gold_key.draw(WORLD)
             ENEMIES_LIST.draw(WORLD)
+            front_decorations.draw(WORLD)
             water_list.draw(WORLD)
             hud.print_status(WORLD, player.score, player.life, key_status, player.stamina)
             pygame.display.flip()
