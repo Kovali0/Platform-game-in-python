@@ -21,6 +21,16 @@ The game can be started in two ways:
    - Go to subfolder KnightAdventures\dist\main 
    - Run main.exe file
 
+## Controls
+
+[a] / [d] - left / right move
+
+[space] - jump
+
+[mouse left click] - attack
+
+[esc] - quit game
+
 ## Requirements
 
 Python 3.7.9
