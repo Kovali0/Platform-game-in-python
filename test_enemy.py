@@ -1,5 +1,5 @@
 from unittest import TestCase
-from enemy import Enemy, Slime
+from enemy import Enemy, Slime, Fish
 import pygame
 
 
@@ -48,3 +48,23 @@ class TestSlime(TestCase):
         self.assertEqual(self.enemy.rect.x, 164)
         self.assertEqual(self.enemy.move_counter, -18)
         self.assertEqual(self.enemy.current_direction, -2)
+
+
+class TestFish(TestCase):
+    def setUp(self):
+        initPygame()
+        self.enemy = Fish(["fishBlue.png"], 128)
+        self.enemy.set_enemy_location(128, 128, 100)
+
+    def test_controller(self):
+        self.assertEqual(self.enemy.rect.y, 128)
+        self.assertEqual(self.enemy.move_counter, 0)
+        self.assertEqual(self.enemy.current_direction, 2)
+        self.enemy.controller()
+        self.assertEqual(self.enemy.rect.y, 130)
+        self.assertEqual(self.enemy.move_counter, 2)
+        for i in range(21):
+            self.enemy.controller()
+        self.assertEqual(self.enemy.rect.y, 172)
+        self.assertEqual(self.enemy.move_counter, 44)
+        self.assertEqual(self.enemy.current_direction, 2)
