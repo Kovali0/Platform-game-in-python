@@ -70,6 +70,13 @@ class GameOverScreen:
         """
         self.world.blit(self.back_btn.image, self.back_btn.rect)
 
+    def control_action(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            if self.back_btn.show(mouse_pos):
+                return False
+        return True
+
 
 class WinScreen:
     """
@@ -82,9 +89,20 @@ class WinScreen:
         self.bg_x = self.bg_rect.width
         self.bg_y = self.bg_rect.height
         self.back_btn = Button(128, self.bg_y - 128, 'back.png')
+        self.next_btn = Button(self.bg_x - 256, self.bg_y - 128, 'next.png')
 
     def show_controllers(self):
         """
         Show all buttons and others controls for level win screen.
         """
         self.world.blit(self.back_btn.image, self.back_btn.rect)
+        self.world.blit(self.next_btn.image, self.next_btn.rect)
+
+    def control_action(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            if self.back_btn.show(mouse_pos):
+                return False
+            if self.next_btn.show(mouse_pos):
+                return False
+        return True

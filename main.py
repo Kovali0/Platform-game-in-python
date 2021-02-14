@@ -55,10 +55,7 @@ def screen_loop(condition, screen, clock):
                     sys.exit()
                 finally:
                     pass
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                if screen.back_btn.show(mouse_pos):
-                    condition = False
+            condition = screen.control_action(event)
         pygame.display.flip()
         clock.tick(FPS)
     return condition

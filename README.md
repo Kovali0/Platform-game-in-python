@@ -34,7 +34,8 @@ The game can be started in two ways:
 ## Requirements
 
 Python 3.7.9
-PyGame 2.0.0
+Numpy 1.19.2
+Pandas 1.1.3
 
 ## Music and graphic credentials
 
