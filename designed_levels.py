@@ -1,5 +1,5 @@
 """
-Main file
+File with levels designed
 """
 import os
 import pygame
@@ -9,8 +9,6 @@ from enemy import Slime, Fish
 
 # Global Variables
 WORLD_Y = 780
-FORWARD_X = 600
-BACKWARD_X = 120
 # Tiles size x-width y-high
 TX = 64
 TY = 64
@@ -142,6 +140,12 @@ def decoration_level_1():
 
 
 def design_level(level_id, enemies):
+    """
+    Design level and return all needed things.
+    :param level_id: which level should be created
+    :param enemies: global list of enemies
+    :return: level object, background, back decorations list and front decorations list
+    """
     if level_id == 1:
         background = pygame.image.load(os.path.join('images', 'backgrounds', 'clouds_background.png'))
         first_level = design_first_level(enemies)

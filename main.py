@@ -3,13 +3,12 @@ Main file
 """
 import os
 import sys
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 import pygame
 from player import Player
-from level import Level, Decoration
 import designed_levels as des_lvl
 from hud import Hud
 from menu import Menu, GameOverScreen, WinScreen
-from enemy import Slime, Fish
 
 
 # Global Variables
@@ -56,6 +55,8 @@ def screen_loop(condition, screen, clock):
                 finally:
                     pass
             condition = screen.control_action(event)
+            if isinstance(condition, str):
+                return "next"
         pygame.display.flip()
         clock.tick(FPS)
     return condition
@@ -67,18 +68,18 @@ def main():
     """
     clock = pygame.time.Clock()
     pygame.init()
+    pygame.display.set_caption('Knight Adventures')
     pygame.mixer.init()
     pygame.mixer.music.load(os.path.join('music', 'music.mp3'))
     pygame.mixer.music.play(-1, 0.0)
     run = True
     in_menu = True
     in_game = False
-    level = 1
+    current_level = 1
+    menu = Menu(WORLD)
 
     while run:
-
         # Menu part
-        menu = Menu(WORLD)
         while in_menu:
             WORLD.blit(menu.background, menu.background.get_rect())
             menu.show_controllers()
@@ -117,7 +118,7 @@ def main():
         player_list = pygame.sprite.Group()
         player_list.add(player)
 
-        level, background, back_decorations, front_decorations = des_lvl.design_level(1, enemies_list)
+        level, background, back_decorations, front_decorations = des_lvl.design_level(current_level, enemies_list)
 
         ground_list = level.ground_list
         water_list = level.water_list
@@ -229,9 +230,12 @@ def main():
                 in_game = False
                 in_menu = True
             if win:
-                level += screen_loop(win, win_screen, clock)
-                in_game = False
-                in_menu = True
+                if screen_loop(win, win_screen, clock) == "next":
+                    current_level += 0
+                    break
+                else:
+                    in_game = False
+                    in_menu = True
 
 
 if __name__ == '__main__':

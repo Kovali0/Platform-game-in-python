@@ -118,7 +118,6 @@ class Player(pygame.sprite.Sprite):
 
         if pygame.sprite.spritecollide(self, coins, True):
             self.score += 1
-            print(str(self.score))
 
         if pygame.sprite.spritecollide(self, key, True):
             self.has_key = True
@@ -126,10 +125,8 @@ class Player(pygame.sprite.Sprite):
                 doors.sprites()[0].open_doors()
             except IndexError:
                 pass
-            print("Get key!")
 
         if pygame.sprite.spritecollide(self, doors, False) and self.has_key:
-            print("Win game!")
             return True
 
         if self.in_attack:
