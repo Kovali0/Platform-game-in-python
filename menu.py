@@ -104,5 +104,5 @@ class WinScreen:
             if self.back_btn.show(mouse_pos):
                 return False
             if self.next_btn.show(mouse_pos):
-                return False
+                return 2
         return True
