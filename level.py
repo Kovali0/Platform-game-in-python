@@ -30,11 +30,13 @@ class Level:
     """
     Level class
     """
-    def __init__(self, lvl, tile_x, tile_y, world_y, water_points, ground_len, plat_locations):
+    def __init__(self, lvl, tile_x, tile_y, world_y, water_points, ground_len, plat_locations, ground_img, platform_img):
         self.level = lvl
         self.tile_x = tile_x
         self.tile_y = tile_y
         self.world_y = world_y
+        self.ground_img = ground_img
+        self.platform_img = platform_img
         self.ground_list = pygame.sprite.Group()
         self.water_list = pygame.sprite.Group()
         self.plat_list = pygame.sprite.Group()
@@ -57,7 +59,7 @@ class Level:
                 water = Platform(i * self.tile_x, self.world_y - self.tile_y, 'water_tile_1.png', True)
                 self.water_list.add(water)
             else:
-                ground = Platform(i * self.tile_x, self.world_y - self.tile_y, 'green_tile_1.png')
+                ground = Platform(i * self.tile_x, self.world_y - self.tile_y, self.ground_img)
                 self.ground_list.add(ground)
             i = i + 1
 
@@ -69,7 +71,7 @@ class Level:
         while i < len(self.plat_locations):
             j = 0
             while j <= self.plat_locations[i][2]:
-                plat = Platform((self.plat_locations[i][0] + (j * self.tile_x)), self.plat_locations[i][1], 'green_tile_2.png')
+                plat = Platform((self.plat_locations[i][0] + (j * self.tile_x)), self.plat_locations[i][1], self.platform_img)
                 self.plat_list.add(plat)
                 j = j + 1
             i = i + 1

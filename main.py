@@ -16,6 +16,7 @@ FPS = 50
 WORLD_X = 960
 WORLD_Y = 780
 WORLD = pygame.display.set_mode([WORLD_X, WORLD_Y])
+LEVELS_NUMBER = 2
 FORWARD_X = 600
 BACKWARD_X = 120
 # Tiles size x-width y-high
@@ -129,7 +130,6 @@ def main():
 
         # Game Loop
         while in_game:
-            win = False
             lose = False
 
             for event in pygame.event.get():
@@ -231,7 +231,9 @@ def main():
                 in_menu = True
             if win:
                 if screen_loop(win, win_screen, clock) == "next":
-                    current_level += 0
+                    current_level += 1
+                    if current_level > LEVELS_NUMBER:
+                        current_level = 1
                     break
                 else:
                     in_game = False
