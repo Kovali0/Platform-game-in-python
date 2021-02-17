@@ -184,6 +184,7 @@ def main():
             if player.rect.x >= FORWARD_X:
                 scroll = player.rect.x - FORWARD_X
                 player.rect.x = FORWARD_X
+                player.start_location[0] -= scroll
                 scroll_elements(plat_list, True, scroll)
                 scroll_elements(ground_list, True, scroll)
                 scroll_elements(water_list, True, scroll)
@@ -197,6 +198,7 @@ def main():
             if player.rect.x <= BACKWARD_X:
                 scroll = BACKWARD_X - player.rect.x
                 player.rect.x = BACKWARD_X
+                player.start_location[0] += scroll
                 scroll_elements(plat_list, False, scroll)
                 scroll_elements(ground_list, False, scroll)
                 scroll_elements(water_list, False, scroll)

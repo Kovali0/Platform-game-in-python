@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
 
     def __init__(self, x_loc, y_loc):
         pygame.sprite.Sprite.__init__(self)
-        self.start_location = (x_loc, y_loc)
+        self.start_location = [x_loc, y_loc]
         self.frame_counter = 0
         self.direction = "right"
         self.is_jumping = True
@@ -136,10 +136,7 @@ class Player(pygame.sprite.Sprite):
                 if self.immortal_time == 0:
                     self.life -= 1
                     self.immortal_time = 20
-                    if self.direction == 'right':
-                        self.reset(self.rect.x - 64 * 3)
-                    else:
-                        self.reset(self.rect.x + 64 * 3)
+                    self.reset()
 
         return False
 
@@ -148,9 +145,9 @@ class Player(pygame.sprite.Sprite):
         Method to run when player fall fo the world and lose hp.
         """
         self.life -= 1
-        self.reset(self.start_location[0])
+        self.reset()
 
-    def reset(self, x_loc=0):
+    def reset(self):
         """
         Method which reset player status.
         :param x_loc: param to set player location on X axis after reset
@@ -160,7 +157,7 @@ class Player(pygame.sprite.Sprite):
         self.is_jumping = True
         self.is_falling = True
         self.in_air = True
-        self.rect.x = x_loc
+        self.rect.x = self.start_location[0]
         self.rect.y = self.start_location[1] - 64 * 3
         self.vel_y = 0
         self.update()
