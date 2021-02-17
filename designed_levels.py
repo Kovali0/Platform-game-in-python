@@ -175,6 +175,40 @@ def design_second_level(enemies) -> Level:
     second_level.set_key((79.5, WORLD_Y - TY * 10.5))
     second_level.set_doors((73, WORLD_Y - TY * 3))
 
+    green_slime_imgs = ["slimeGreen.png"]
+    green_slime_1 = Slime(green_slime_imgs)
+    green_slime_1.set_enemy_location(TX * 15, WORLD_Y - TY * 2, 80)
+    green_slime_2 = Slime(green_slime_imgs)
+    green_slime_2.set_enemy_location(TX * 20, WORLD_Y - TY * 2, 85)
+    green_slime_3 = Slime(green_slime_imgs)
+    green_slime_3.set_enemy_location(TX * 25, WORLD_Y - TY * 2, 80)
+    green_slime_4 = Slime(green_slime_imgs)
+    green_slime_4.set_enemy_location(TX * 42, WORLD_Y - TY * 11, 60)
+    green_slime_5 = Slime(green_slime_imgs)
+    green_slime_5.set_enemy_location(TX * 45, WORLD_Y - TY * 5, 60)
+    green_slime_6 = Slime(green_slime_imgs)
+    green_slime_6.set_enemy_location(TX * 55, WORLD_Y - TY * 2, 90)
+    green_slime_7 = Slime(green_slime_imgs)
+    green_slime_7.set_enemy_location(TX * 65, WORLD_Y - TY * 5, 45)
+    green_slime_8 = Slime(green_slime_imgs)
+    green_slime_8.set_enemy_location(TX * 71, WORLD_Y - TY * 2, 65)
+    green_slime_9 = Slime(green_slime_imgs)
+    green_slime_9.set_enemy_location(TX * 72.5, WORLD_Y - TY * 11, 60)
+
+    blue_fish_imgs = ["fishBlue.png"]
+    blue_fish_1 = Fish(blue_fish_imgs, WORLD_Y)
+    blue_fish_1.set_enemy_location(TX * 7, WORLD_Y - TY * 1, 100)
+
+    enemies.add(green_slime_1)
+    enemies.add(green_slime_2)
+    enemies.add(green_slime_3)
+    enemies.add(green_slime_4)
+    enemies.add(green_slime_5)
+    enemies.add(green_slime_6)
+    enemies.add(green_slime_7)
+    enemies.add(green_slime_8)
+    enemies.add(green_slime_9)
+    enemies.add(blue_fish_1)
     return second_level
 
 
