@@ -327,10 +327,10 @@ def design_third_level(enemies) -> Level:
                     35, 36, 37, 38, 39,
                     55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65,
                     97, 98, 99, 100, 101, 102, 102, 103, 104, 105, 106, 107, 108, 109, 110]
-    second_level = Level(2, TX, TY, WORLD_Y, water_points, 110, p_loc, "dirt_tile_1.png", "orange_tile_1.png")
+    third_level = Level(2, TX, TY, WORLD_Y, water_points, 110, p_loc, "dirt_tile_1.png", "orange_tile_1.png")
     bridges_loc = [(TX * 56, WORLD_Y - TY - 384, 8),
                    (TX * 87, WORLD_Y - TY - 576, 4)]
-    second_level.build_bridges(bridges_loc)
+    third_level.build_bridges(bridges_loc)
 
     coins_locations = [(2.5, WORLD_Y - TY * 10.5),
                        (25, WORLD_Y - TY * 1.5),
@@ -341,11 +341,43 @@ def design_third_level(enemies) -> Level:
                        (77, WORLD_Y - TY * 7.5),
                        (88.5, WORLD_Y - TY * 10.5),
                        (92, WORLD_Y - TY * 4.5)]
-    second_level.set_coins(coins_locations)
-    second_level.set_key((92, WORLD_Y - TY * 1.5))
-    second_level.set_doors((8, WORLD_Y - TY * 3))
+    third_level.set_coins(coins_locations)
+    third_level.set_key((92, WORLD_Y - TY * 1.5))
+    third_level.set_doors((8, WORLD_Y - TY * 3))
 
-    return second_level
+    green_purple_img = ["slimePurple.png"]
+    green_purple_1 = Slime(green_purple_img)
+    green_purple_1.set_enemy_location(TX * 23, WORLD_Y - TY * 8, 50)
+    green_purple_2 = Slime(green_purple_img)
+    green_purple_2.set_enemy_location(TX * 25, WORLD_Y - TY * 2, 120)
+    green_purple_3 = Slime(green_purple_img)
+    green_purple_3.set_enemy_location(TX * 25, WORLD_Y - TY * 2, 65)
+    green_purple_4 = Slime(green_purple_img)
+    green_purple_4.set_enemy_location(TX * 40, WORLD_Y - TY * 11, 65)
+    green_purple_5 = Slime(green_purple_img)
+    green_purple_5.set_enemy_location(TX * 44.5, WORLD_Y - TY * 5, 50)
+    green_purple_6 = Slime(green_purple_img)
+    green_purple_6.set_enemy_location(TX * 51, WORLD_Y - TY * 2, 90)
+    green_purple_7 = Slime(green_purple_img)
+    green_purple_7.set_enemy_location(TX * 68.5, WORLD_Y - TY * 11, 40)
+
+    blue_fish_img = ["fishBlue.png"]
+    blue_fish_1 = Fish(blue_fish_img, WORLD_Y)
+    blue_fish_1.set_enemy_location(TX * 12.5, WORLD_Y - TY * 1, 100)
+    blue_fish_2 = Fish(blue_fish_img, WORLD_Y)
+    blue_fish_2.set_enemy_location(TX * 37, WORLD_Y - TY * 1, 100)
+
+    enemies.add(green_purple_1)
+    enemies.add(green_purple_2)
+    enemies.add(green_purple_3)
+    enemies.add(green_purple_4)
+    enemies.add(green_purple_5)
+    enemies.add(green_purple_6)
+    enemies.add(green_purple_7)
+    enemies.add(blue_fish_1)
+    enemies.add(blue_fish_2)
+    enemies.add(blue_fish_1)
+    return third_level
 
 
 def decoration_level_3():
