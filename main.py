@@ -23,7 +23,7 @@ BACKWARD_X = 120
 TX = 64
 TY = 64
 
-# TODO add player start location respown, changing with scroll elements
+
 def scroll_elements(elements_list, forward, scroller):
     """
     Method which scroll items, tiles and rest things coordinates when player move on screen.
@@ -76,7 +76,7 @@ def main():
     run = True
     in_menu = True
     in_game = False
-    current_level = 2
+    current_level = 3
     menu = Menu(WORLD)
 
     while run:

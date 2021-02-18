@@ -302,6 +302,63 @@ def decoration_level_2():
     return back_decorations, front_decorations
 
 
+def design_third_level(enemies) -> Level:
+    """
+    Function for designing and creating third level.
+    :return: first level object
+    """
+    p_loc = [(TX * -5, WORLD_Y - TY - 192, 0),
+             (TX * -5, WORLD_Y - TY - 384, 0),
+             (TX * 0, WORLD_Y - TY - 576, 4),
+             (TX * 15, WORLD_Y - TY - 192, 2),
+             (TX * 21, WORLD_Y - TY - 384, 4),
+             (TX * 29, WORLD_Y - TY - 576, 3),
+             (TX * 37, WORLD_Y - TY - 576, 7),
+             (TX * 43, WORLD_Y - TY - 192, 3),
+             (TX * 51, WORLD_Y - TY - 192, 0),
+             (TX * 53, WORLD_Y - TY - 384, 2),
+             (TX * 65, WORLD_Y - TY - 384, 6),
+             (TX * 67, WORLD_Y - TY - 576, 2),
+             (TX * 75, WORLD_Y - TY - 384, 5),
+             (TX * 85, WORLD_Y - TY - 576, 1),
+             (TX * 92, WORLD_Y - TY - 576, 1)]
+    water_points = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1,
+                    10, 11, 12, 13, 14,
+                    35, 36, 37, 38, 39,
+                    55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65,
+                    97, 98, 99, 100, 101, 102, 102, 103, 104, 105, 106, 107, 108, 109, 110]
+    second_level = Level(2, TX, TY, WORLD_Y, water_points, 110, p_loc, "dirt_tile_1.png", "orange_tile_1.png")
+    bridges_loc = [(TX * 56, WORLD_Y - TY - 384, 8),
+                   (TX * 87, WORLD_Y - TY - 576, 4)]
+    second_level.build_bridges(bridges_loc)
+
+    coins_locations = [(2.5, WORLD_Y - TY * 10.5),
+                       (25, WORLD_Y - TY * 1.5),
+                       (38.5, WORLD_Y - TY * 10.5),
+                       (51.5, WORLD_Y - TY * 4.5),
+                       (62.5, WORLD_Y - TY * 10.5),
+                       (70.5, WORLD_Y - TY * 1.5),
+                       (77, WORLD_Y - TY * 7.5),
+                       (88.5, WORLD_Y - TY * 10.5),
+                       (92, WORLD_Y - TY * 4.5)]
+    second_level.set_coins(coins_locations)
+    second_level.set_key((92, WORLD_Y - TY * 1.5))
+    second_level.set_doors((8, WORLD_Y - TY * 3))
+
+    return second_level
+
+
+def decoration_level_3():
+
+    """
+    Setup decorations for first level
+    :return: list of back_decorations and front_decorations
+    """
+    back_decorations = pygame.sprite.Group()
+    front_decorations = pygame.sprite.Group()
+    return back_decorations, front_decorations
+
+
 def design_level(level_id, enemies):
     """
     Design level and return all needed things.
@@ -320,3 +377,9 @@ def design_level(level_id, enemies):
         second_level = design_second_level(enemies)
         back_decorations, front_decorations = decoration_level_2()
         return second_level, background, back_decorations, front_decorations
+
+    if level_id == 3:
+        background = pygame.image.load(os.path.join('images', 'backgrounds', 'orange_background.png'))
+        third_level = design_third_level(enemies)
+        back_decorations, front_decorations = decoration_level_3()
+        return third_level, background, back_decorations, front_decorations

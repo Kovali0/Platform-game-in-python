@@ -30,13 +30,13 @@ class Level:
     """
     Level class
     """
-    def __init__(self, lvl, tile_x, tile_y, world_y, water_points, ground_len, plat_locations, ground_img, platform_img):
+    def __init__(self, lvl, tile_x, tile_y, world_y, water_points, ground_len, plat_locations, ground_img, plat_img):
         self.level = lvl
         self.tile_x = tile_x
         self.tile_y = tile_y
         self.world_y = world_y
         self.ground_img = ground_img
-        self.platform_img = platform_img
+        self.platform_img = plat_img
         self.ground_list = pygame.sprite.Group()
         self.water_list = pygame.sprite.Group()
         self.plat_list = pygame.sprite.Group()
@@ -47,7 +47,7 @@ class Level:
         self.plat_locations = plat_locations
         self.ground_len = ground_len
         self.ground()
-        self.platforms()
+        self.platforms(self.platform_img, self.plat_locations)
 
     def ground(self):
         """
@@ -63,15 +63,15 @@ class Level:
                 self.ground_list.add(ground)
             i = i + 1
 
-    def platforms(self):
+    def platforms(self, img, locations):
         """
         Platforms builder
         """
         i = 0
-        while i < len(self.plat_locations):
+        while i < len(locations):
             j = 0
-            while j <= self.plat_locations[i][2]:
-                plat = Platform((self.plat_locations[i][0] + (j * self.tile_x)), self.plat_locations[i][1], self.platform_img)
+            while j <= locations[i][2]:
+                plat = Platform((locations[i][0] + (j * self.tile_x)), locations[i][1], img)
                 self.plat_list.add(plat)
                 j = j + 1
             i = i + 1
@@ -103,6 +103,9 @@ class Level:
         x_loc, y_loc = location
         doors = Doors(x_loc * self.tile_x, y_loc)
         self.doors.add(doors)
+
+    def build_bridges(self, locations):
+        self.platforms("wooden_bridge.png", locations)
 
 
 class Coin(pygame.sprite.Sprite):
