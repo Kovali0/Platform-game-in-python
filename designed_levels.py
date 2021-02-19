@@ -4,8 +4,7 @@ File with levels designed
 import os
 import pygame
 from level import Level, Decoration
-from enemy import Slime, Fish
-
+from enemy import Slime, Fish, Viking
 
 # Global Variables
 WORLD_Y = 780
@@ -346,12 +345,12 @@ def design_third_level(enemies) -> Level:
     third_level.set_doors((8, WORLD_Y - TY * 3))
 
     green_purple_img = ["slimePurple.png"]
-    green_purple_1 = Slime(green_purple_img)
-    green_purple_1.set_enemy_location(TX * 23, WORLD_Y - TY * 8, 50)
-    green_purple_2 = Slime(green_purple_img)
-    green_purple_2.set_enemy_location(TX * 25, WORLD_Y - TY * 2, 120)
-    green_purple_3 = Slime(green_purple_img)
-    green_purple_3.set_enemy_location(TX * 25, WORLD_Y - TY * 2, 65)
+    #green_purple_1 = Slime(green_purple_img)
+    #green_purple_1.set_enemy_location(TX * 23, WORLD_Y - TY * 8, 50)
+    #green_purple_2 = Slime(green_purple_img)
+    #green_purple_2.set_enemy_location(TX * 25, WORLD_Y - TY * 2, 120)
+    #green_purple_3 = Slime(green_purple_img)
+    #green_purple_3.set_enemy_location(TX * 25, WORLD_Y - TY * 2, 65)
     green_purple_4 = Slime(green_purple_img)
     green_purple_4.set_enemy_location(TX * 40, WORLD_Y - TY * 11, 65)
     green_purple_5 = Slime(green_purple_img)
@@ -359,24 +358,34 @@ def design_third_level(enemies) -> Level:
     green_purple_6 = Slime(green_purple_img)
     green_purple_6.set_enemy_location(TX * 51, WORLD_Y - TY * 2, 90)
     green_purple_7 = Slime(green_purple_img)
-    green_purple_7.set_enemy_location(TX * 68.5, WORLD_Y - TY * 11, 40)
+    green_purple_7.set_enemy_location(TX * 68, WORLD_Y - TY * 11, 40)
 
     blue_fish_img = ["fishBlue.png"]
     blue_fish_1 = Fish(blue_fish_img, WORLD_Y)
-    blue_fish_1.set_enemy_location(TX * 12.5, WORLD_Y - TY * 1, 100)
+    #blue_fish_1.set_enemy_location(TX * 12.5, WORLD_Y - TY * 1, 100)
     blue_fish_2 = Fish(blue_fish_img, WORLD_Y)
     blue_fish_2.set_enemy_location(TX * 37, WORLD_Y - TY * 1, 100)
 
-    enemies.add(green_purple_1)
-    enemies.add(green_purple_2)
-    enemies.add(green_purple_3)
+    viking_img = ["viking/walk/0.png", "viking/walk/0.png", "viking/walk/1.png", "viking/walk/1.png",
+                  "viking/walk/2.png", "viking/walk/2.png", "viking/walk/3.png", "viking/walk/3.png",
+                  "viking/walk/4.png", "viking/walk/4.png", "viking/walk/5.png", "viking/walk/5.png",
+                  "viking/walk/6.png", "viking/walk/6.png", "viking/walk/7.png", "viking/walk/7.png",
+                  "viking/walk/8.png", "viking/walk/8.png", "viking/walk/9.png", "viking/walk/9.png"]
+    viking_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png"]
+    viking_1 = Viking(viking_img, viking_attack_img)
+    viking_1.set_enemy_location(TX * 22, WORLD_Y - TY * 2.5, 120)
+
+    #enemies.add(green_purple_1)
+    #enemies.add(green_purple_2)
+    #enemies.add(green_purple_3)
     enemies.add(green_purple_4)
     enemies.add(green_purple_5)
     enemies.add(green_purple_6)
     enemies.add(green_purple_7)
-    enemies.add(blue_fish_1)
+    #enemies.add(blue_fish_1)
     enemies.add(blue_fish_2)
     enemies.add(blue_fish_1)
+    enemies.add(viking_1)
     return third_level
 
 

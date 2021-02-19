@@ -3,6 +3,9 @@ Main file
 """
 import os
 import sys
+
+from enemy import Viking
+
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 import pygame
 from player import Player
@@ -152,6 +155,8 @@ def main():
                 player.fall_off_the_world()
 
             for enemy in enemies_list.sprites():
+                if type(enemy) == Viking and not enemy.in_attack:
+                    enemy.can_see_player((player.rect.x, player.rect.y))
                 enemy.controller()
 
             key = pygame.key.get_pressed()

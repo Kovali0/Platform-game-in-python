@@ -4,9 +4,6 @@ File with enemies. Contain main Enemy interface and detailed enemies classes. Sl
 import os
 import pygame
 
-# Global Variables
-PLA_ANIMATIONS_NUMBER = 9
-
 
 class Enemy(pygame.sprite.Sprite):
     """
@@ -102,3 +99,54 @@ class Fish(Enemy):
         if self.move_counter == self.distance:
             self.current_direction *= -1
             self.move_counter *= -1
+
+
+class Viking(Enemy):
+    """
+    Advanced enemy Viking class with attack
+    """
+
+    def __init__(self, img_list, attack_sprites):
+        Enemy.__init__(self, img_list)
+        self.current_direction = -2
+        self.in_attack = False
+        self.attack_counter = 0
+        self.attack = []
+        self.attack_sprites_len = len(attack_sprites)
+        for img in attack_sprites:
+            self.attack.append(pygame.image.load(os.path.join('images', 'enemies', 'viking', 'attack', str(img))).convert_alpha())
+
+    def controller(self):
+        """
+        Main controller method for slime.
+        """
+        if not self.in_attack:
+            self.update_sprite()
+        else:
+            self.attack_update()
+        self.move(self.current_direction, 0)
+        self.move_counter += 1
+        if self.move_counter == self.distance:
+            self.current_direction *= -1
+            self.move_counter *= -1
+
+    def attack_update(self):
+        """
+        Method for attack animation.
+        """
+        if self.in_attack:
+            self.attack_counter += 1
+            if self.current_direction < 0:
+                self.image = self.attack[self.attack_counter % self.attack_sprites_len - 1]
+            else:
+                self.image = pygame.transform.flip(self.attack[self.attack_counter % self.attack_sprites_len - 1], True, False)
+        if self.attack_counter == self.attack_sprites_len:
+            self.in_attack = False
+
+    def can_see_player(self, player_loc):
+        if self.current_direction > 0:
+            if self.rect.y + 1.5 >= player_loc[1] >= self.rect.y and self.rect.x < player_loc[0] < self.rect.x + 64 * 3:
+                self.in_attack = True
+        if self.current_direction < 0:
+            if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2 and self.rect.x > player_loc[0] > self.rect.x - 64 * 3:
+                self.in_attack = True
