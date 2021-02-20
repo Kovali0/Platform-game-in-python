@@ -161,12 +161,12 @@ def main():
 
             key = pygame.key.get_pressed()
             if key[pygame.K_d]:
-                player.frame_counter += 1
+                player.frame_counter += 0.5
                 player.direction = "right"
                 player.move(5, 0)
 
             if key[pygame.K_a]:
-                player.frame_counter += 1
+                player.frame_counter += 0.5
                 player.direction = "left"
                 player.move(-5, 0)
 
@@ -181,7 +181,6 @@ def main():
             if pygame.mouse.get_pressed()[0]:
                 if player.stamina >= 100 and not player.in_attack:
                     player.stamina -= 100
-                    player.attack_counter = 0
                     player.in_attack = True
 
             player.attack_update()

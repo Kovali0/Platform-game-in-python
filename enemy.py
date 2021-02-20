@@ -92,6 +92,7 @@ class Fish(Enemy):
         self.update_sprite(True)
         self.move(0, self.current_direction)
         self.move_counter += 2
+        #TODO add gravity
         #if self.current_direction < 0 or self.rect.y > self.world_y:
         #    self.gravity = 0
         #else:
@@ -120,10 +121,10 @@ class Viking(Enemy):
         """
         Main controller method for slime.
         """
-        if not self.in_attack:
-            self.update_sprite()
-        else:
+        if self.in_attack:
             self.attack_update()
+        else:
+            self.update_sprite()
         self.move(self.current_direction, 0)
         self.move_counter += 1
         if self.move_counter == self.distance:
@@ -135,17 +136,18 @@ class Viking(Enemy):
         Method for attack animation.
         """
         if self.in_attack:
-            self.attack_counter += 1
+            self.attack_counter += 0.5
             if self.current_direction < 0:
-                self.image = self.attack[self.attack_counter % self.attack_sprites_len - 1]
+                self.image = self.attack[int(self.attack_counter) % self.attack_sprites_len]
             else:
-                self.image = pygame.transform.flip(self.attack[self.attack_counter % self.attack_sprites_len - 1], True, False)
+                self.image = pygame.transform.flip(self.attack[int(self.attack_counter) % self.attack_sprites_len], True, False)
         if self.attack_counter == self.attack_sprites_len:
+            self.attack_counter = 0
             self.in_attack = False
 
     def can_see_player(self, player_loc):
         if self.current_direction > 0:
-            if self.rect.y + 1.5 >= player_loc[1] >= self.rect.y and self.rect.x < player_loc[0] < self.rect.x + 64 * 3:
+            if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2 and self.rect.x < player_loc[0] < self.rect.x - 64 * 3:
                 self.in_attack = True
         if self.current_direction < 0:
             if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2 and self.rect.x > player_loc[0] > self.rect.x - 64 * 3:

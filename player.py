@@ -3,6 +3,7 @@ File with player class
 """
 import os
 import pygame
+from enemy import Viking
 
 # Global Variables
 PLA_ANIMATIONS = 10
@@ -64,21 +65,22 @@ class Player(pygame.sprite.Sprite):
             if self.frame_counter > 100:
                 self.frame_counter = 0
             if self.direction == 'right':
-                self.image = self.walk[self.frame_counter % 8]
+                self.image = self.walk[int(self.frame_counter) % PLA_ANIMATIONS]
             else:
-                self.image = pygame.transform.flip(self.walk[self.frame_counter % 8], True, False)
+                self.image = pygame.transform.flip(self.walk[int(self.frame_counter) % PLA_ANIMATIONS], True, False)
 
     def attack_update(self):
         """
         Method for attack animation.
         """
         if self.in_attack:
-            self.attack_counter += 1
+            self.attack_counter += 0.5
             if self.direction == 'right':
-                self.image = self.attack[self.attack_counter % PLA_ANIMATIONS - 1]
+                self.image = self.attack[int(self.attack_counter) % PLA_ANIMATIONS]
             else:
-                self.image = pygame.transform.flip(self.attack[self.attack_counter % PLA_ANIMATIONS - 1], True, False)
+                self.image = pygame.transform.flip(self.attack[int(self.attack_counter) % PLA_ANIMATIONS], True, False)
         if self.attack_counter == PLA_ANIMATIONS:
+            self.attack_counter = 0
             self.in_attack = False
 
     def gravity(self):
@@ -129,14 +131,20 @@ class Player(pygame.sprite.Sprite):
         if pygame.sprite.spritecollide(self, doors, False) and self.has_key:
             return True
 
+        if self.immortal_time is not 0:
+            return False
+
         if self.in_attack:
             pygame.sprite.spritecollide(self, enemies_list, True)
         else:
-            if pygame.sprite.spritecollide(self, enemies_list, False):
-                if self.immortal_time == 0:
+            enemies_hit = pygame.sprite.spritecollide(self, enemies_list, False)
+            for enemy in enemies_hit:
+                if type(enemy) == Viking:
+                    self.life -= 2
+                else:
                     self.life -= 1
-                    self.immortal_time = 20
-                    self.reset()
+                self.immortal_time = 20
+                self.reset()
 
         return False
 

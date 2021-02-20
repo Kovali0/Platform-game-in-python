@@ -384,7 +384,6 @@ def design_third_level(enemies) -> Level:
     enemies.add(green_purple_7)
     #enemies.add(blue_fish_1)
     enemies.add(blue_fish_2)
-    enemies.add(blue_fish_1)
     enemies.add(viking_1)
     return third_level
 
