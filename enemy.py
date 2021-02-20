@@ -123,9 +123,10 @@ class Viking(Enemy):
         """
         if self.in_attack:
             self.attack_update()
+            self.move(self.current_direction * 2, 0)
         else:
             self.update_sprite()
-        self.move(self.current_direction, 0)
+            self.move(self.current_direction, 0)
         self.move_counter += 1
         if self.move_counter == self.distance:
             self.current_direction *= -1
@@ -147,7 +148,7 @@ class Viking(Enemy):
 
     def can_see_player(self, player_loc):
         if self.current_direction > 0:
-            if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2 and self.rect.x < player_loc[0] < self.rect.x - 64 * 3:
+            if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2 and self.rect.x < player_loc[0] < self.rect.x + 64 * 3:
                 self.in_attack = True
         if self.current_direction < 0:
             if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2 and self.rect.x > player_loc[0] > self.rect.x - 64 * 3:

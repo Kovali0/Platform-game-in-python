@@ -135,11 +135,15 @@ class Player(pygame.sprite.Sprite):
             return False
 
         if self.in_attack:
-            pygame.sprite.spritecollide(self, enemies_list, True)
+            enemies_hit = pygame.sprite.spritecollide(self, enemies_list, True)
+            for enemy in enemies_hit:
+                if type(enemy) == Viking and enemy.in_attack:
+                    self.life -= 1
+                    self.immortal_time = 20
         else:
             enemies_hit = pygame.sprite.spritecollide(self, enemies_list, False)
             for enemy in enemies_hit:
-                if type(enemy) == Viking:
+                if type(enemy) == Viking and enemy.in_attack:
                     self.life -= 2
                 else:
                     self.life -= 1
