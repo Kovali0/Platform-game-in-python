@@ -52,8 +52,8 @@ class Axe(Bullet):
     """
     Axe class
     """
-    def __init__(self, speed, distance, stays_on_the_map, x_loc, y_loc):
-        Bullet.__init__(self, speed, distance, stays_on_the_map)
+    def __init__(self, speed, stays_on_the_map, x_loc, y_loc):
+        Bullet.__init__(self, speed, 0, stays_on_the_map)
         path = "images/enemies/ax_thrower_viking/thrown_axe"
         self.on_ground_img = pygame.image.load(os.path.join(path, "axe_in_ground.png"))
         self.set_images(path, 9)
@@ -62,13 +62,11 @@ class Axe(Bullet):
     def controller(self):
         if self.is_moving:
             self.update()
-            if self.frame_counter % len(self.images) * 2 == 0:
-                self.move(self.current_direction * self.speed, 1)
+            if self.frame_counter % len(self.images) == 0:
+                self.move(self.current_direction * self.speed, 2)
             else:
                 self.move(self.current_direction * self.speed, 0)
             self.move_counter += 1
             self.frame_counter += 0.5
-            if self.move_counter == self.distance:
-                self.is_moving = False
         else:
             self.image = self.on_ground_img

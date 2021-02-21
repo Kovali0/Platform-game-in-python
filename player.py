@@ -3,6 +3,8 @@ File with player class
 """
 import os
 import pygame
+
+from armament import Axe
 from enemy import Viking
 
 # Global Variables
@@ -151,6 +153,17 @@ class Player(pygame.sprite.Sprite):
                 self.reset()
 
         return False
+
+    def armament_collision_checker(self, armament_list):
+        """
+        Checker of player collision with armament on the map.
+        :param armament_list: list of all armaments
+        """
+        armament_hit_list = pygame.sprite.spritecollide(self, armament_list, False)
+        for item in armament_hit_list:
+            if type(item) == Axe and item.is_moving:
+                self.life -= 2
+                self.reset()
 
     def fall_off_the_world(self):
         """

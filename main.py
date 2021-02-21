@@ -4,7 +4,7 @@ Main file
 import os
 import sys
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
-import pygame
+import pygame as pg
 from player import Player
 import designed_levels as des_lvl
 from hud import Hud
@@ -17,7 +17,7 @@ from armament import Axe
 FPS = 50
 WORLD_X = 960
 WORLD_Y = 780
-WORLD = pygame.display.set_mode([WORLD_X, WORLD_Y])
+WORLD = pg.display.set_mode([WORLD_X, WORLD_Y])
 LEVELS_NUMBER = 2
 FORWARD_X = 600
 BACKWARD_X = 120
@@ -50,9 +50,9 @@ def screen_loop(condition, screen, clock):
     while condition:
         WORLD.blit(screen.background, screen.background.get_rect())
         screen.show_controllers()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
                 try:
                     sys.exit()
                 finally:
@@ -60,7 +60,7 @@ def screen_loop(condition, screen, clock):
             condition = screen.control_action(event)
             if isinstance(condition, str):
                 return "next"
-        pygame.display.flip()
+        pg.display.flip()
         clock.tick(FPS)
     return condition
 
@@ -69,12 +69,12 @@ def main():
     """
     Program main function
     """
-    clock = pygame.time.Clock()
-    pygame.init()
-    pygame.display.set_caption('Knight Adventures')
-    pygame.mixer.init()
-    pygame.mixer.music.load(os.path.join('music', 'music.mp3'))
-    pygame.mixer.music.play(-1, 0.0)
+    clock = pg.time.Clock()
+    pg.init()
+    pg.display.set_caption('Knight Adventures')
+    pg.mixer.init()
+    pg.mixer.music.load(os.path.join('music', 'music.mp3'))
+    pg.mixer.music.play(-1, 0.0)
     run = True
     in_menu = True
     in_game = False
@@ -87,39 +87,39 @@ def main():
             WORLD.blit(menu.background, menu.background.get_rect())
             menu.show_controllers()
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
                     try:
                         sys.exit()
                     finally:
                         run = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_pos = pygame.mouse.get_pos()
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    mouse_pos = pg.mouse.get_pos()
 
                     if menu.start_btn.show(mouse_pos):
                         in_game = True
                         in_menu = False
 
                     if menu.exit_btn.show(mouse_pos):
-                        pygame.quit()
+                        pg.quit()
                         try:
                             sys.exit()
                         finally:
                             run = False
 
-            pygame.display.flip()
+            pg.display.flip()
             clock.tick(FPS)
 
         # Setup game
         game_over_screen = GameOverScreen(WORLD)
         win_screen = WinScreen(WORLD)
-        enemies_list = pygame.sprite.Group()
-        armament_list = pygame.sprite.Group()
+        enemies_list = pg.sprite.Group()
+        armament_list = pg.sprite.Group()
         hud = Hud(0, 0)
 
         player = Player(0, WORLD_Y - TY)
-        player_list = pygame.sprite.Group()
+        player_list = pg.sprite.Group()
         player_list.add(player)
 
         level, background, back_decorations, front_decorations = des_lvl.design_level(current_level, enemies_list)
@@ -135,9 +135,9 @@ def main():
         while in_game:
             lose = False
 
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
                     try:
                         sys.exit()
                     finally:
@@ -145,6 +145,7 @@ def main():
                         run = False
 
             win = player.collision_checker(ground_list, plat_list, coins, gold_key, doors, enemies_list)
+            player.armament_collision_checker(armament_list)
             if player.life < 0:
                 lose = True
 
@@ -160,34 +161,36 @@ def main():
                 if type(enemy) == VikingAxeThrower and not enemy.in_attack:
                     enemy.can_see_player((player.rect.x, player.rect.y), enemy.sight_range)
                 react = enemy.controller()
-                #print(react)
                 if react:
-                    print("FFFFFFFF")
                     armament_list.add(react)
 
             for item in armament_list:
                 item.controller()
+                if not item.is_moving:
+                    pg.sprite.spritecollide(item, pg.sprite.Group([x for x in armament_list if x != item]), True)
+                if pg.sprite.spritecollide(item, ground_list, False) or pg.sprite.spritecollide(item, plat_list, False):
+                    item.is_moving = False
 
-            key = pygame.key.get_pressed()
-            if key[pygame.K_d]:
+            key = pg.key.get_pressed()
+            if key[pg.K_d]:
                 player.frame_counter += 0.5
                 player.direction = "right"
                 player.move(5, 0)
 
-            if key[pygame.K_a]:
+            if key[pg.K_a]:
                 player.frame_counter += 0.5
                 player.direction = "left"
                 player.move(-5, 0)
 
-            if key[pygame.K_SPACE] and not player.is_jumping and not player.in_air:
+            if key[pg.K_SPACE] and not player.is_jumping and not player.in_air:
                 player.vel_y = -25
                 player.is_jumping = True
                 player.in_air = True
 
-            if not key[pygame.K_a] and not key[pygame.K_d]:
+            if not key[pg.K_a] and not key[pg.K_d]:
                 player.frame_counter = 0
 
-            if pygame.mouse.get_pressed()[0]:
+            if pg.mouse.get_pressed()[0]:
                 if player.stamina >= 100 and not player.in_attack:
                     player.stamina -= 100
                     player.in_attack = True
@@ -240,7 +243,7 @@ def main():
             front_decorations.draw(WORLD)
             water_list.draw(WORLD)
             hud.print_status(WORLD, player.score, player.life, key_status, player.stamina)
-            pygame.display.flip()
+            pg.display.flip()
             clock.tick(FPS)
 
             if lose:

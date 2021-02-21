@@ -126,8 +126,8 @@ class Viking(Enemy):
         """
         if self.in_attack:
             self.attack_update()
-            self.move(self.current_direction * 2, 0)
-            self.move_counter += 2
+            self.move(self.current_direction * 3, 0)
+            self.move_counter += 3
         else:
             self.update_sprite()
             self.move(self.current_direction, 0)
@@ -189,9 +189,9 @@ class VikingAxeThrower(Viking):
             self.attack_update()
             if self.attack_counter == 5:
                 return self.throw_axe()
-        else:jk
+        else:
             self.update_sprite()
             self.frame_counter += 1
 
     def throw_axe(self):
-        return Axe(5, self.throw_strength * 10, True, self.rect.x, self.rect.y)
+        return Axe(self.throw_strength, True, self.rect.x, self.rect.y)
