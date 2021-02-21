@@ -3,15 +3,14 @@ Main file
 """
 import os
 import sys
-
-from enemy import Viking, VikingAxeThrower
-
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 import pygame
 from player import Player
 import designed_levels as des_lvl
 from hud import Hud
 from menu import Menu, GameOverScreen, WinScreen
+from enemy import Viking, VikingAxeThrower
+from armament import Axe
 
 
 # Global Variables
@@ -116,6 +115,7 @@ def main():
         game_over_screen = GameOverScreen(WORLD)
         win_screen = WinScreen(WORLD)
         enemies_list = pygame.sprite.Group()
+        armament_list = pygame.sprite.Group()
         hud = Hud(0, 0)
 
         player = Player(0, WORLD_Y - TY)
@@ -156,10 +156,17 @@ def main():
 
             for enemy in enemies_list.sprites():
                 if type(enemy) == Viking and not enemy.in_attack:
-                    enemy.can_see_player((player.rect.x, player.rect.y), 3)
+                    enemy.can_see_player((player.rect.x, player.rect.y), enemy.sight_range)
                 if type(enemy) == VikingAxeThrower and not enemy.in_attack:
-                    enemy.can_see_player((player.rect.x, player.rect.y), 7)
-                enemy.controller()
+                    enemy.can_see_player((player.rect.x, player.rect.y), enemy.sight_range)
+                react = enemy.controller()
+                #print(react)
+                if react:
+                    print("FFFFFFFF")
+                    armament_list.add(react)
+
+            for item in armament_list:
+                item.controller()
 
             key = pygame.key.get_pressed()
             if key[pygame.K_d]:
@@ -198,6 +205,7 @@ def main():
                 scroll_elements(gold_key, True, scroll)
                 scroll_elements(doors, True, scroll)
                 scroll_elements(enemies_list, True, scroll)
+                scroll_elements(armament_list, True, scroll)
                 scroll_elements(back_decorations, True, scroll)
                 scroll_elements(front_decorations, True, scroll)
 
@@ -212,6 +220,7 @@ def main():
                 scroll_elements(gold_key, False, scroll)
                 scroll_elements(doors, False, scroll)
                 scroll_elements(enemies_list, False, scroll)
+                scroll_elements(armament_list, False, scroll)
                 scroll_elements(back_decorations, False, scroll)
                 scroll_elements(front_decorations, False, scroll)
 
@@ -227,6 +236,7 @@ def main():
             coins.draw(WORLD)
             gold_key.draw(WORLD)
             enemies_list.draw(WORLD)
+            armament_list.draw(WORLD)
             front_decorations.draw(WORLD)
             water_list.draw(WORLD)
             hud.print_status(WORLD, player.score, player.life, key_status, player.stamina)

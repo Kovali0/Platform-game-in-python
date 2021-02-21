@@ -3,6 +3,7 @@ File with enemies. Contain main Enemy interface and detailed enemies classes. Sl
 """
 import os
 import pygame
+from armament import Axe
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -37,7 +38,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def update_sprite(self, vertical=False):
         """
-        Method for update current image and create animation for player.
+        Method for update current image and create animation for enemy.
         :param vertical: enemy movement direction
         """
         if self.frame_counter > len(self.images) * 20:
@@ -107,8 +108,9 @@ class Viking(Enemy):
     Advanced enemy Viking class with attack
     """
 
-    def __init__(self, img_list, attack_sprites):
+    def __init__(self, img_list, attack_sprites, sight_range):
         Enemy.__init__(self, img_list)
+        self.sight_range = sight_range
         self.current_direction = -2
         self.in_attack = False
         self.attack_counter = 0
@@ -166,12 +168,14 @@ class VikingAxeThrower(Viking):
     Advanced enemy Viking Axe Thrower, who attack on distance and stand in one place.
     """
 
-    def __init__(self, img_list, attack_sprites):
+    def __init__(self, img_list, attack_sprites, sight_range, throw_strength):
         Enemy.__init__(self, img_list)
+        self.sight_range = sight_range
+        self.throw_strength = throw_strength
         self.current_direction = -2
         self.in_attack = False
         self.attack_counter = 0
-        self.attack_speed = 0.40
+        self.attack_speed = 0.25
         self.attack = []
         self.attack_sprites_len = len(attack_sprites)
         for img in attack_sprites:
@@ -183,8 +187,11 @@ class VikingAxeThrower(Viking):
         """
         if self.in_attack:
             self.attack_update()
-        else:
+            if self.attack_counter == 5:
+                return self.throw_axe()
+        else:jk
             self.update_sprite()
             self.frame_counter += 1
 
-
+    def throw_axe(self):
+        return Axe(5, self.throw_strength * 10, True, self.rect.x, self.rect.y)

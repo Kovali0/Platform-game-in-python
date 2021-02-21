@@ -372,9 +372,9 @@ def design_third_level(enemies) -> Level:
                   "viking/walk/6.png", "viking/walk/6.png", "viking/walk/7.png", "viking/walk/7.png",
                   "viking/walk/8.png", "viking/walk/8.png", "viking/walk/9.png", "viking/walk/9.png"]
     viking_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png"]
-    viking_1 = Viking(viking_img, viking_attack_img)
+    viking_1 = Viking(viking_img, viking_attack_img, 3)
     viking_1.set_enemy_location(TX * 78, WORLD_Y - TY * 2.5, 300)
-    viking_2 = Viking(viking_img, viking_attack_img)
+    viking_2 = Viking(viking_img, viking_attack_img, 3)
     viking_2.set_enemy_location(TX * 89, WORLD_Y - TY * 11.5, 145)
 
     axe_thrower_img = ["ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/1.png",
@@ -386,7 +386,7 @@ def design_third_level(enemies) -> Level:
                        "ax_thrower_viking/idle/9.png", "ax_thrower_viking/idle/9.png"]
     axe_thrower_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "2.png", "6.png", "7.png", "8.png",
                               "9.png", "10.png", "10.png", "11.png", "12.png"]
-    axe_thrower_1 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img)
+    axe_thrower_1 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 10, 30)
     axe_thrower_1.set_enemy_location(TX * 28, WORLD_Y - TY * 2.05)
 
     #enemies.add(green_purple_1)
