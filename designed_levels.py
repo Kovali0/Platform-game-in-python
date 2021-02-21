@@ -3,6 +3,8 @@ File with levels designed
 """
 import os
 import pygame
+
+from armament import Trap
 from level import Level, Decoration
 from enemy import Slime, Fish, Viking, VikingAxeThrower
 
@@ -13,7 +15,7 @@ TX = 64
 TY = 64
 
 
-def design_first_level(enemies) -> Level:
+def design_first_level(enemies, armament) -> Level:
     """
     Function for designing and creating first level.
     :return: first level object
@@ -138,7 +140,7 @@ def decoration_level_1():
     return back_decorations, front_decorations
 
 
-def design_second_level(enemies) -> Level:
+def design_second_level(enemies, armament) -> Level:
     """
     Function for designing and creating second level.
     :return: first level object
@@ -301,7 +303,7 @@ def decoration_level_2():
     return back_decorations, front_decorations
 
 
-def design_third_level(enemies) -> Level:
+def design_third_level(enemies, armament) -> Level:
     """
     Function for designing and creating third level.
     :return: first level object
@@ -343,6 +345,9 @@ def design_third_level(enemies) -> Level:
     third_level.set_coins(coins_locations)
     third_level.set_key((92, WORLD_Y - TY * 1.5))
     third_level.set_doors((8, WORLD_Y - TY * 3))
+
+    spikes_1 = Trap(TX * 8, WORLD_Y - TY * 2, "spikes.png", 1)
+    armament.add(spikes_1)
 
     #green_purple_img = ["slimePurple.png"]
     #green_purple_1 = Slime(green_purple_img)
@@ -415,7 +420,7 @@ def decoration_level_3():
     return back_decorations, front_decorations
 
 
-def design_level(level_id, enemies):
+def design_level(level_id, enemies, armament):
     """
     Design level and return all needed things.
     :param level_id: which level should be created
@@ -424,18 +429,18 @@ def design_level(level_id, enemies):
     """
     if level_id == 1:
         background = pygame.image.load(os.path.join('images', 'backgrounds', 'clouds_background.png'))
-        first_level = design_first_level(enemies)
+        first_level = design_first_level(enemies, armament)
         back_decorations, front_decorations = decoration_level_1()
         return first_level, background, back_decorations, front_decorations
 
     if level_id == 2:
         background = pygame.image.load(os.path.join('images', 'backgrounds', 'green_lands_background.png'))
-        second_level = design_second_level(enemies)
+        second_level = design_second_level(enemies, armament)
         back_decorations, front_decorations = decoration_level_2()
         return second_level, background, back_decorations, front_decorations
 
     if level_id == 3:
         background = pygame.image.load(os.path.join('images', 'backgrounds', 'orange_background.png'))
-        third_level = design_third_level(enemies)
+        third_level = design_third_level(enemies, armament)
         back_decorations, front_decorations = decoration_level_3()
         return third_level, background, back_decorations, front_decorations

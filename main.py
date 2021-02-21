@@ -122,7 +122,7 @@ def main():
         player_list = pg.sprite.Group()
         player_list.add(player)
 
-        level, background, back_decorations, front_decorations = des_lvl.design_level(current_level, enemies_list)
+        level, background, back_decorations, front_decorations = des_lvl.design_level(current_level, enemies_list, armament_list)
 
         ground_list = level.ground_list
         water_list = level.water_list

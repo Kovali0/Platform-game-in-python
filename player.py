@@ -4,7 +4,7 @@ File with player class
 import os
 import pygame
 
-from armament import Axe
+from armament import Axe, Trap
 from enemy import Viking
 
 # Global Variables
@@ -159,10 +159,15 @@ class Player(pygame.sprite.Sprite):
         Checker of player collision with armament on the map.
         :param armament_list: list of all armaments
         """
+        if self.immortal_time is not 0:
+            return
         armament_hit_list = pygame.sprite.spritecollide(self, armament_list, False)
         for item in armament_hit_list:
             if type(item) == Axe and item.is_moving:
                 self.life -= 2
+                self.reset()
+            if type(item) == Trap:
+                self.life -= item.damage
                 self.reset()
 
     def fall_off_the_world(self):

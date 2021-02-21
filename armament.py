@@ -70,3 +70,21 @@ class Axe(Bullet):
             self.frame_counter += 0.5
         else:
             self.image = self.on_ground_img
+
+
+class Trap(pygame.sprite.Sprite):
+    """
+    Traps class
+    """
+
+    def __init__(self, x_loc, y_loc, img, dmg):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join('images', 'items', img))
+        self.rect = self.image.get_rect()
+        self.rect.x = x_loc
+        self.rect.y = y_loc
+        self.damage = dmg
+        self.is_moving = False
+
+    def controller(self):
+        pass
