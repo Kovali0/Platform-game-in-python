@@ -47,7 +47,7 @@ class Enemy(pygame.sprite.Sprite):
         else:
             self.image = pygame.transform.flip(self.images[self.frame_counter % len(self.images) - 1], True, vertical)
 
-    def set_enemy_location(self, x_loc, y_loc, distance):
+    def set_enemy_location(self, x_loc, y_loc, distance = 0):
         """
         Method for place enemy location on the game world with distance.
         :param x_loc: location on x axis
@@ -112,6 +112,7 @@ class Viking(Enemy):
         self.current_direction = -2
         self.in_attack = False
         self.attack_counter = 0
+        self.attack_speed = 0.5
         self.attack = []
         self.attack_sprites_len = len(attack_sprites)
         for img in attack_sprites:
@@ -119,15 +120,16 @@ class Viking(Enemy):
 
     def controller(self):
         """
-        Main controller method for slime.
+        Main viking controller method.
         """
         if self.in_attack:
             self.attack_update()
             self.move(self.current_direction * 2, 0)
+            self.move_counter += 2
         else:
             self.update_sprite()
             self.move(self.current_direction, 0)
-        self.move_counter += 1
+            self.move_counter += 1
         if self.move_counter == self.distance:
             self.current_direction *= -1
             self.move_counter *= -1
@@ -136,20 +138,53 @@ class Viking(Enemy):
         """
         Method for attack animation.
         """
-        if self.in_attack:
-            self.attack_counter += 0.5
-            if self.current_direction < 0:
-                self.image = self.attack[int(self.attack_counter) % self.attack_sprites_len]
-            else:
-                self.image = pygame.transform.flip(self.attack[int(self.attack_counter) % self.attack_sprites_len], True, False)
-        if self.attack_counter == self.attack_sprites_len:
+        self.attack_counter += self.attack_speed
+        if self.current_direction < 0:
+            self.image = self.attack[int(self.attack_counter) % self.attack_sprites_len]
+        else:
+            self.image = pygame.transform.flip(self.attack[int(self.attack_counter) % self.attack_sprites_len], True, False)
+        if self.attack_counter >= self.attack_sprites_len:
             self.attack_counter = 0
             self.in_attack = False
 
-    def can_see_player(self, player_loc):
+    def can_see_player(self, player_loc, sight_range):
+        """
+        Checking if player is in viking's field of view.
+        :param player_loc: current player location
+        :param sight_range: sight_range for 64 tiles on the X axis
+        """
         if self.current_direction > 0:
-            if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2 and self.rect.x < player_loc[0] < self.rect.x + 64 * 3:
+            if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2 and self.rect.x < player_loc[0] < self.rect.x + 64 * sight_range:
                 self.in_attack = True
         if self.current_direction < 0:
-            if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2 and self.rect.x > player_loc[0] > self.rect.x - 64 * 3:
+            if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2 and self.rect.x > player_loc[0] > self.rect.x - 64 * sight_range:
                 self.in_attack = True
+
+
+class VikingAxeThrower(Viking):
+    """
+    Advanced enemy Viking Axe Thrower, who attack on distance and stand in one place.
+    """
+
+    def __init__(self, img_list, attack_sprites):
+        Enemy.__init__(self, img_list)
+        self.current_direction = -2
+        self.in_attack = False
+        self.attack_counter = 0
+        self.attack_speed = 0.40
+        self.attack = []
+        self.attack_sprites_len = len(attack_sprites)
+        for img in attack_sprites:
+            self.attack.append(pygame.image.load(os.path.join('images', 'enemies', 'ax_thrower_viking', 'attack', str(img))).convert_alpha())
+
+    def controller(self):
+        """
+        Viking Axe Thrower controller.
+        """
+        if self.in_attack:
+            self.attack_update()
+        else:
+            self.update_sprite()
+            self.frame_counter += 1
+
+

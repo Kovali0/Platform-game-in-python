@@ -4,7 +4,7 @@ Main file
 import os
 import sys
 
-from enemy import Viking
+from enemy import Viking, VikingAxeThrower
 
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 import pygame
@@ -156,7 +156,9 @@ def main():
 
             for enemy in enemies_list.sprites():
                 if type(enemy) == Viking and not enemy.in_attack:
-                    enemy.can_see_player((player.rect.x, player.rect.y))
+                    enemy.can_see_player((player.rect.x, player.rect.y), 3)
+                if type(enemy) == VikingAxeThrower and not enemy.in_attack:
+                    enemy.can_see_player((player.rect.x, player.rect.y), 7)
                 enemy.controller()
 
             key = pygame.key.get_pressed()
