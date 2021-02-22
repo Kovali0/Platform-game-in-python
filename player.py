@@ -113,12 +113,16 @@ class Player(pygame.sprite.Sprite):
 
         plat_hit_list = pygame.sprite.spritecollide(self, plat_list, False)
         for plat in plat_hit_list:
-            self.in_air = False
-            self.vel_y = 0
             if self.rect.bottom <= plat.rect.bottom:
                 self.rect.bottom = plat.rect.top
             else:
                 self.vel_y += 3
+
+            if self.rect.bottom <= plat.rect.top:
+                self.in_air = False
+                self.vel_y = 0
+            else:
+                self.in_air = True
 
         if pygame.sprite.spritecollide(self, coins, True):
             self.score += 1
