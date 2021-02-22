@@ -6,6 +6,7 @@ import pygame
 
 from armament import Axe, Trap
 from enemy import Viking
+from level import Building
 
 # Global Variables
 PLA_ANIMATIONS = 10
@@ -173,6 +174,34 @@ class Player(pygame.sprite.Sprite):
             if type(item) == Trap:
                 self.life -= item.damage
                 self.reset()
+
+    def buildings_collision_checker(self, buildings_list):
+        """
+        Checker of player collision with buildings on the map.
+        :param buildings_list: list of all buildings on the map
+        """
+        for building in buildings_list:
+            building_hit_list = pygame.sprite.spritecollide(self, building.walls_list, False)
+            in_collide = False
+            for object_1 in building_hit_list:
+                for object_2 in building_hit_list:
+                    if object_2 is not object_1 and object_2.rect.y != object_1.rect.y:
+                        in_collide = True
+                if self.rect.bottom <= object_1.rect.bottom and not in_collide:
+                    self.rect.bottom = object_1.rect.top
+                elif object_1.rect.midright[0] >= self.rect.midright[0] >= object_1.rect.midleft[0]:
+                    self.rect.x -= 5
+                elif object_1.rect.midleft[0] <= self.rect.midleft[0] <= object_1.rect.midright[0]:
+                    self.rect.x += 5
+                else:
+                    self.vel_y += 3
+
+                if self.rect.bottom <= object_1.rect.top:
+                    self.in_air = False
+                    self.vel_y = 0
+                else:
+                    self.in_air = True
+                    self.vel_y += 3
 
     def fall_off_the_world(self):
         """

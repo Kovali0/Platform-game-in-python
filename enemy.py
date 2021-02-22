@@ -132,7 +132,7 @@ class Viking(Enemy):
             self.update_sprite()
             self.move(self.current_direction, 0)
             self.move_counter += 1
-        if self.move_counter == self.distance:
+        if self.move_counter >= self.distance:
             self.current_direction *= -1
             self.move_counter *= -1
 

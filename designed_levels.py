@@ -320,9 +320,10 @@ def design_third_level(enemies, armament) -> Level:
              (TX * 53, WORLD_Y - TY - 384, 2),
              (TX * 65, WORLD_Y - TY - 384, 6),
              (TX * 67, WORLD_Y - TY - 576, 2),
-             (TX * 75, WORLD_Y - TY - 384, 5),
-             (TX * 85, WORLD_Y - TY - 576, 1),
-             (TX * 92, WORLD_Y - TY - 576, 1)]
+             (TX * 75, WORLD_Y - TY - 384, 2),
+             (TX * 79, WORLD_Y - TY - 192, 1),
+             (TX * 81, WORLD_Y - TY - 576, 1),
+             (TX * 87, WORLD_Y - TY - 576, 1)]
     water_points = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1,
                     10, 11, 12, 13, 14,
                     35, 36, 37, 38, 39,
@@ -330,7 +331,7 @@ def design_third_level(enemies, armament) -> Level:
                     97, 98, 99, 100, 101, 102, 102, 103, 104, 105, 106, 107, 108, 109, 110]
     third_level = Level(2, TX, TY, WORLD_Y, water_points, 110, p_loc, "dirt_tile_1.png", "orange_tile_1.png")
     bridges_loc = [(TX * 56, WORLD_Y - TY - 384, 8),
-                   (TX * 87, WORLD_Y - TY - 576, 4)]
+                   (TX * 83, WORLD_Y - TY - 576, 3)]
     third_level.build_bridges(bridges_loc)
 
     coins_locations = [(2.5, WORLD_Y - TY * 10.5),
@@ -339,17 +340,17 @@ def design_third_level(enemies, armament) -> Level:
                        (51.5, WORLD_Y - TY * 4.5),
                        (62.5, WORLD_Y - TY * 10.5),
                        (70.5, WORLD_Y - TY * 1.5),
-                       (77, WORLD_Y - TY * 7.5),
-                       (88.5, WORLD_Y - TY * 10.5),
-                       (92, WORLD_Y - TY * 4.5)]
+                       (85, WORLD_Y - TY * 10.5),
+                       (95, WORLD_Y - TY * 9.5),
+                       (96.5, WORLD_Y - TY * 4.5)]
     third_level.set_coins(coins_locations)
-    third_level.set_key((92, WORLD_Y - TY * 1.5))
+    third_level.set_key((94.5, WORLD_Y - TY * 2))
     third_level.set_doors((8, WORLD_Y - TY * 3))
 
     building_1_struct = np.array([[0,  0,  0,  0,  0,  0, 0],
                                   [0,  0,  0,  0,  0,  0, 0],
                                   [0, -2,  0, -2,  0, -2, 0],
-                                  [0,  1,  1, -1,  1,  1, 0],
+                                  [0,  1,  1,  1,  1,  1, 0],
                                   [0,  1, -1, -1, -1,  1, 0],
                                   [0,  1, -1, -1, -1,  1, 0],
                                   [0, -1, -1, -1, -1, -1, 0],
@@ -359,7 +360,7 @@ def design_third_level(enemies, armament) -> Level:
                                   [0,  1, -1, -1, -1,  1, 0]])
     building_1_walls_img = ["stone_tile_1.png"]
     building_1_back_img = ["stone_tile_1.png", "stone_tile_5.png"]
-    building_1 = Building(WORLD_Y, 6, building_1_struct, building_1_back_img, building_1_walls_img)
+    building_1 = Building(WORLD_Y, 91, building_1_struct, building_1_back_img, building_1_walls_img)
     building_1.add_front(0, 2, "stone_tile_5.png")
     building_1.add_front(2, 2, "stone_tile_5.png")
     building_1.add_front(4, 2, "stone_tile_5.png")
@@ -376,9 +377,9 @@ def design_third_level(enemies, armament) -> Level:
     building_1.add_decoration(5, 6, "torch.png")
     third_level.buildings.append(building_1)
 
-    spikes_1 = Trap(TX * 92, WORLD_Y - TY * 2, "spikes.png", 1)
-    spikes_2 = Trap(TX * 93, WORLD_Y - TY * 2, "spikes.png", 1)
-    spikes_3 = Trap(TX * 94, WORLD_Y - TY * 2, "spikes.png", 1)
+    spikes_1 = Trap(TX * 93, WORLD_Y - TY * 2, "spikes.png", 1)
+    spikes_2 = Trap(TX * 94, WORLD_Y - TY * 2, "spikes.png", 1)
+    spikes_3 = Trap(TX * 95, WORLD_Y - TY * 2, "spikes.png", 1)
     armament.add(spikes_1)
     armament.add(spikes_2)
     armament.add(spikes_3)
@@ -414,7 +415,7 @@ def design_third_level(enemies, armament) -> Level:
     viking_1 = Viking(viking_img, viking_attack_img, 3)
     viking_1.set_enemy_location(TX * 78, WORLD_Y - TY * 2.5, 300)
     viking_2 = Viking(viking_img, viking_attack_img, 3)
-    viking_2.set_enemy_location(TX * 89, WORLD_Y - TY * 11.5, 145)
+    viking_2.set_enemy_location(TX * 84.5, WORLD_Y - TY * 11.5, 110)
 
     axe_thrower_img = ["ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/1.png",
                        "ax_thrower_viking/idle/1.png", "ax_thrower_viking/idle/2.png", "ax_thrower_viking/idle/2.png",

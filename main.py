@@ -144,8 +144,10 @@ def main():
                         in_game = False
                         run = False
 
+            player.buildings_collision_checker(level.buildings)
             win = player.collision_checker(ground_list, plat_list, coins, gold_key, doors, enemies_list)
             player.armament_collision_checker(armament_list)
+
             if player.life < 0:
                 lose = True
 
