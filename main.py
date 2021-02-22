@@ -211,6 +211,11 @@ def main():
                 scroll_elements(armament_list, True, scroll)
                 scroll_elements(back_decorations, True, scroll)
                 scroll_elements(front_decorations, True, scroll)
+                for building in level.buildings:
+                    scroll_elements(building.walls_list, True, scroll)
+                    scroll_elements(building.back_list, True, scroll)
+                    scroll_elements(building.decorations_list, True, scroll)
+                    scroll_elements(building.front_elements_list, True, scroll)
 
             if player.rect.x <= BACKWARD_X:
                 scroll = BACKWARD_X - player.rect.x
@@ -226,16 +231,25 @@ def main():
                 scroll_elements(armament_list, False, scroll)
                 scroll_elements(back_decorations, False, scroll)
                 scroll_elements(front_decorations, False, scroll)
+                for building in level.buildings:
+                    scroll_elements(building.walls_list, False, scroll)
+                    scroll_elements(building.back_list, False, scroll)
+                    scroll_elements(building.decorations_list, False, scroll)
+                    scroll_elements(building.front_elements_list, False, scroll)
 
             key_status = 1 if player.has_key else 0
             WORLD.blit(background, WORLD.get_rect())
             player.gravity()
             player.update()
+            for building in level.buildings:
+                building.build_fundaments(WORLD)
             back_decorations.draw(WORLD)
             doors.draw(WORLD)
             player_list.draw(WORLD)
             ground_list.draw(WORLD)
             plat_list.draw(WORLD)
+            for building in level.buildings:
+                building.build_front(WORLD)
             coins.draw(WORLD)
             gold_key.draw(WORLD)
             enemies_list.draw(WORLD)

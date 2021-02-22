@@ -3,9 +3,9 @@ File with levels designed
 """
 import os
 import pygame
-
+import numpy as np
 from armament import Trap
-from level import Level, Decoration
+from level import Level, Decoration, Building
 from enemy import Slime, Fish, Viking, VikingAxeThrower
 
 # Global Variables
@@ -346,8 +346,42 @@ def design_third_level(enemies, armament) -> Level:
     third_level.set_key((92, WORLD_Y - TY * 1.5))
     third_level.set_doors((8, WORLD_Y - TY * 3))
 
-    spikes_1 = Trap(TX * 8, WORLD_Y - TY * 2, "spikes.png", 1)
+    building_1_struct = np.array([[0,  0,  0,  0,  0,  0, 0],
+                                  [0,  0,  0,  0,  0,  0, 0],
+                                  [0, -2,  0, -2,  0, -2, 0],
+                                  [0,  1,  1, -1,  1,  1, 0],
+                                  [0,  1, -1, -1, -1,  1, 0],
+                                  [0,  1, -1, -1, -1,  1, 0],
+                                  [0, -1, -1, -1, -1, -1, 0],
+                                  [0, -1, -1, -1, -1, -1, 0],
+                                  [0,  1, -1, -1, -1,  1, 0],
+                                  [0,  1, -1, -1, -1,  1, 0],
+                                  [0,  1, -1, -1, -1,  1, 0]])
+    building_1_walls_img = ["stone_tile_1.png"]
+    building_1_back_img = ["stone_tile_1.png", "stone_tile_5.png"]
+    building_1 = Building(WORLD_Y, 6, building_1_struct, building_1_back_img, building_1_walls_img)
+    building_1.add_front(0, 2, "stone_tile_5.png")
+    building_1.add_front(2, 2, "stone_tile_5.png")
+    building_1.add_front(4, 2, "stone_tile_5.png")
+    building_1.add_front(6, 2, "stone_tile_5.png")
+    building_1.add_front(0, 3, "stone_tile_2.png", False, True)
+    building_1.add_front(6, 3, "stone_tile_2.png", True, True)
+    building_1.add_decoration(2, 5, "chain.png")
+    building_1.add_decoration(2, 6, "chain.png")
+    building_1.add_decoration(2, 7, "chain.png")
+    building_1.add_decoration(4, 5, "chain.png")
+    building_1.add_decoration(4, 6, "chain.png")
+    building_1.add_decoration(4, 7, "chain.png")
+    building_1.add_decoration(1, 6, "torch.png")
+    building_1.add_decoration(5, 6, "torch.png")
+    third_level.buildings.append(building_1)
+
+    spikes_1 = Trap(TX * 92, WORLD_Y - TY * 2, "spikes.png", 1)
+    spikes_2 = Trap(TX * 93, WORLD_Y - TY * 2, "spikes.png", 1)
+    spikes_3 = Trap(TX * 94, WORLD_Y - TY * 2, "spikes.png", 1)
     armament.add(spikes_1)
+    armament.add(spikes_2)
+    armament.add(spikes_3)
 
     #green_purple_img = ["slimePurple.png"]
     #green_purple_1 = Slime(green_purple_img)
