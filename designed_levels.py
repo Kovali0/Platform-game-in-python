@@ -345,7 +345,7 @@ def design_third_level(enemies, armament) -> Level:
                        (96.5, WORLD_Y - TY * 4.5)]
     third_level.set_coins(coins_locations)
     third_level.set_key((94.5, WORLD_Y - TY * 2))
-    third_level.set_doors((8, WORLD_Y - TY * 3))
+    third_level.set_doors((7, WORLD_Y - TY * 3))
 
     building_1_struct = np.array([[0,  0,  0,  0,  0,  0, 0],
                                   [0,  0,  0,  0,  0,  0, 0],
@@ -406,29 +406,29 @@ def design_third_level(enemies, armament) -> Level:
     #blue_fish_2 = Fish(blue_fish_img, WORLD_Y)
     #blue_fish_2.set_enemy_location(TX * 37, WORLD_Y - TY * 1, 100)
 
-    viking_img = ["viking/walk/0.png", "viking/walk/0.png", "viking/walk/1.png", "viking/walk/1.png",
-                  "viking/walk/2.png", "viking/walk/2.png", "viking/walk/3.png", "viking/walk/3.png",
-                  "viking/walk/4.png", "viking/walk/4.png", "viking/walk/5.png", "viking/walk/5.png",
-                  "viking/walk/6.png", "viking/walk/6.png", "viking/walk/7.png", "viking/walk/7.png",
-                  "viking/walk/8.png", "viking/walk/8.png", "viking/walk/9.png", "viking/walk/9.png"]
-    viking_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png"]
-    viking_1 = Viking(viking_img, viking_attack_img, 3)
-    viking_1.set_enemy_location(TX * 78, WORLD_Y - TY * 2.5, 300)
-    viking_2 = Viking(viking_img, viking_attack_img, 3)
-    viking_2.set_enemy_location(TX * 84.5, WORLD_Y - TY * 11.5, 110)
-
-    axe_thrower_img = ["ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/1.png",
-                       "ax_thrower_viking/idle/1.png", "ax_thrower_viking/idle/2.png", "ax_thrower_viking/idle/2.png",
-                       "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/4.png",
-                       "ax_thrower_viking/idle/4.png", "ax_thrower_viking/idle/5.png", "ax_thrower_viking/idle/5.png",
-                       "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/7.png",
-                       "ax_thrower_viking/idle/7.png", "ax_thrower_viking/idle/8.png", "ax_thrower_viking/idle/8.png",
-                       "ax_thrower_viking/idle/9.png", "ax_thrower_viking/idle/9.png"]
-    axe_thrower_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "2.png", "6.png", "7.png", "8.png",
-                              "9.png", "10.png", "10.png", "11.png", "12.png"]
-    axe_thrower_1 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 10, 5)
-    axe_thrower_1.set_enemy_location(TX * 68, WORLD_Y - TY * 8.05)
-
+    #viking_img = ["viking/walk/0.png", "viking/walk/0.png", "viking/walk/1.png", "viking/walk/1.png",
+    #              "viking/walk/2.png", "viking/walk/2.png", "viking/walk/3.png", "viking/walk/3.png",
+    #              "viking/walk/4.png", "viking/walk/4.png", "viking/walk/5.png", "viking/walk/5.png",
+    #              "viking/walk/6.png", "viking/walk/6.png", "viking/walk/7.png", "viking/walk/7.png",
+    #              "viking/walk/8.png", "viking/walk/8.png", "viking/walk/9.png", "viking/walk/9.png"]
+    #viking_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png"]
+    #viking_1 = Viking(viking_img, viking_attack_img, 3)
+    #viking_1.set_enemy_location(TX * 78, WORLD_Y - TY * 2.5, 300)
+    #viking_2 = Viking(viking_img, viking_attack_img, 3)
+    #viking_2.set_enemy_location(TX * 84.5, WORLD_Y - TY * 11.5, 110)
+#
+    #axe_thrower_img = ["ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/1.png",
+    #                   "ax_thrower_viking/idle/1.png", "ax_thrower_viking/idle/2.png", "ax_thrower_viking/idle/2.png",
+    #                   "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/4.png",
+    #                   "ax_thrower_viking/idle/4.png", "ax_thrower_viking/idle/5.png", "ax_thrower_viking/idle/5.png",
+    #                   "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/7.png",
+    #                   "ax_thrower_viking/idle/7.png", "ax_thrower_viking/idle/8.png", "ax_thrower_viking/idle/8.png",
+    #                   "ax_thrower_viking/idle/9.png", "ax_thrower_viking/idle/9.png"]
+    #axe_thrower_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "2.png", "6.png", "7.png", "8.png",
+    #                          "9.png", "10.png", "10.png", "11.png", "12.png"]
+    #axe_thrower_1 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 10, 5)
+    #axe_thrower_1.set_enemy_location(TX * 68, WORLD_Y - TY * 8.05)
+#
     #enemies.add(green_purple_1)
     #enemies.add(green_purple_2)
     #enemies.add(green_purple_3)
@@ -438,9 +438,9 @@ def design_third_level(enemies, armament) -> Level:
     #enemies.add(green_purple_7)
     #enemies.add(blue_fish_1)
     #enemies.add(blue_fish_2)
-    enemies.add(viking_1)
-    enemies.add(viking_2)
-    enemies.add(axe_thrower_1)
+    #enemies.add(viking_1)
+    #enemies.add(viking_2)
+    #enemies.add(axe_thrower_1)
     return third_level
 
 
@@ -451,7 +451,83 @@ def decoration_level_3():
     :return: list of back_decorations and front_decorations
     """
     back_decorations = pygame.sprite.Group()
+    back_decorations.add(Decoration(0, WORLD_Y - TY * 9, "orange_tree.png", True))
+    back_decorations.add(Decoration(3, WORLD_Y - TY * 2, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(4, WORLD_Y - TY * 2, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(4, WORLD_Y - TY * 3, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(5, WORLD_Y - TY * 2, "sandstone_2.png"))
+    back_decorations.add(Decoration(6, WORLD_Y - TY * 2, "sandstone_3.png"))
+    back_decorations.add(Decoration(7, WORLD_Y - TY * 2, "sandstone_3.png"))
+    back_decorations.add(Decoration(8, WORLD_Y - TY * 2, "sandstone_2.png", True))
+    back_decorations.add(Decoration(5, WORLD_Y - TY * 3, "sandstone_7.png"))
+    back_decorations.add(Decoration(6, WORLD_Y - TY * 3, "sandstone_1.png"))
+    back_decorations.add(Decoration(7, WORLD_Y - TY * 3, "sandstone_1.png"))
+    back_decorations.add(Decoration(8, WORLD_Y - TY * 3, "sandstone_7.png", True))
+    back_decorations.add(Decoration(5, WORLD_Y - TY * 4, "sandstone_5.png"))
+    back_decorations.add(Decoration(6, WORLD_Y - TY * 4, "sandstone_6.png"))
+    back_decorations.add(Decoration(7, WORLD_Y - TY * 4, "sandstone_6.png"))
+    back_decorations.add(Decoration(8, WORLD_Y - TY * 4, "sandstone_5.png", True))
+    back_decorations.add(Decoration(4, WORLD_Y - TY * 5, "orange_tile_2.png"))
+    back_decorations.add(Decoration(5, WORLD_Y - TY * 5, "orange_tile_3.png"))
+    back_decorations.add(Decoration(6, WORLD_Y - TY * 5, "orange_tile_3.png"))
+    back_decorations.add(Decoration(7, WORLD_Y - TY * 5, "orange_tile_3.png"))
+    back_decorations.add(Decoration(8, WORLD_Y - TY * 5, "orange_tile_3.png"))
+    back_decorations.add(Decoration(9, WORLD_Y - TY * 5, "orange_tile_2.png", True))
+    back_decorations.add(Decoration(6, WORLD_Y - TY * 3, "window.png"))
+    back_decorations.add(Decoration(9, WORLD_Y - TY * 3.5, "signboard_tavern.png"))
+    back_decorations.add(Decoration(9, WORLD_Y - TY * 2, "way_sign_right.png"))
+    back_decorations.add(Decoration(9.2, WORLD_Y - TY * 1.7, "water_plant.png", True))
+    back_decorations.add(Decoration(15.4, WORLD_Y - TY * 1.8, "purple_flower.png"))
+    back_decorations.add(Decoration(21, WORLD_Y - TY * 8, "fence.png"))
+    back_decorations.add(Decoration(22, WORLD_Y - TY * 8, "fence.png"))
+    back_decorations.add(Decoration(23, WORLD_Y - TY * 8, "fence.png"))
+    back_decorations.add(Decoration(28, WORLD_Y - TY * 2.05, "orange_bush_2.png"))
+    back_decorations.add(Decoration(29.5, WORLD_Y - TY * 2.05, "orange_bush_2.png"))
+    back_decorations.add(Decoration(29, WORLD_Y - TY * 4.28, "orange_tree_1.png"))
+    back_decorations.add(Decoration(30, WORLD_Y - TY * 4.28, "orange_tree_1.png"))
+    back_decorations.add(Decoration(30.5, WORLD_Y - TY * 2.05, "orange_bush_2.png"))
+    back_decorations.add(Decoration(33, WORLD_Y - TY * 5.18, "birch_without_leaves.png"))
+    back_decorations.add(Decoration(33, WORLD_Y - TY * 2, "orange_bush_2.png"))
+    back_decorations.add(Decoration(40.6, WORLD_Y - TY * 1.8, "purple_flower.png"))
+    back_decorations.add(Decoration(43.4, WORLD_Y - TY * 5, "fence.png"))
+    back_decorations.add(Decoration(45.6, WORLD_Y - TY * 5, "fence.png"))
+    back_decorations.add(Decoration(45.5, WORLD_Y - TY * 2.05, "orange_bush_2.png"))
+    back_decorations.add(Decoration(47, WORLD_Y - TY * 2.05, "orange_bush_2.png"))
+    back_decorations.add(Decoration(49.5, WORLD_Y - TY * 9, "orange_tree.png", True))
+    back_decorations.add(Decoration(50.8, WORLD_Y - TY * 2.83, "orange_bush_1.png"))
     front_decorations = pygame.sprite.Group()
+    front_decorations.add(Decoration(2, WORLD_Y - TY * 2, "fence.png"))
+    front_decorations.add(Decoration(3, WORLD_Y - TY * 2, "fence.png"))
+    front_decorations.add(Decoration(4, WORLD_Y - TY * 2, "fence.png"))
+    front_decorations.add(Decoration(5, WORLD_Y - TY * 2, "grass.png"))
+    front_decorations.add(Decoration(5.2, WORLD_Y - TY * 2, "grass.png", True))
+    front_decorations.add(Decoration(5.4, WORLD_Y - TY * 2, "grass.png", True))
+    front_decorations.add(Decoration(6, WORLD_Y - TY * 2, "bush.png"))
+    front_decorations.add(Decoration(14.8, WORLD_Y - TY * 1.7, "water_plant.png"))
+    front_decorations.add(Decoration(18, WORLD_Y - TY * 2.83, "orange_bush_1.png"))
+    front_decorations.add(Decoration(24, WORLD_Y - TY * 2, "mushroom_brown.png"))
+    front_decorations.add(Decoration(25, WORLD_Y - TY * 1.9, "big_rock.png"))
+    front_decorations.add(Decoration(27, WORLD_Y - TY * 4.28, "big_orange_tree.png"))
+    front_decorations.add(Decoration(29, WORLD_Y - TY * 2.05, "orange_bush_2.png"))
+    front_decorations.add(Decoration(31, WORLD_Y - TY * 2, "mushroom_red.png"))
+    front_decorations.add(Decoration(32.5, WORLD_Y - TY * 2.05, "orange_bush_2.png"))
+    front_decorations.add(Decoration(33.5, WORLD_Y - TY * 8.75, "long_orange_tree.png"))
+    front_decorations.add(Decoration(38, WORLD_Y - TY * 11, "wooden_box_crate.png"))
+    front_decorations.add(Decoration(39, WORLD_Y - TY * 12, "wooden_box_crate.png"))
+    front_decorations.add(Decoration(39, WORLD_Y - TY * 11, "wooden_box_crate.png"))
+    front_decorations.add(Decoration(40, WORLD_Y - TY * 11, "wooden_box_crate.png"))
+    front_decorations.add(Decoration(41, WORLD_Y - TY * 11, "wooden_box_crate.png"))
+    front_decorations.add(Decoration(40, WORLD_Y - TY * 2, "rock.png"))
+    front_decorations.add(Decoration(43.8, WORLD_Y - TY * 2.05, "orange_bush_2.png"))
+    front_decorations.add(Decoration(45.5, WORLD_Y - TY * 1.9, "big_rock.png"))
+    front_decorations.add(Decoration(44.5, WORLD_Y - TY * 2.05, "orange_bush_2.png", True))
+    front_decorations.add(Decoration(45.85, WORLD_Y - TY * 1.9, "big_rock.png", True))
+    front_decorations.add(Decoration(50, WORLD_Y - TY * 2, "mushroom_brown.png"))
+    front_decorations.add(Decoration(50.4, WORLD_Y - TY * 2, "mushroom_brown.png"))
+    front_decorations.add(Decoration(52, WORLD_Y - TY * 2, "mushroom_red.png"))
+    front_decorations.add(Decoration(53, WORLD_Y - TY * 8, "fence.png"))
+    front_decorations.add(Decoration(54, WORLD_Y - TY * 8, "fence.png"))
+    front_decorations.add(Decoration(55, WORLD_Y - TY * 8, "fence.png"))
     return back_decorations, front_decorations
 
 
