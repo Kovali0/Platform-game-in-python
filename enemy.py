@@ -3,6 +3,7 @@ File with enemies. Contain main Enemy interface and detailed enemies classes. Sl
 """
 import os
 import pygame
+from math import copysign
 from armament import Axe
 
 
@@ -168,11 +169,11 @@ class VikingAxeThrower(Viking):
     Advanced enemy Viking Axe Thrower, who attack on distance and stand in one place.
     """
 
-    def __init__(self, img_list, attack_sprites, sight_range, throw_strength):
+    def __init__(self, img_list, attack_sprites, sight_range, throw_strength, direction=-2):
         Enemy.__init__(self, img_list)
         self.sight_range = sight_range
         self.throw_strength = throw_strength
-        self.current_direction = -2
+        self.current_direction = direction
         self.in_attack = False
         self.attack_counter = 0
         self.attack_speed = 0.25
@@ -194,4 +195,4 @@ class VikingAxeThrower(Viking):
             self.frame_counter += 1
 
     def throw_axe(self):
-        return Axe(self.throw_strength, True, self.rect.x, self.rect.y)
+        return Axe(self.throw_strength, True, self.rect.x, self.rect.y, copysign(1, self.current_direction))

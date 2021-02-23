@@ -52,8 +52,9 @@ class Axe(Bullet):
     """
     Axe class
     """
-    def __init__(self, speed, stays_on_the_map, x_loc, y_loc):
+    def __init__(self, speed, stays_on_the_map, x_loc, y_loc, direction):
         Bullet.__init__(self, speed, 0, stays_on_the_map)
+        self.current_direction = direction
         path = "images/enemies/ax_thrower_viking/thrown_axe"
         self.on_ground_img = pygame.image.load(os.path.join(path, "axe_in_ground.png"))
         self.set_images(path, 9)

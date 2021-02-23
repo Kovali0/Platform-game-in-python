@@ -172,6 +172,11 @@ def main():
                     pg.sprite.spritecollide(item, pg.sprite.Group([x for x in armament_list if x != item]), True)
                 if pg.sprite.spritecollide(item, ground_list, False) or pg.sprite.spritecollide(item, plat_list, False):
                     item.is_moving = False
+                # TODO add armament collisions with buildings
+                # for building in level.buildings:
+                #     if pg.sprite.spritecollide(item, building.walls_list, False)\
+                #             or pg.sprite.spritecollide(item, building.front_elements_list, False):
+                #         item.is_moving = False
 
             key = pg.key.get_pressed()
             if key[pg.K_d]:
