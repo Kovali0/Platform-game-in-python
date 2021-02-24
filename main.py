@@ -10,7 +10,6 @@ import designed_levels as des_lvl
 from hud import Hud
 from menu import Menu, GameOverScreen, WinScreen
 from enemy import Viking, VikingAxeThrower
-from armament import Axe
 
 
 # Global Variables
@@ -18,7 +17,7 @@ FPS = 50
 WORLD_X = 960
 WORLD_Y = 780
 WORLD = pg.display.set_mode([WORLD_X, WORLD_Y])
-LEVELS_NUMBER = 2
+LEVELS_NUMBER = 3
 FORWARD_X = 600
 BACKWARD_X = 120
 # Tiles size x-width y-high
