@@ -33,7 +33,12 @@ class Player(pygame.sprite.Sprite):
         for i in range(PLA_ANIMATIONS):
             img = pygame.image.load(os.path.join('images', 'player', 'walk', str(i) + '.png')).convert_alpha()
             self.walk.append(img)
-        self.image = self.walk[0]
+            self.is_moving = False
+        self.idle = []
+        for i in range(PLA_ANIMATIONS):
+            img = pygame.image.load(os.path.join('images', 'player', 'idle', str(i) + '.png')).convert_alpha()
+            self.idle.append(img)
+        self.image = self.idle[0]
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.rect = self.image.get_rect()
@@ -67,10 +72,16 @@ class Player(pygame.sprite.Sprite):
             self.is_jumping = False
             if self.frame_counter > 100:
                 self.frame_counter = 0
-            if self.direction == 'right':
-                self.image = self.walk[int(self.frame_counter) % PLA_ANIMATIONS]
+            if self.is_moving:
+                if self.direction == 'right':
+                    self.image = self.walk[int(self.frame_counter) % PLA_ANIMATIONS]
+                else:
+                    self.image = pygame.transform.flip(self.walk[int(self.frame_counter) % PLA_ANIMATIONS], True, False)
             else:
-                self.image = pygame.transform.flip(self.walk[int(self.frame_counter) % PLA_ANIMATIONS], True, False)
+                if self.direction == 'right':
+                    self.image = self.idle[int(self.frame_counter) % PLA_ANIMATIONS]
+                else:
+                    self.image = pygame.transform.flip(self.idle[int(self.frame_counter) % PLA_ANIMATIONS], True, False)
 
     def attack_update(self):
         """

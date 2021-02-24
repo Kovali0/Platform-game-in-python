@@ -74,6 +74,9 @@ def main():
     pg.mixer.init()
     pg.mixer.music.load(os.path.join('music', 'music.mp3'))
     pg.mixer.music.play(-1, 0.0)
+    pg.joystick.init()
+    js = pg.joystick.Joystick(0)
+    js.init()
     run = True
     in_menu = True
     in_game = False
@@ -147,6 +150,7 @@ def main():
             win = player.collision_checker(ground_list, plat_list, coins, gold_key, doors, enemies_list)
             player.armament_collision_checker(armament_list)
 
+            player.is_moving = False
             if player.life < 0:
                 lose = True
 
@@ -178,28 +182,30 @@ def main():
                 #         item.is_moving = False
 
             key = pg.key.get_pressed()
-            if key[pg.K_d]:
+            if key[pg.K_d] or js.get_axis(0) > 0.8:
+                player.is_moving = True
                 player.frame_counter += 0.5
                 player.direction = "right"
                 player.move(5, 0)
 
-            if key[pg.K_a]:
+            if key[pg.K_a] or js.get_axis(0) < -0.8:
+                player.is_moving = True
                 player.frame_counter += 0.5
                 player.direction = "left"
                 player.move(-5, 0)
 
-            if key[pg.K_SPACE] and not player.is_jumping and not player.in_air:
+            if key[pg.K_SPACE] or js.get_button(0) and not player.is_jumping and not player.in_air:
                 player.vel_y = -25
                 player.is_jumping = True
                 player.in_air = True
 
-            if not key[pg.K_a] and not key[pg.K_d]:
-                player.frame_counter = 0
-
-            if pg.mouse.get_pressed()[0]:
+            if pg.mouse.get_pressed()[0] or js.get_button(1):
                 if player.stamina >= 100 and not player.in_attack:
                     player.stamina -= 100
                     player.in_attack = True
+
+            if not player.is_moving:
+                player.frame_counter += 0.5
 
             player.attack_update()
 
