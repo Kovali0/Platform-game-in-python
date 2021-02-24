@@ -611,22 +611,16 @@ def design_fourth_level(enemies, armament) -> Level:
                        (18.5, WORLD_Y - TY * 2.5),
                        (40.5, WORLD_Y - TY * 1.5),
                        (41.5, WORLD_Y - TY * 7.5),
-                       (52.5, WORLD_Y - TY * 4.5),
+                       (53, WORLD_Y - TY * 4.5),
                        (57.5, WORLD_Y - TY * 10.5),
-                       (62.5, WORLD_Y - TY * 3.5),
+                       (69.5, WORLD_Y - TY * 12.3),
                        (80.5, WORLD_Y - TY * 1.5),
                        (96, WORLD_Y - TY * 12)]
     fourth_level.set_coins(coins_locations)
-    fourth_level.set_key((69, WORLD_Y - TY * 11))
-    fourth_level.set_doors((89, WORLD_Y - TY * 6))
+    fourth_level.set_key((69.5, WORLD_Y - TY * 9))
+    fourth_level.set_doors((91, WORLD_Y - TY * 6))
 
     mountain_1_struct = np.array([[0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
                                   [0, 0, 2, 2, 0, 0, 0, 0],
                                   [0, 0, 1, 1, 2, 0, 0, 0],
                                   [0, 2, 1, 1, 1, 2, 0, 0],
@@ -636,10 +630,6 @@ def design_fourth_level(enemies, armament) -> Level:
     fourth_level.buildings.append(mountain_1)
 
     mountain_2_struct = np.array([[0, 0, 0, 0],
-                                  [0, 0, 0, 0],
-                                  [0, 0, 0, 0],
-                                  [0, 0, 0, 0],
-                                  [0, 0, 0, 0],
                                   [1, 0, 0, 0],
                                   [2, 0, 0, 0],
                                   [2, 1, 0, 0],
@@ -650,11 +640,7 @@ def design_fourth_level(enemies, armament) -> Level:
     mountain_2 = Building(WORLD_Y, 41, mountain_2_struct, [], mountain_2_walls_img)
     fourth_level.buildings.append(mountain_2)
 
-    mountain_3_struct = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0],
+    mountain_3_struct = np.array([[0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0],
                                   [0, 0, 0, 0, 0, 0, 4, 3, 3, 1, 3, 3, 4, 0, 0, 0],
                                   [0, 0, 0, 0, 0, 4, 3, 1, 1, 1, 1, 3, 3, 4, 0, 0],
                                   [0, 0, 0, 4, 2, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0],
@@ -666,19 +652,31 @@ def design_fourth_level(enemies, armament) -> Level:
     fourth_level.buildings.append(mountain_3)
 
     mountain_4_struct = np.array([[0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
-                                  [0, 0, 0, 0, 0, 0, 0, 0],
                                   [0, 0, 2, 2, 2, 2, 4, 0],
                                   [0, 2, 1, 1, 1, 3, 3, 4],
                                   [2, 1, 1, 3, 3, 3, 3, 3]])
     mountain_4_walls_img = ["dirt_tile_1.png", "snow_tile_1.png", "stone_tile_0.png", "snow_tile_2.png"]
     mountain_4 = Building(WORLD_Y, 86, mountain_4_struct, [], mountain_4_walls_img)
     fourth_level.buildings.append(mountain_4)
+
+    building_struct = np.array([[ 1,  1,  1,  1,  1],
+                                [ 1, -2, -2, -2,  1],
+                                [-1, -3, -2, -3, -1],
+                                [-1, -2, -2, -2, -1],
+                                [ 0,  0,  0,  0,  0],
+                                [ 0,  0,  0,  0,  0],
+                                [ 0,  0,  0,  0,  0],
+                                [ 0,  0,  0,  0,  0],
+                                [ 0,  0,  0,  0,  0],
+                                [ 0,  0,  0,  0,  0],
+                                [ 0,  0,  0,  0,  0]])
+    building_walls_img = ["wood_tile_5.png"]
+    building_back_img = ["wood_tile_5.png", "wood_tile_3.png", "window_wood.png"]
+    building = Building(WORLD_Y, 67, building_struct, building_back_img, building_walls_img)
+    building.add_decoration(2, 1.2, "pennant_swords.png")
+    building.add_decoration(0.3, 2.9, "torch_2.png")
+    building.add_decoration(3.7, 2.9, "torch_2.png")
+    fourth_level.buildings.append(building)
 
     #green_purple_img = ["slimePurple.png"]
     #green_purple_1 = Slime(green_purple_img)
