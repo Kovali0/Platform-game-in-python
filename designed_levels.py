@@ -215,7 +215,7 @@ def design_second_level(enemies, armament) -> Level:
 
 def decoration_level_2():
     """
-    Setup decorations for first level
+    Setup decorations for 2nd level
     :return: list of back_decorations and front_decorations
     """
     back_decorations = pygame.sprite.Group()
@@ -329,7 +329,7 @@ def design_third_level(enemies, armament) -> Level:
                     35, 36, 37, 38, 39,
                     55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65,
                     97, 98, 99, 100, 101, 102, 102, 103, 104, 105, 106, 107, 108, 109, 110]
-    third_level = Level(2, TX, TY, WORLD_Y, water_points, 110, p_loc, "dirt_tile_1.png", "orange_tile_1.png")
+    third_level = Level(3, TX, TY, WORLD_Y, water_points, 110, p_loc, "dirt_tile_1.png", "orange_tile_1.png")
     bridges_loc = [(TX * 56, WORLD_Y - TY - 384, 8),
                    (TX * 83, WORLD_Y - TY - 576, 3)]
     third_level.build_bridges(bridges_loc)
@@ -347,7 +347,7 @@ def design_third_level(enemies, armament) -> Level:
     third_level.set_key((94.5, WORLD_Y - TY * 2))
     third_level.set_doors((7, WORLD_Y - TY * 3))
 
-    building_1_struct = np.array([[0,  0,  0,  0,  0,  0, 0],
+    tower_struct = np.array([[0,  0,  0,  0,  0,  0, 0],
                                   [0,  0,  0,  0,  0,  0, 0],
                                   [0, -2,  0, -2,  0, -2, 0],
                                   [0,  1,  1,  1,  1,  1, 0],
@@ -358,25 +358,25 @@ def design_third_level(enemies, armament) -> Level:
                                   [0,  1, -1, -1, -1,  1, 0],
                                   [0,  1, -1, -1, -1,  1, 0],
                                   [0,  1, -1, -1, -1,  1, 0]])
-    building_1_walls_img = ["stone_tile_1.png"]
-    building_1_back_img = ["stone_tile_1.png", "stone_tile_5.png"]
-    building_1 = Building(WORLD_Y, 91, building_1_struct, building_1_back_img, building_1_walls_img)
-    building_1.add_front(0, 2, "stone_tile_5.png")
-    building_1.add_front(2, 2, "stone_tile_5.png")
-    building_1.add_front(4, 2, "stone_tile_5.png")
-    building_1.add_front(6, 2, "stone_tile_5.png")
-    building_1.add_front(0, 3, "stone_tile_2.png", False, True)
-    building_1.add_front(6, 3, "stone_tile_2.png", True, True)
-    building_1.add_decoration(2, 5, "chain.png")
-    building_1.add_decoration(2, 6, "chain.png")
-    building_1.add_decoration(2, 7, "chain.png")
-    building_1.add_decoration(4, 5, "chain.png")
-    building_1.add_decoration(4, 6, "chain.png")
-    building_1.add_decoration(4, 7, "chain.png")
-    building_1.add_decoration(1, 6, "torch.png")
-    building_1.add_decoration(5, 6, "torch.png")
-    building_1.add_decoration(3, 4.5, "pennant_swords.png")
-    third_level.buildings.append(building_1)
+    tower_walls_img = ["stone_tile_1.png"]
+    tower_back_img = ["stone_tile_1.png", "stone_tile_5.png"]
+    tower = Building(WORLD_Y, 91, tower_struct, tower_back_img, tower_walls_img)
+    tower.add_front(0, 2, "stone_tile_5.png")
+    tower.add_front(2, 2, "stone_tile_5.png")
+    tower.add_front(4, 2, "stone_tile_5.png")
+    tower.add_front(6, 2, "stone_tile_5.png")
+    tower.add_front(0, 3, "stone_tile_2.png", False, True)
+    tower.add_front(6, 3, "stone_tile_2.png", True, True)
+    tower.add_decoration(2, 5, "chain.png")
+    tower.add_decoration(2, 6, "chain.png")
+    tower.add_decoration(2, 7, "chain.png")
+    tower.add_decoration(4, 5, "chain.png")
+    tower.add_decoration(4, 6, "chain.png")
+    tower.add_decoration(4, 7, "chain.png")
+    tower.add_decoration(1, 6, "torch.png")
+    tower.add_decoration(5, 6, "torch.png")
+    tower.add_decoration(3, 4.5, "pennant_swords.png")
+    third_level.buildings.append(tower)
 
     spikes_1 = Trap(TX * 93, WORLD_Y - TY * 2, "spikes.png", 1)
     spikes_2 = Trap(TX * 94, WORLD_Y - TY * 2, "spikes.png", 1)
@@ -447,7 +447,7 @@ def design_third_level(enemies, armament) -> Level:
 def decoration_level_3():
 
     """
-    Setup decorations for first level
+    Setup decorations for 3rd level
     :return: list of back_decorations and front_decorations
     """
     back_decorations = pygame.sprite.Group()
@@ -572,6 +572,171 @@ def decoration_level_3():
     return back_decorations, front_decorations
 
 
+def design_fourth_level(enemies, armament) -> Level:
+    """
+    Function for designing and creating third level.
+    :return: first level object
+    """
+    p_loc = [(TX * -10, WORLD_Y - 64 * 10, 0),
+             (TX * -6, WORLD_Y - 64 * 7, 0),
+             (TX * -2, WORLD_Y - 64 * 7, 2),
+             (TX * 4, WORLD_Y - 64 * 10, 1),
+             (TX * 9, WORLD_Y - 64 * 10, 0),
+             (TX * 15, WORLD_Y - 64 * 10, 2),
+             (TX * 20, WORLD_Y - 64 * 7, 2),
+             (TX * 27, WORLD_Y - 64 * 8, 0),
+             (TX * 30, WORLD_Y - 64 * 8, 0),
+             (TX * 34, WORLD_Y - 64 * 10, 1),
+             (TX * 46, WORLD_Y - 64 * 10, 4),
+             (TX * 55, WORLD_Y - 64 * 10, 0),
+             (TX * 60, WORLD_Y - 64 * 10, 0),
+             (TX * 76, WORLD_Y - 64 * 10, 2),
+             (TX * 84, WORLD_Y - 64 * 7, 0),
+             (TX * 87, WORLD_Y - 64 * 10, 2),
+             (TX * 95.5, WORLD_Y - 64 * 10, 0)]
+    water_points = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1,
+                    5, 6, 7, 8, 9,
+                    27, 28, 29, 30,
+                    36, 37, 38, 39,
+                    51, 52, 53, 54,
+                    76, 77, 78, 79,
+                    81, 82, 83, 84,
+                    94, 95, 96, 97, 98, 99, 100]
+    fourth_level = Level(4, TX, TY, WORLD_Y, water_points, 100, p_loc, "snow_tile_1.png", "blue_tile_1.png")
+    bridges_loc = [(TX * 28, WORLD_Y - 64 * 8, 1),
+                   (TX * 56, WORLD_Y - 64 * 10, 3)]
+    fourth_level.build_bridges(bridges_loc)
+
+    coins_locations = [(-9.5, WORLD_Y - TY * 12),
+                       (18.5, WORLD_Y - TY * 2.5),
+                       (40.5, WORLD_Y - TY * 1.5),
+                       (41.5, WORLD_Y - TY * 7.5),
+                       (52.5, WORLD_Y - TY * 4.5),
+                       (57.5, WORLD_Y - TY * 10.5),
+                       (62.5, WORLD_Y - TY * 3.5),
+                       (80.5, WORLD_Y - TY * 1.5),
+                       (96, WORLD_Y - TY * 12)]
+    fourth_level.set_coins(coins_locations)
+    fourth_level.set_key((69, WORLD_Y - TY * 11))
+    fourth_level.set_doors((89, WORLD_Y - TY * 6))
+
+    mountain_1_struct = np.array([[0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 2, 2, 0, 0, 0, 0],
+                                  [0, 0, 1, 1, 2, 0, 0, 0],
+                                  [0, 2, 1, 1, 1, 2, 0, 0],
+                                  [2, 1, 1, 1, 1, 1, 2, 2]])
+    mountain_1_walls_img = ["dirt_tile_1.png", "snow_tile_1.png"]
+    mountain_1 = Building(WORLD_Y, 11, mountain_1_struct, [], mountain_1_walls_img)
+    fourth_level.buildings.append(mountain_1)
+
+    mountain_2_struct = np.array([[0, 0, 0, 0],
+                                  [0, 0, 0, 0],
+                                  [0, 0, 0, 0],
+                                  [0, 0, 0, 0],
+                                  [0, 0, 0, 0],
+                                  [1, 0, 0, 0],
+                                  [2, 0, 0, 0],
+                                  [2, 1, 0, 0],
+                                  [2, 2, 1, 0],
+                                  [2, 2, 2, 1],
+                                  [2, 2, 2, 2]])
+    mountain_2_walls_img = ["snow_tile_2.png", "stone_tile_0.png"]
+    mountain_2 = Building(WORLD_Y, 41, mountain_2_struct, [], mountain_2_walls_img)
+    fourth_level.buildings.append(mountain_2)
+
+    mountain_3_struct = np.array([[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 4, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 4, 3, 3, 1, 3, 3, 4, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 4, 3, 1, 1, 1, 1, 3, 3, 4, 0, 0],
+                                  [0, 0, 0, 4, 2, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0],
+                                  [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0],
+                                  [0, 4, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2],
+                                  [4, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
+    mountain_3_walls_img = ["stone_tile_0.png", "snow_tile_2.png", "dirt_tile_1.png", "snow_tile_1.png"]
+    mountain_3 = Building(WORLD_Y, 60, mountain_3_struct, [], mountain_3_walls_img)
+    fourth_level.buildings.append(mountain_3)
+
+    mountain_4_struct = np.array([[0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 0, 0, 0, 0, 0, 0],
+                                  [0, 0, 2, 2, 2, 2, 4, 0],
+                                  [0, 2, 1, 1, 1, 3, 3, 4],
+                                  [2, 1, 1, 3, 3, 3, 3, 3]])
+    mountain_4_walls_img = ["dirt_tile_1.png", "snow_tile_1.png", "stone_tile_0.png", "snow_tile_2.png"]
+    mountain_4 = Building(WORLD_Y, 86, mountain_4_struct, [], mountain_4_walls_img)
+    fourth_level.buildings.append(mountain_4)
+
+    #green_purple_img = ["slimePurple.png"]
+    #green_purple_1 = Slime(green_purple_img)
+    #green_purple_1.set_enemy_location(TX * 23, WORLD_Y - TY * 8, 50)
+    #green_purple_2 = Slime(green_purple_img)
+    #green_purple_2.set_enemy_location(TX * 25, WORLD_Y - TY * 2, 120)
+    #green_purple_3 = Slime(green_purple_img)
+    #green_purple_3.set_enemy_location(TX * 25, WORLD_Y - TY * 2, 65)
+
+    #blue_fish_img = ["fishBlue.png"]
+    #blue_fish_1 = Fish(blue_fish_img, WORLD_Y)
+    #blue_fish_1.set_enemy_location(TX * 12.5, WORLD_Y - TY * 1, 100)
+    #blue_fish_2 = Fish(blue_fish_img, WORLD_Y)
+    #blue_fish_2.set_enemy_location(TX * 37, WORLD_Y - TY * 1, 100)
+    #viking_img = ["viking/walk/0.png", "viking/walk/0.png", "viking/walk/1.png", "viking/walk/1.png",
+    #              "viking/walk/2.png", "viking/walk/2.png", "viking/walk/3.png", "viking/walk/3.png",
+    #              "viking/walk/4.png", "viking/walk/4.png", "viking/walk/5.png", "viking/walk/5.png",
+    #              "viking/walk/6.png", "viking/walk/6.png", "viking/walk/7.png", "viking/walk/7.png",
+    #              "viking/walk/8.png", "viking/walk/8.png", "viking/walk/9.png", "viking/walk/9.png"]
+    #viking_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png"]
+    #viking_1 = Viking(viking_img, viking_attack_img, 3)
+    #viking_1.set_enemy_location(TX * 78, WORLD_Y - TY * 2.5, 300)
+    #viking_2 = Viking(viking_img, viking_attack_img, 3)
+    #viking_2.set_enemy_location(TX * 84.5, WORLD_Y - TY * 11.5, 110)
+#
+    #axe_thrower_img = ["ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/1.png",
+    #                   "ax_thrower_viking/idle/1.png", "ax_thrower_viking/idle/2.png", "ax_thrower_viking/idle/2.png",
+    #                   "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/4.png",
+    #                   "ax_thrower_viking/idle/4.png", "ax_thrower_viking/idle/5.png", "ax_thrower_viking/idle/5.png",
+    #                   "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/7.png",
+    #                   "ax_thrower_viking/idle/7.png", "ax_thrower_viking/idle/8.png", "ax_thrower_viking/idle/8.png",
+    #                   "ax_thrower_viking/idle/9.png", "ax_thrower_viking/idle/9.png"]
+    #axe_thrower_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "2.png", "6.png", "7.png", "8.png",
+    #                          "9.png", "10.png", "10.png", "11.png", "12.png"]
+    #axe_thrower_1 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 10, 5)
+    #axe_thrower_1.set_enemy_location(TX * 68, WORLD_Y - TY * 8.05)
+
+    #enemies.add(green_purple_1)
+    #enemies.add(green_purple_2)
+    #enemies.add(green_purple_3)
+    #enemies.add(blue_fish_1)
+    #enemies.add(blue_fish_2)
+    #enemies.add(viking_1)
+    #enemies.add(viking_2)
+    #enemies.add(axe_thrower_1)
+    return fourth_level
+
+
+def decoration_level_4():
+    """
+    Setup decorations for 4th level
+    :return: list of back_decorations and front_decorations
+    """
+    back_decorations = pygame.sprite.Group()
+    front_decorations = pygame.sprite.Group()
+    return back_decorations, front_decorations
+
+
 def design_level(level_id, enemies, armament):
     """
     Design level and return all needed things.
@@ -596,3 +761,9 @@ def design_level(level_id, enemies, armament):
         third_level = design_third_level(enemies, armament)
         back_decorations, front_decorations = decoration_level_3()
         return third_level, background, back_decorations, front_decorations
+
+    if level_id == 4:
+        background = pygame.image.load(os.path.join('images', 'backgrounds', 'mountains_background.png'))
+        fourth_level = design_fourth_level(enemies, armament)
+        back_decorations, front_decorations = decoration_level_4()
+        return fourth_level, background, back_decorations, front_decorations
