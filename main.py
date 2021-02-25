@@ -83,7 +83,6 @@ def main():
     pg.mixer.init()
     pg.mixer.music.load(os.path.join('music', 'music.mp3'))
     pg.mixer.music.play(-1, 0.0)
-    game_pad = None
     run = True
     in_menu = True
     in_game = False
