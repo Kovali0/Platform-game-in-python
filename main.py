@@ -3,6 +3,7 @@ Main file
 """
 import os
 import sys
+
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 import pygame as pg
 from player import Player
@@ -10,7 +11,6 @@ import designed_levels as des_lvl
 from hud import Hud
 from menu import Menu, GameOverScreen, WinScreen
 from enemy import Viking, VikingAxeThrower
-
 
 # Global Variables
 FPS = 50
@@ -64,6 +64,15 @@ def screen_loop(condition, screen, clock):
     return condition
 
 
+def connect_controller():
+    pg.joystick.init()
+    if pg.joystick.get_count() > 0:
+        js = pg.joystick.Joystick(0)
+        js.init()
+        return js
+    return None
+
+
 def main():
     """
     Program main function
@@ -74,9 +83,7 @@ def main():
     pg.mixer.init()
     pg.mixer.music.load(os.path.join('music', 'music.mp3'))
     pg.mixer.music.play(-1, 0.0)
-    pg.joystick.init()
-    js = pg.joystick.Joystick(0)
-    js.init()
+    game_pad = None
     run = True
     in_menu = True
     in_game = False
@@ -124,7 +131,8 @@ def main():
         player_list = pg.sprite.Group()
         player_list.add(player)
 
-        level, background, back_decorations, front_decorations = des_lvl.design_level(current_level, enemies_list, armament_list)
+        level, background, back_decorations, front_decorations = des_lvl.design_level(current_level, enemies_list,
+                                                                                      armament_list)
 
         ground_list = level.ground_list
         water_list = level.water_list
@@ -181,25 +189,32 @@ def main():
                 #             or pg.sprite.spritecollide(item, building.front_elements_list, False):
                 #         item.is_moving = False
 
+            if game_pad := connect_controller():
+                js = {"L": game_pad.get_axis(0),
+                      "Btn_X": game_pad.get_button(0),
+                      "Btn_O": game_pad.get_button(1)}
+            else:
+                js = {}
+
             key = pg.key.get_pressed()
-            if key[pg.K_d] or js.get_axis(0) > 0.8:
+            if key[pg.K_d] or js.get("L", 0) > 0.8:
                 player.is_moving = True
                 player.frame_counter += 0.5
                 player.direction = "right"
                 player.move(5, 0)
 
-            if key[pg.K_a] or js.get_axis(0) < -0.8:
+            if key[pg.K_a] or js.get("L", 0) < -0.8:
                 player.is_moving = True
                 player.frame_counter += 0.5
                 player.direction = "left"
                 player.move(-5, 0)
 
-            if key[pg.K_SPACE] or js.get_button(0) and not player.is_jumping and not player.in_air:
+            if (key[pg.K_SPACE] or js.get("Btn_X", 0)) and not player.is_jumping and not player.in_air:
                 player.vel_y = -25
                 player.is_jumping = True
                 player.in_air = True
 
-            if pg.mouse.get_pressed()[0] or js.get_button(1):
+            if pg.mouse.get_pressed()[0] or js.get("Btn_O", 0):
                 if player.stamina >= 100 and not player.in_attack:
                     player.stamina -= 100
                     player.in_attack = True

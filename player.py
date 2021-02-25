@@ -6,7 +6,6 @@ import pygame
 
 from armament import Axe, Trap
 from enemy import Viking
-from level import Building
 
 # Global Variables
 PLA_ANIMATIONS = 10
@@ -149,7 +148,7 @@ class Player(pygame.sprite.Sprite):
         if pygame.sprite.spritecollide(self, doors, False) and self.has_key:
             return True
 
-        if self.immortal_time is not 0:
+        if self.immortal_time != 0:
             return False
 
         if self.in_attack:
@@ -175,7 +174,7 @@ class Player(pygame.sprite.Sprite):
         Checker of player collision with armament on the map.
         :param armament_list: list of all armaments
         """
-        if self.immortal_time is not 0:
+        if self.immortal_time != 0:
             return
         armament_hit_list = pygame.sprite.spritecollide(self, armament_list, False)
         for item in armament_hit_list:
