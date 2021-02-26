@@ -813,7 +813,6 @@ def decoration_level_4():
     back_decorations.add(Decoration(86.7, WORLD_Y - TY * 7, "spruce.png"))
     back_decorations.add(Decoration(88, WORLD_Y - TY * 10.7, "tree_without_leaves.png", True))
     back_decorations.add(Decoration(92.9, WORLD_Y - TY * 4, "mushroom_red.png"))
-
     back_decorations.add(Decoration(89, WORLD_Y - TY * 5, "wood_tile_4.png"))
     back_decorations.add(Decoration(90, WORLD_Y - TY * 5, "wood_tile_3.png"))
     back_decorations.add(Decoration(91, WORLD_Y - TY * 5, "wood_tile_3.png"))
@@ -827,6 +826,10 @@ def decoration_level_4():
     back_decorations.add(Decoration(91, WORLD_Y - TY * 7, "wood_tile_1.png"))
     back_decorations.add(Decoration(92, WORLD_Y - TY * 7, "wood_tile_2.png", True))
     back_decorations.add(Decoration(91.2, WORLD_Y - TY * 6.8, "pennant_horse.png", True))
+    back_decorations.add(Decoration(90, WORLD_Y - TY * 4.9, "blue_flower.png"))
+    back_decorations.add(Decoration(88, WORLD_Y - TY * 5, "wooden_stick_1.png"))
+    back_decorations.add(Decoration(88, WORLD_Y - TY * 6, "wooden_stick_2.png"))
+    back_decorations.add(Decoration(88, WORLD_Y - TY * 7, "torch_2.png"))
     front_decorations = pygame.sprite.Group()
     front_decorations.add(Decoration(-0.5, WORLD_Y - TY * 8.7, "tree_without_leaves.png"))
     front_decorations.add(Decoration(11, WORLD_Y - TY * 3, "rock.png"))
@@ -846,10 +849,231 @@ def decoration_level_4():
     front_decorations.add(Decoration(80, WORLD_Y - TY * 2, "mushroom_brown.png"))
     front_decorations.add(Decoration(85.3, WORLD_Y - TY * 1.7, "mountain_bush.png"))
     front_decorations.add(Decoration(88.5, WORLD_Y - TY * 3.8, "spruce_3.png"))
-    back_decorations.add(Decoration(90, WORLD_Y - TY * 4.9, "blue_flower.png"))
-    back_decorations.add(Decoration(88, WORLD_Y - TY * 5, "wooden_stick_1.png"))
-    back_decorations.add(Decoration(88, WORLD_Y - TY * 6, "wooden_stick_2.png"))
-    back_decorations.add(Decoration(88, WORLD_Y - TY * 7, "torch_2.png"))
+    return back_decorations, front_decorations
+
+
+def design_fifth_level(enemies, armament) -> Level:
+    """
+    Function for designing and creating fifth level.
+    :return: 5th level object
+    """
+    p_loc = [(TX * 38, WORLD_Y - 64 * 10, 3),
+             (TX * 45, WORLD_Y - 64 * 10, 0),
+             (TX * 58, WORLD_Y - 64 * 10, 1)]
+    water_points = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1,
+                    5, 6, 7, 8, 9,
+                    20, 21, 22, 23, 24, 25, 26, 27,
+                    73, 74, 75, 76, 77, 78]
+    fifth_level = Level(5, TX, TY, WORLD_Y, water_points, 82, p_loc, "snow_tile_2.png", "blue_tile_1.png")
+    bridges_loc = [(TX * 20, WORLD_Y - 64 * 3, 7),
+                   (TX * 73, WORLD_Y - 64 * 4, 5)]
+    fifth_level.build_bridges(bridges_loc)
+
+    coins_locations = [(-9.5, WORLD_Y - TY * 12),
+                       (18.5, WORLD_Y - TY * 2.5),
+                       (40.5, WORLD_Y - TY * 1.5),
+                       (41.5, WORLD_Y - TY * 7.5),
+                       (53, WORLD_Y - TY * 4.5),
+                       (57.5, WORLD_Y - TY * 10.5),
+                       (69.5, WORLD_Y - TY * 12.3),
+                       (80.5, WORLD_Y - TY * 1.5),
+                       (96, WORLD_Y - TY * 12)]
+    fifth_level.set_coins(coins_locations)
+    fifth_level.set_key((65.5, WORLD_Y - TY * 5.2))
+    fifth_level.set_doors((80, WORLD_Y - TY * 6))
+
+    mountain_1_struct = np.array([[0, 0, 0, 0, 0, 2, 2, 2, 2, 2],
+                                  [0, 0, 2, 2, 2, 1, 1, 1, 1, 1]])
+    mountain_1_walls_img = ["stone_tile_0.png", "snow_tile_2.png"]
+    mountain_1 = Building(WORLD_Y, 10, mountain_1_struct, [], mountain_1_walls_img)
+    fifth_level.buildings.append(mountain_1)
+
+    mountain_2_struct = np.array([[1, 1, 1, 1, 1, 1, 1, 1, 2, 0],
+                                  [1, 1, 1, 1, 1, 1, 1, 1, 1, 2]])
+    mountain_2_walls_img = ["stone_tile_0.png", "snow_tile_2.png"]
+    mountain_2 = Building(WORLD_Y, 28, mountain_2_struct, [], mountain_2_walls_img)
+    fifth_level.buildings.append(mountain_2)
+
+    mountain_3_struct = np.array([[0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                                  [0, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                                  [2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])
+    mountain_3_walls_img = ["stone_tile_0.png", "snow_tile_2.png"]
+    mountain_3 = Building(WORLD_Y, 58, mountain_3_struct, [], mountain_3_walls_img)
+    fifth_level.buildings.append(mountain_3)
+
+    mountain_4_struct = np.array([[2, 2, 1],
+                                  [1, 1, 1],
+                                  [1, 1, 1]])
+    mountain_4_walls_img = ["stone_tile_0.png", "snow_tile_2.png"]
+    mountain_4 = Building(WORLD_Y, 79, mountain_4_struct, [], mountain_4_walls_img)
+    fifth_level.buildings.append(mountain_4)
+
+    tower_struct = np.array([[0, -2,  0, -2,  0, -2,  0, -2, 0],
+                             [0,  1,  1, -1,  1, -1, -1,  1, 0],
+                             [0,  2, -1, -1, -1, -1, -1,  3, 0],
+                             [0,  2, -1, -1, -1, -1, -1,  3, 0],
+                             [0,  2, -1, -1, -1, -1, -1,  3, 0],
+                             [0,  2,  1,  1, -1, -1,  1,  3, 0],
+                             [0,  2, -1, -1, -1, -1, -1,  3, 0],
+                             [0, -3, -1, -1, -1, -1, -1, -4, 0],
+                             [0, -3, -1, -1, -1, -1, -1, -4, 0],
+                             [0,  0,  0,  0,  0,  0,  0,  0, 0],
+                             [0,  0,  0,  0,  0,  0,  0,  0, 0]])
+    tower_walls_img = ["stone_tile_1.png", "stone_tile_6.png", "stone_tile_7.png"]
+    tower_back_img = ["stone_tile_1.png", "stone_tile_5.png", "stone_tile_6.png", "stone_tile_7.png"]
+    tower = Building(WORLD_Y, 27, tower_struct, tower_back_img, tower_walls_img)
+    tower.add_front(0, 0, "stone_tile_5.png")
+    tower.add_front(2, 0, "stone_tile_5.png")
+    tower.add_front(4, 0, "stone_tile_5.png")
+    tower.add_front(6, 0, "stone_tile_5.png")
+    tower.add_front(8, 0, "stone_tile_5.png")
+    tower.add_front(0, 1, "stone_tile_2.png", False, True)
+    tower.add_front(8, 1, "stone_tile_2.png", True, True)
+    tower.add_decoration(3.95, 3.2, "pennant_swords.png")
+    tower.add_decoration(1.5, 7.9, "torch_2.png")
+    tower.add_decoration(3, 3.9, "torch_2.png")
+    tower.add_decoration(2.2, 3, "window.png")
+    tower.add_decoration(5.8, 3, "window.png")
+    tower.add_decoration(5.5, 7.9, "torch_2.png")
+    fifth_level.buildings.append(tower)
+
+    building_struct = np.array([[0,  2,  2,  2,  2,  2, 0],
+                                [0,  1, -2, -2, -2,  1, 0],
+                                [0, -1, -3, -2, -3, -1, 0],
+                                [0, -1, -2, -2, -2, -1, 0]])
+    building_walls_img = ["wood_tile_5.png", "orange_tile_3.png"]
+    building_back_img = ["wood_tile_5.png", "wood_tile_3.png", "window_wood.png"]
+    building = Building(WORLD_Y, 39, building_struct, building_back_img, building_walls_img)
+    building.add_front(0, 0, "orange_tile_2.png", False)
+    building.add_front(6, 0, "orange_tile_2.png", True)
+    fifth_level.buildings.append(building)
+
+    warehouse_struct = np.array([[0,  5,  5,  5,  5,  5,  5,  5, 0],
+                                 [0,  2, -1, -1, -4, -1, -1, -3, 0],
+                                 [0,  2, -1, -1, -4, -1, -1, -3, 0],
+                                 [0,  2,  4,  4,  4,  4,  4,  3, 0],
+                                 [0, -2, -1, -1, -1, -1, -1, -3, 0],
+                                 [0, -2, -1, -1, -1, -1, -1, -3, 0]])
+    warehouse_walls_img = ["stone_tile_1.png", "stone_tile_6.png", "stone_tile_7.png", "wood_tile_5.png", "orange_tile_3.png"]
+    warehouse_back_img = ["stone_tile_1.png", "stone_tile_6.png", "stone_tile_7.png", "wood_tile_5.png"]
+    warehouse = Building(WORLD_Y, 47, warehouse_struct, warehouse_back_img, warehouse_walls_img)
+    warehouse.add_front(0, 0, "orange_tile_2.png", False)
+    warehouse.add_front(8, 0, "orange_tile_2.png", True)
+    warehouse.add_front(4, 4, "wood_tile_5.png")
+    warehouse.add_front(4, 5, "wood_tile_5.png")
+    warehouse.add_decoration(2.5, 1.5, "window.png")
+    warehouse.add_decoration(5.5, 1.5, "window.png")
+    warehouse.add_decoration(2, 4, "chain.png")
+    warehouse.add_decoration(3, 4, "chain.png")
+    warehouse.add_decoration(0, 5, "wooden_box_crate.png")
+    warehouse.add_decoration(5, 5, "wooden_box_crate.png")
+    warehouse.add_decoration(6, 5, "wooden_box_crate.png")
+    warehouse.add_decoration(2, 1, "wooden_box_crate.png")
+    warehouse.add_decoration(2, 2, "wooden_box_crate.png")
+    warehouse.add_decoration(3, 2, "wooden_box_crate.png")
+    fifth_level.buildings.append(warehouse)
+
+    tavern_walls_img = ["sandstone_1.png", "orange_tile_3.png", "sandstone_3.png", "sandstone_4.png", "sandstone_5.png",
+                        "sandstone_6.png", "sandstone_7.png"]
+    tavern_back_img = ["sandstone_1.png", "sandstone_2.png", "sandstone_3.png", "sandstone_4.png", "window_wood.png",
+                       "sandstone_6.png", "sandstone_7.png", "orange_tile_3.png", "stone_tile_0.png"]
+    tavern_struct = np.array([[0,  0,  0,  0, -9,  0,  0,  0,  0,  0, 0,  0,  0],
+                              [0,  2,  2, -8, -9, -8,  2,  2,  2,  2,  2,  2, 0],
+                              [0,  7, -1, -1, -9, -1, -1, -1, -1, -1, -1,  7, 0],
+                              [0,  7, -1, -5, -9, -1, -5, -1, -1, -5, -1,  7, 0],
+                              [0,  7, -1, -1, -9, -1, -1, -1, -1, -1, -1,  7, 0],
+                              [0,  5,  4,  6,  4,  6,  4, -6, -4,  6,  4,  5, 0],
+                              [0,  7, -1, -1, -9, -1,  1, -1, -1, -1, -1,  7, 0],
+                              [0, -7, -1, -5, -9, -1,  1, -1, -1, -5, -1,  0, 0],
+                              [0, -2, -3, -3, -3, -3,  3, -3, -3, -3, -3,  0, 0],
+                              [0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0,  0,  0],
+                              [0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0,  0,  0],
+                              [0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0,  0,  0]])
+    tavern = Building(WORLD_Y, 61, tavern_struct, tavern_back_img, tavern_walls_img)
+    tavern.add_front(0, 1, "orange_tile_2.png", False)
+    tavern.add_front(12, 1, "orange_tile_2.png", True)
+    tavern.add_front(0, 5, "signboard_tavern.png", True)
+    tavern.add_front(6, 6, "sandstone_6.png", to_y_flip=True)
+    tavern.add_front(6, 7, "sandstone_6.png", to_y_flip=True)
+    tavern.add_front(6, 8, "sandstone_6.png", to_y_flip=True)
+    tavern.add_front(11, 2, "sandstone_7.png", True)
+    tavern.add_front(11, 3, "sandstone_7.png", True)
+    tavern.add_front(11, 4, "sandstone_7.png", True)
+    tavern.add_front(11, 5, "sandstone_5.png", True)
+    tavern.add_front(11, 6, "sandstone_7.png", True)
+    tavern.add_front(11, 7, "sandstone_7.png", True)
+    tavern.add_front(11, 8, "sandstone_2.png", True)
+    fifth_level.buildings.append(tavern)
+
+    return fifth_level
+
+
+def decoration_level_5():
+    """
+    Setup decorations for 5th level
+    :return: list of back_decorations and front_decorations
+    """
+    back_decorations = pygame.sprite.Group()
+    back_decorations.add(Decoration(0, WORLD_Y - TY * 5.5, "spruce.png", True))
+
+    back_decorations.add(Decoration(10, WORLD_Y - TY * 1.9, "big_rock.png", True))
+    back_decorations.add(Decoration(11, WORLD_Y - TY * 3.9, "spruce_2.png"))
+    back_decorations.add(Decoration(12.4, WORLD_Y - TY * 1.9, "mushroom_brown.png"))
+    back_decorations.add(Decoration(13, WORLD_Y - TY * 5.5, "spruce.png", True))
+    back_decorations.add(Decoration(14.5, WORLD_Y - TY * 7, "spruce.png", True))
+    back_decorations.add(Decoration(15.5, WORLD_Y - TY * 9.2, "green_tree.png"))
+    back_decorations.add(Decoration(17, WORLD_Y - TY * 4, "bush.png", True))
+    back_decorations.add(Decoration(18, WORLD_Y - TY * 5.5, "spruce_3.png"))
+    back_decorations.add(Decoration(18.5, WORLD_Y - TY * 3.9, "big_rock_2.png"))
+
+    back_decorations.add(Decoration(36, WORLD_Y - TY * 4, "wooden_stick_1.png"))
+    back_decorations.add(Decoration(36, WORLD_Y - TY * 5, "wooden_stick_2.png"))
+    back_decorations.add(Decoration(36, WORLD_Y - TY * 6, "torch_2.png"))
+    back_decorations.add(Decoration(35.8, WORLD_Y - TY * 4, "rock.png"))
+    back_decorations.add(Decoration(40, WORLD_Y - TY * 3, "torch.png"))
+    back_decorations.add(Decoration(42, WORLD_Y - TY * 3.8, "pennant_swords.png"))
+    back_decorations.add(Decoration(44, WORLD_Y - TY * 3, "torch.png"))
+    back_decorations.add(Decoration(46, WORLD_Y - TY * 2, "wooden_stick_1.png"))
+    back_decorations.add(Decoration(46, WORLD_Y - TY * 3, "wooden_stick_2.png"))
+    back_decorations.add(Decoration(46, WORLD_Y - TY * 4, "torch_2.png"))
+    back_decorations.add(Decoration(45.5, WORLD_Y - TY * 1.7, "mountain_bush.png"))
+    back_decorations.add(Decoration(56, WORLD_Y - TY * 4.60, "frozen_tree.png"))
+    back_decorations.add(Decoration(59, WORLD_Y - TY * 5.9, "spruce_2.png"))
+    back_decorations.add(Decoration(63, WORLD_Y - TY * 7, "torch.png", True))
+    back_decorations.add(Decoration(63, WORLD_Y - TY * 11, "torch.png"))
+    back_decorations.add(Decoration(66, WORLD_Y - TY * 7, "torch.png"))
+    back_decorations.add(Decoration(66, WORLD_Y - TY * 11, "torch.png", True))
+    back_decorations.add(Decoration(68, WORLD_Y - TY * 7, "torch.png", True))
+    back_decorations.add(Decoration(68, WORLD_Y - TY * 11, "torch.png", True))
+    back_decorations.add(Decoration(71, WORLD_Y - TY * 7, "torch.png"))
+    back_decorations.add(Decoration(71, WORLD_Y - TY * 11, "torch.png"))
+    back_decorations.add(Decoration(63, WORLD_Y - TY * 9, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(68, WORLD_Y - TY * 5, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(68, WORLD_Y - TY * 6, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(69, WORLD_Y - TY * 5, "wooden_box_crate.png"))
+    back_decorations.add(Decoration(64.95, WORLD_Y - TY * 6.7, "pennant_swords.png"))
+    back_decorations.add(Decoration(68.9, WORLD_Y - TY * 9.7, "pennant_swords.png"))
+    back_decorations.add(Decoration(65, WORLD_Y - TY * 5, "stone_tile_0.png"))
+    back_decorations.add(Decoration(65, WORLD_Y - TY * 5, "window.png"))
+    back_decorations.add(Decoration(65, WORLD_Y - TY * 5, "fireplace.png"))
+    front_decorations = pygame.sprite.Group()
+    front_decorations.add(Decoration(2.5, WORLD_Y - TY * 1.7, "mountain_bush.png"))
+    front_decorations.add(Decoration(4, WORLD_Y - TY * 2, "way_sign_right.png"))
+    front_decorations.add(Decoration(10.8, WORLD_Y - TY * 2, "mushroom_red.png", True))
+    front_decorations.add(Decoration(16, WORLD_Y - TY * 4, "fence.png"))
+    front_decorations.add(Decoration(17, WORLD_Y - TY * 4, "fence.png"))
+    front_decorations.add(Decoration(18, WORLD_Y - TY * 4, "fence.png"))
+    front_decorations.add(Decoration(15.5, WORLD_Y - TY * 4, "rock.png", True))
+    front_decorations.add(Decoration(34.5, WORLD_Y - TY * 8.7, "tree_without_leaves.png"))
+    front_decorations.add(Decoration(51, WORLD_Y - TY * 3, "torch.png"))
+    front_decorations.add(Decoration(55, WORLD_Y - TY * 2, "wooden_box_crate.png"))
+    front_decorations.add(Decoration(54.5, WORLD_Y - TY * 1.7, "mountain_bush.png"))
+    front_decorations.add(Decoration(58, WORLD_Y - TY * 2.9, "blue_flower.png"))
+    front_decorations.add(Decoration(59, WORLD_Y - TY * 4.1, "wooden_stick_1.png"))
+    front_decorations.add(Decoration(59, WORLD_Y - TY * 5, "wooden_stick_2.png"))
+    front_decorations.add(Decoration(59, WORLD_Y - TY * 6, "torch_2.png"))
+    front_decorations.add(Decoration(59, WORLD_Y - TY * 4, "fence.png"))
+    front_decorations.add(Decoration(60, WORLD_Y - TY * 4, "fence.png"))
     return back_decorations, front_decorations
 
 
@@ -869,7 +1093,7 @@ def design_level(level_id, enemies, armament):
     if level_id == 2:
         background = pygame.image.load(os.path.join('images', 'backgrounds', 'green_lands_background.png'))
         second_level = design_second_level(enemies, armament)
-        back_decorations, front_decorations = decoration_level_2()
+        back_decorations, front_decorations = decoration_level_5()
         return second_level, background, back_decorations, front_decorations
 
     if level_id == 3:
@@ -883,3 +1107,9 @@ def design_level(level_id, enemies, armament):
         fourth_level = design_fourth_level(enemies, armament)
         back_decorations, front_decorations = decoration_level_4()
         return fourth_level, background, back_decorations, front_decorations
+
+    if level_id == 5:
+        background = pygame.image.load(os.path.join('images', 'backgrounds', 'mountains_background.png'))
+        fifth_level = design_fifth_level(enemies, armament)
+        back_decorations, front_decorations = decoration_level_5()
+        return fifth_level, background, back_decorations, front_decorations

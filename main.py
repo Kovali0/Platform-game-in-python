@@ -86,7 +86,7 @@ def main():
     run = True
     in_menu = True
     in_game = False
-    current_level = 4
+    current_level = 5
     menu = Menu(WORLD)
 
     while run:
