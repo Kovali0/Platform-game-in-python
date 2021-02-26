@@ -17,7 +17,7 @@ FPS = 50
 WORLD_X = 960
 WORLD_Y = 780
 WORLD = pg.display.set_mode([WORLD_X, WORLD_Y])
-LEVELS_NUMBER = 3
+LEVELS_NUMBER = 5
 FORWARD_X = 600
 BACKWARD_X = 120
 # Tiles size x-width y-high
@@ -86,7 +86,7 @@ def main():
     run = True
     in_menu = True
     in_game = False
-    current_level = 5
+    current_level = 6
     menu = Menu(WORLD)
 
     while run:
