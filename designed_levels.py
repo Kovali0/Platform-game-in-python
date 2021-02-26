@@ -13,6 +13,23 @@ WORLD_Y = 780
 # Tiles size x-width y-high
 TX = 64
 TY = 64
+# Images path
+viking_img = ["viking/walk/0.png", "viking/walk/0.png", "viking/walk/1.png", "viking/walk/1.png",
+              "viking/walk/2.png", "viking/walk/2.png", "viking/walk/3.png", "viking/walk/3.png",
+              "viking/walk/4.png", "viking/walk/4.png", "viking/walk/5.png", "viking/walk/5.png",
+              "viking/walk/6.png", "viking/walk/6.png", "viking/walk/7.png", "viking/walk/7.png",
+              "viking/walk/8.png", "viking/walk/8.png", "viking/walk/9.png", "viking/walk/9.png"]
+viking_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png"]
+
+axe_thrower_img = ["ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/1.png",
+                   "ax_thrower_viking/idle/1.png", "ax_thrower_viking/idle/2.png", "ax_thrower_viking/idle/2.png",
+                   "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/4.png",
+                   "ax_thrower_viking/idle/4.png", "ax_thrower_viking/idle/5.png", "ax_thrower_viking/idle/5.png",
+                   "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/7.png",
+                   "ax_thrower_viking/idle/7.png", "ax_thrower_viking/idle/8.png", "ax_thrower_viking/idle/8.png",
+                   "ax_thrower_viking/idle/9.png", "ax_thrower_viking/idle/9.png"]
+axe_thrower_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "2.png", "6.png", "7.png", "8.png",
+                          "9.png", "10.png", "10.png", "11.png", "12.png"]
 
 
 def design_first_level(enemies, armament) -> Level:
@@ -406,26 +423,12 @@ def design_third_level(enemies, armament) -> Level:
     blue_fish_1.set_enemy_location(TX * 12.5, WORLD_Y - TY * 1, 100)
     blue_fish_2 = Fish(blue_fish_img, WORLD_Y)
     blue_fish_2.set_enemy_location(TX * 37, WORLD_Y - TY * 1, 100)
-    viking_img = ["viking/walk/0.png", "viking/walk/0.png", "viking/walk/1.png", "viking/walk/1.png",
-                  "viking/walk/2.png", "viking/walk/2.png", "viking/walk/3.png", "viking/walk/3.png",
-                  "viking/walk/4.png", "viking/walk/4.png", "viking/walk/5.png", "viking/walk/5.png",
-                  "viking/walk/6.png", "viking/walk/6.png", "viking/walk/7.png", "viking/walk/7.png",
-                  "viking/walk/8.png", "viking/walk/8.png", "viking/walk/9.png", "viking/walk/9.png"]
-    viking_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png"]
+
     viking_1 = Viking(viking_img, viking_attack_img, 3)
     viking_1.set_enemy_location(TX * 78, WORLD_Y - TY * 2.5, 300)
     viking_2 = Viking(viking_img, viking_attack_img, 3)
     viking_2.set_enemy_location(TX * 84.5, WORLD_Y - TY * 11.5, 110)
 
-    axe_thrower_img = ["ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/1.png",
-                       "ax_thrower_viking/idle/1.png", "ax_thrower_viking/idle/2.png", "ax_thrower_viking/idle/2.png",
-                       "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/4.png",
-                       "ax_thrower_viking/idle/4.png", "ax_thrower_viking/idle/5.png", "ax_thrower_viking/idle/5.png",
-                       "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/7.png",
-                       "ax_thrower_viking/idle/7.png", "ax_thrower_viking/idle/8.png", "ax_thrower_viking/idle/8.png",
-                       "ax_thrower_viking/idle/9.png", "ax_thrower_viking/idle/9.png"]
-    axe_thrower_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "2.png", "6.png", "7.png", "8.png",
-                              "9.png", "10.png", "10.png", "11.png", "12.png"]
     axe_thrower_1 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 10, 5)
     axe_thrower_1.set_enemy_location(TX * 68, WORLD_Y - TY * 8.05)
 
@@ -718,12 +721,6 @@ def design_fourth_level(enemies, armament) -> Level:
     blue_fish_7 = Fish(blue_fish_img, WORLD_Y)
     blue_fish_7.set_enemy_location(TX * 84, WORLD_Y - TY * 1, 150)
 
-    viking_img = ["viking/walk/0.png", "viking/walk/0.png", "viking/walk/1.png", "viking/walk/1.png",
-                  "viking/walk/2.png", "viking/walk/2.png", "viking/walk/3.png", "viking/walk/3.png",
-                  "viking/walk/4.png", "viking/walk/4.png", "viking/walk/5.png", "viking/walk/5.png",
-                  "viking/walk/6.png", "viking/walk/6.png", "viking/walk/7.png", "viking/walk/7.png",
-                  "viking/walk/8.png", "viking/walk/8.png", "viking/walk/9.png", "viking/walk/9.png"]
-    viking_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png"]
     viking_1 = Viking(viking_img, viking_attack_img, 3)
     viking_1.set_enemy_location(TX * 23, WORLD_Y - TY * 2.5, 100)
     viking_2 = Viking(viking_img, viking_attack_img, 3)
@@ -734,16 +731,6 @@ def design_fourth_level(enemies, armament) -> Level:
     viking_4.set_enemy_location(TX * 48, WORLD_Y - TY * 2.5, 60)
     viking_5 = Viking(viking_img, viking_attack_img, 3)
     viking_5.set_enemy_location(TX * 68.4, WORLD_Y - TY * 9.5, 55)
-#
-    axe_thrower_img = ["ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/1.png",
-                       "ax_thrower_viking/idle/1.png", "ax_thrower_viking/idle/2.png", "ax_thrower_viking/idle/2.png",
-                       "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/3.png", "ax_thrower_viking/idle/4.png",
-                       "ax_thrower_viking/idle/4.png", "ax_thrower_viking/idle/5.png", "ax_thrower_viking/idle/5.png",
-                       "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/6.png", "ax_thrower_viking/idle/7.png",
-                       "ax_thrower_viking/idle/7.png", "ax_thrower_viking/idle/8.png", "ax_thrower_viking/idle/8.png",
-                       "ax_thrower_viking/idle/9.png", "ax_thrower_viking/idle/9.png"]
-    axe_thrower_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "2.png", "6.png", "7.png", "8.png",
-                              "9.png", "10.png", "10.png", "11.png", "12.png"]
     axe_thrower_1 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 10, 5)
     axe_thrower_1.set_enemy_location(TX * 30, WORLD_Y - TY * 9.05)
     axe_thrower_2 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 10, 4, 2)
@@ -857,7 +844,12 @@ def design_fifth_level(enemies, armament) -> Level:
     Function for designing and creating fifth level.
     :return: 5th level object
     """
-    p_loc = [(TX * 38, WORLD_Y - 64 * 10, 3),
+    p_loc = [(TX * -1, WORLD_Y - 64 * 7, 0),
+             (TX * 4, WORLD_Y - 64 * 5, 1),
+             (TX * 4, WORLD_Y - 64 * 10, 1),
+             (TX * 9, WORLD_Y - 64 * 10, 0),
+             (TX * 13, WORLD_Y - 64 * 10, 2),
+             (TX * 38, WORLD_Y - 64 * 10, 3),
              (TX * 45, WORLD_Y - 64 * 10, 0),
              (TX * 58, WORLD_Y - 64 * 10, 1)]
     water_points = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1,
@@ -869,18 +861,18 @@ def design_fifth_level(enemies, armament) -> Level:
                    (TX * 73, WORLD_Y - 64 * 4, 5)]
     fifth_level.build_bridges(bridges_loc)
 
-    coins_locations = [(-9.5, WORLD_Y - TY * 12),
-                       (18.5, WORLD_Y - TY * 2.5),
-                       (40.5, WORLD_Y - TY * 1.5),
-                       (41.5, WORLD_Y - TY * 7.5),
+    coins_locations = [(12, WORLD_Y - TY * 12),
+                       (27.1, WORLD_Y - TY * 11.5),
+                       (33.5, WORLD_Y - TY * 8.5),
+                       (42.5, WORLD_Y - TY * 2.5),
+                       (49, WORLD_Y - TY * 11),
+                       (52.5, WORLD_Y - TY * 1.5),
                        (53, WORLD_Y - TY * 4.5),
-                       (57.5, WORLD_Y - TY * 10.5),
-                       (69.5, WORLD_Y - TY * 12.3),
-                       (80.5, WORLD_Y - TY * 1.5),
-                       (96, WORLD_Y - TY * 12)]
+                       (71.5, WORLD_Y - TY * 8.5),
+                       (77.5, WORLD_Y - TY * 9)]
     fifth_level.set_coins(coins_locations)
     fifth_level.set_key((65.5, WORLD_Y - TY * 5.2))
-    fifth_level.set_doors((80, WORLD_Y - TY * 6))
+    fifth_level.set_doors((80.4, WORLD_Y - TY * 6))
 
     mountain_1_struct = np.array([[0, 0, 0, 0, 0, 2, 2, 2, 2, 2],
                                   [0, 0, 2, 2, 2, 1, 1, 1, 1, 1]])
@@ -934,7 +926,7 @@ def design_fifth_level(enemies, armament) -> Level:
     tower.add_decoration(3, 3.9, "torch_2.png")
     tower.add_decoration(2.2, 3, "window.png")
     tower.add_decoration(5.8, 3, "window.png")
-    tower.add_decoration(5.5, 7.9, "torch_2.png")
+    tower.add_decoration(6.5, 7.9, "torch_2.png")
     fifth_level.buildings.append(tower)
 
     building_struct = np.array([[0,  2,  2,  2,  2,  2, 0],
@@ -1005,6 +997,72 @@ def design_fifth_level(enemies, armament) -> Level:
     tavern.add_front(11, 8, "sandstone_2.png", True)
     fifth_level.buildings.append(tavern)
 
+    building_1_struct = np.array([[0, 0, 0],
+                                  [4, 3, 3],
+                                  [0, 2, 1],
+                                  [0, 2, 1],
+                                  [0, 0, 0],
+                                  [0, 0, 0],
+                                  [0, 0, 0],
+                                  [0, 0, 0],
+                                  [0, 0, 0],
+                                  [0, 0, 0],
+                                  [0, 0, 0],
+                                  [0, 0, 0]])
+    building_1_walls_img = ["stone_tile_1.png", "stone_tile_6.png", "stone_tile_5.png", "stone_tile_4.png"]
+    building_1 = Building(WORLD_Y, 79, building_1_struct, [], building_1_walls_img)
+    fifth_level.buildings.append(building_1)
+
+    spikes_1 = Trap(TX * 79, WORLD_Y - TY * 5, "spikes.png", 1)
+    armament.add(spikes_1)
+
+    blue_slime_imgs = ["slimeBlue.png"]
+    blue_slime_1 = Slime(blue_slime_imgs)
+    blue_slime_1.set_enemy_location(TX * 13, WORLD_Y - TY * 3, 40)
+    blue_slime_2 = Slime(blue_slime_imgs)
+    blue_slime_2.set_enemy_location(TX * 17, WORLD_Y - TY * 4, 60)
+
+    viking_1 = Viking(viking_img, viking_attack_img, 6)
+    viking_1.set_enemy_location(TX * 28, WORLD_Y - TY * 4.5, 250)
+    viking_2 = Viking(viking_img, viking_attack_img, 5)
+    viking_2.set_enemy_location(TX * 30, WORLD_Y - TY * 4.5, 110)
+    viking_3 = Viking(viking_img, viking_attack_img, 3)
+    viking_3.set_enemy_location(TX * 42, WORLD_Y - TY * 2.5, 130)
+    viking_4 = Viking(viking_img, viking_attack_img, 3)
+    viking_4.set_enemy_location(TX * 55, WORLD_Y - TY * 2.5, 80)
+    viking_5 = Viking(viking_img, viking_attack_img, 3)
+    viking_5.set_enemy_location(TX * 65, WORLD_Y - TY * 9.5, 60)
+    viking_6 = Viking(viking_img, viking_attack_img, 3)
+    viking_6.set_enemy_location(TX * 64, WORLD_Y - TY * 5.5, 60)
+    viking_7 = Viking(viking_img, viking_attack_img, 5)
+    viking_7.set_enemy_location(TX * 76, WORLD_Y - TY * 5.5, 110)
+
+    axe_thrower_1 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 25, 5)
+    axe_thrower_1.set_enemy_location(TX * 28, WORLD_Y - TY * 12.05)
+    axe_thrower_2 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 7, 4, 2)
+    axe_thrower_2.set_enemy_location(TX * 29, WORLD_Y - TY * 8.05)
+    axe_thrower_3 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 10, 6, 2)
+    axe_thrower_3.set_enemy_location(TX * 51, WORLD_Y - TY * 5.05)
+    axe_thrower_4 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 10, 6)
+    axe_thrower_4.set_enemy_location(TX * 53, WORLD_Y - TY * 8.05)
+    axe_thrower_5 = VikingAxeThrower(axe_thrower_img, axe_thrower_attack_img, 20, 6)
+    axe_thrower_5.set_enemy_location(TX * 80, WORLD_Y - TY * 12.7)
+
+    enemies.add(blue_slime_1)
+    enemies.add(blue_slime_2)
+    enemies.add(viking_1)
+    enemies.add(viking_2)
+    enemies.add(viking_3)
+    enemies.add(viking_4)
+    enemies.add(viking_5)
+    enemies.add(viking_6)
+    enemies.add(viking_7)
+    enemies.add(axe_thrower_1)
+    enemies.add(axe_thrower_2)
+    enemies.add(axe_thrower_3)
+    enemies.add(axe_thrower_4)
+    enemies.add(axe_thrower_5)
+
     return fifth_level
 
 
@@ -1015,7 +1073,6 @@ def decoration_level_5():
     """
     back_decorations = pygame.sprite.Group()
     back_decorations.add(Decoration(0, WORLD_Y - TY * 5.5, "spruce.png", True))
-
     back_decorations.add(Decoration(10, WORLD_Y - TY * 1.9, "big_rock.png", True))
     back_decorations.add(Decoration(11, WORLD_Y - TY * 3.9, "spruce_2.png"))
     back_decorations.add(Decoration(12.4, WORLD_Y - TY * 1.9, "mushroom_brown.png"))
@@ -1025,7 +1082,6 @@ def decoration_level_5():
     back_decorations.add(Decoration(17, WORLD_Y - TY * 4, "bush.png", True))
     back_decorations.add(Decoration(18, WORLD_Y - TY * 5.5, "spruce_3.png"))
     back_decorations.add(Decoration(18.5, WORLD_Y - TY * 3.9, "big_rock_2.png"))
-
     back_decorations.add(Decoration(36, WORLD_Y - TY * 4, "wooden_stick_1.png"))
     back_decorations.add(Decoration(36, WORLD_Y - TY * 5, "wooden_stick_2.png"))
     back_decorations.add(Decoration(36, WORLD_Y - TY * 6, "torch_2.png"))
@@ -1056,6 +1112,17 @@ def decoration_level_5():
     back_decorations.add(Decoration(65, WORLD_Y - TY * 5, "stone_tile_0.png"))
     back_decorations.add(Decoration(65, WORLD_Y - TY * 5, "window.png"))
     back_decorations.add(Decoration(65, WORLD_Y - TY * 5, "fireplace.png"))
+    back_decorations.add(Decoration(79, WORLD_Y - TY * 5, "bush.png"))
+    back_decorations.add(Decoration(80, WORLD_Y - TY * 5, "stone_tile_6.png"))
+    back_decorations.add(Decoration(80, WORLD_Y - TY * 6, "stone_tile_6.png"))
+    back_decorations.add(Decoration(80, WORLD_Y - TY * 7, "stone_tile_6.png"))
+    back_decorations.add(Decoration(80, WORLD_Y - TY * 8, "stone_tile_6.png"))
+    back_decorations.add(Decoration(80, WORLD_Y - TY * 9, "stone_tile_6.png"))
+    back_decorations.add(Decoration(81, WORLD_Y - TY * 5, "stone_tile_1.png"))
+    back_decorations.add(Decoration(81, WORLD_Y - TY * 6, "stone_tile_1.png"))
+    back_decorations.add(Decoration(81, WORLD_Y - TY * 7, "stone_tile_1.png"))
+    back_decorations.add(Decoration(81, WORLD_Y - TY * 8, "stone_tile_1.png"))
+    back_decorations.add(Decoration(81, WORLD_Y - TY * 9, "stone_tile_1.png"))
     front_decorations = pygame.sprite.Group()
     front_decorations.add(Decoration(2.5, WORLD_Y - TY * 1.7, "mountain_bush.png"))
     front_decorations.add(Decoration(4, WORLD_Y - TY * 2, "way_sign_right.png"))
@@ -1064,8 +1131,10 @@ def decoration_level_5():
     front_decorations.add(Decoration(17, WORLD_Y - TY * 4, "fence.png"))
     front_decorations.add(Decoration(18, WORLD_Y - TY * 4, "fence.png"))
     front_decorations.add(Decoration(15.5, WORLD_Y - TY * 4, "rock.png", True))
+    front_decorations.add(Decoration(27, WORLD_Y - TY * 12, "stone_tile_5.png"))
     front_decorations.add(Decoration(34.5, WORLD_Y - TY * 8.7, "tree_without_leaves.png"))
     front_decorations.add(Decoration(51, WORLD_Y - TY * 3, "torch.png"))
+    front_decorations.add(Decoration(52, WORLD_Y - TY * 2, "wooden_box_crate.png"))
     front_decorations.add(Decoration(55, WORLD_Y - TY * 2, "wooden_box_crate.png"))
     front_decorations.add(Decoration(54.5, WORLD_Y - TY * 1.7, "mountain_bush.png"))
     front_decorations.add(Decoration(58, WORLD_Y - TY * 2.9, "blue_flower.png"))
@@ -1074,6 +1143,14 @@ def decoration_level_5():
     front_decorations.add(Decoration(59, WORLD_Y - TY * 6, "torch_2.png"))
     front_decorations.add(Decoration(59, WORLD_Y - TY * 4, "fence.png"))
     front_decorations.add(Decoration(60, WORLD_Y - TY * 4, "fence.png"))
+    front_decorations.add(Decoration(78, WORLD_Y - TY * 10.5, "pennant_1.png"))
+    front_decorations.add(Decoration(79, WORLD_Y - TY * 10.5, "pennant_2.png"))
+    front_decorations.add(Decoration(79, WORLD_Y - TY * 9.5, "pennant_3.png"))
+    front_decorations.add(Decoration(79, WORLD_Y - TY * 8.5, "pennant_4.png"))
+    front_decorations.add(Decoration(80.4, WORLD_Y - TY * 7.5, "window.png"))
+    front_decorations.add(Decoration(80.4, WORLD_Y - TY * 10.2, "window.png"))
+    front_decorations.add(Decoration(80, WORLD_Y - TY * 12, "stone_tile_5.png"))
+    front_decorations.add(Decoration(81, WORLD_Y - TY * 12, "stone_tile_5.png"))
     return back_decorations, front_decorations
 
 
