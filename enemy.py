@@ -196,3 +196,22 @@ class VikingAxeThrower(Viking):
 
     def throw_axe(self):
         return Axe(self.throw_strength, True, self.rect.x, self.rect.y, copysign(1, self.current_direction))
+
+
+class BossViking(Viking):
+    """
+    Viking boss
+    """
+
+    def __init__(self, img_list, attack_sprites, sight_range):
+        Viking.__init__(self, img_list, attack_sprites, sight_range)
+        self.sight_range = sight_range
+        self.current_direction = -2
+        self.in_attack = False
+        self.attack_counter = 0
+        self.attack_speed = 0.5
+        self.attack = []
+        self.attack_sprites_len = len(attack_sprites)
+        for img in attack_sprites:
+            self.attack.append(pygame.image.load(os.path.join('images', 'enemies', 'viking', 'attack', str(img))).convert_alpha())
+
