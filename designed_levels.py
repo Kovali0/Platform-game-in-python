@@ -6,7 +6,7 @@ import pygame
 import numpy as np
 from armament import Trap
 from level import Level, Decoration, Building
-from enemy import Slime, Fish, Viking, VikingAxeThrower
+from enemy import Slime, Fish, Viking, VikingAxeThrower, BossViking
 
 # Global Variables
 WORLD_Y = 780
@@ -30,6 +30,22 @@ axe_thrower_img = ["ax_thrower_viking/idle/0.png", "ax_thrower_viking/idle/0.png
                    "ax_thrower_viking/idle/9.png", "ax_thrower_viking/idle/9.png"]
 axe_thrower_attack_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "2.png", "6.png", "7.png", "8.png",
                           "9.png", "10.png", "10.png", "11.png", "12.png"]
+
+
+boss_img = ["boss/run/0.png", "boss/run/0.png", "boss/run/1.png", "boss/run/1.png",
+            "boss/run/2.png", "boss/run/2.png", "boss/run/3.png", "boss/run/3.png",
+            "boss/run/4.png", "boss/run/4.png", "boss/run/5.png", "boss/run/5.png",
+            "boss/run/6.png", "boss/run/6.png", "boss/run/7.png", "boss/run/7.png",
+            "boss/run/8.png", "boss/run/8.png", "boss/run/9.png", "boss/run/9.png"]
+boss_action_img = ["0.png", "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png"]
+
+
+def darker_object(deco):
+    darken_percent = .25
+    dark = pygame.Surface(deco.image.get_size()).convert_alpha()
+    dark.fill((0, 0, 0, darken_percent * 255))
+    deco.image.blit(dark, (0, 0))
+    return deco
 
 
 def design_first_level(enemies, armament) -> Level:
@@ -1225,15 +1241,11 @@ def design_sixth_level(enemies, armament) -> Level:
     boss_hall = Building(WORLD_Y, 8, boss_hall_struct, boss_hall_back_img, boss_hall_walls_img)
     sixth_level.buildings.append(boss_hall)
 
+    boss = BossViking(boss_img, boss_action_img, boss_action_img, boss_action_img, 10)
+    boss.set_enemy_location(TX * 18, WORLD_Y - TY * 3.3, 50)
+    enemies.add(boss)
+
     return sixth_level
-
-
-def darker_object(deco):
-    darken_percent = .25
-    dark = pygame.Surface(deco.image.get_size()).convert_alpha()
-    dark.fill((0, 0, 0, darken_percent * 255))
-    deco.image.blit(dark, (0, 0))
-    return deco
 
 
 def decoration_level_6():

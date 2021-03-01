@@ -4,7 +4,7 @@ File with enemies. Contain main Enemy interface and detailed enemies classes. Sl
 import os
 import pygame
 from math import copysign
-from armament import Axe
+from armament import Axe, HeavyAxe, ShockWave
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -203,15 +203,94 @@ class BossViking(Viking):
     Viking boss
     """
 
-    def __init__(self, img_list, attack_sprites, sight_range):
+    def __init__(self, img_list, attack_sprites, death_sprites, charge_sprites, sight_range):
         Viking.__init__(self, img_list, attack_sprites, sight_range)
+        self.mod_y = 0
         self.sight_range = sight_range
-        self.current_direction = -2
+        self.current_direction = 2
+        self.health_points = 5
         self.in_attack = False
+        self.in_charge = False
+        self.is_death = False
+        self.can_throw_axe = False
         self.attack_counter = 0
         self.attack_speed = 0.5
+        self.attack_cooldown = 0
+        self.axe_throw_cooldown = 0
         self.attack = []
         self.attack_sprites_len = len(attack_sprites)
         for img in attack_sprites:
-            self.attack.append(pygame.image.load(os.path.join('images', 'enemies', 'viking', 'attack', str(img))).convert_alpha())
+            self.attack.append(pygame.image.load(os.path.join('images', 'enemies', 'boss', 'attack', str(img))).convert_alpha())
+        self.charge = []
+        self.charge_sprites_len = len(charge_sprites)
+        for img in charge_sprites:
+            self.charge.append(pygame.image.load(os.path.join('images', 'enemies', 'boss', 'charge', str(img))).convert_alpha())
+        self.death = []
+        self.death_sprites_len = len(death_sprites)
+        for img in death_sprites:
+            self.death.append(pygame.image.load(os.path.join('images', 'enemies', 'boss', 'death', str(img))).convert_alpha())
 
+    def controller(self):
+        """
+        Boss controller.
+        """
+        if self.axe_throw_cooldown > 0:
+            self.axe_throw_cooldown -= 1
+        elif self.can_throw_axe:
+            self.attack_update()
+            if self.attack_counter == 0:
+                self.axe_throw_cooldown = 80
+            if self.attack_counter == 5:
+                return self.throw_axe()
+        if self.attack_cooldown > 0:
+            self.attack_cooldown -= 1
+        elif self.in_attack:
+            self.attack_update()
+            if self.attack_counter == 0:
+                self.attack_cooldown = 120
+            return ShockWave(8, True, self.rect.x, self.rect.y, copysign(1, self.current_direction))
+        else:
+            self.update_sprite()
+            self.move(self.current_direction, 0)
+            self.move_counter += 1
+        if self.move_counter >= self.distance:
+            self.current_direction *= -1
+            self.move_counter *= -1
+
+    def can_see_player(self, player_loc, sight_range):
+        """
+        Checking if player is in viking's field of view.
+        :param player_loc: current player location
+        :param sight_range: sight_range for 64 tiles on the X axis
+        """
+        self.find_y_mod(player_loc)
+        if self.rect.y - 128 > player_loc[1]:
+            self.can_throw_axe = True
+        if self.current_direction > 0:
+            if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2:
+                if self.rect.x < player_loc[0] < self.rect.x + 64 * (sight_range/2):
+                    self.in_attack = True
+                if self.rect.x < player_loc[0] < self.rect.x + 64 * sight_range:
+                    self.in_charge = True
+        if self.current_direction < 0:
+            if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2:
+                if self.rect.x > player_loc[0] > self.rect.x - 64 * (sight_range/2):
+                    self.in_attack = True
+                if self.rect.x > player_loc[0] > self.rect.x - 64 * sight_range:
+                    self.in_charge = True
+
+    def find_y_mod(self, player_loc):
+        rev_x = self.rect.x - player_loc[0]
+        rev_y = self.rect.y - player_loc[1]
+        if rev_x:
+            m = rev_y/rev_x
+            self.mod_y = player_loc[1] - m * player_loc[0]
+
+    def throw_axe(self):
+        return HeavyAxe(5, True, self.rect.x, self.rect.y, copysign(1, self.current_direction), -1 * self.mod_y)
+
+    def get_hit(self, pts):
+        if self.health_points - pts <= 0:
+            self.is_death = True
+        else:
+            self.health_points -= pts

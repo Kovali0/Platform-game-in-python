@@ -10,7 +10,7 @@ from player import Player
 import designed_levels as des_lvl
 from hud import Hud
 from menu import Menu, GameOverScreen, WinScreen
-from enemy import Viking, VikingAxeThrower
+from enemy import Viking, VikingAxeThrower, BossViking
 
 # Global Variables
 FPS = 50
@@ -171,6 +171,8 @@ def main():
                 if type(enemy) == Viking and not enemy.in_attack:
                     enemy.can_see_player((player.rect.x, player.rect.y), enemy.sight_range)
                 if type(enemy) == VikingAxeThrower and not enemy.in_attack:
+                    enemy.can_see_player((player.rect.x, player.rect.y), enemy.sight_range)
+                if type(enemy) == BossViking and not enemy.in_attack:
                     enemy.can_see_player((player.rect.x, player.rect.y), enemy.sight_range)
                 react = enemy.controller()
                 if react:

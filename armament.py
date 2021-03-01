@@ -73,6 +73,56 @@ class Axe(Bullet):
             self.image = self.on_ground_img
 
 
+class HeavyAxe(Bullet):
+    """
+    Heavy Axe class
+    """
+    def __init__(self, speed, stays_on_the_map, x_loc, y_loc, direction, mod_y=-1):
+        Bullet.__init__(self, speed, 0, stays_on_the_map)
+        self.current_direction = direction
+        self.mod_y = mod_y
+        path = "images/enemies/boss/axe"
+        self.on_ground_img = pygame.image.load(os.path.join(path, "axe_in_ground.png"))
+        self.set_images(path, 10)
+        self.destroy_platforms = True
+        self.set_start_position(x_loc, y_loc)
+
+    def controller(self):
+        if self.is_moving:
+            self.update()
+            if self.frame_counter % len(self.images) == 0:
+                self.move(self.current_direction * self.speed, self.mod_y)
+            else:
+                self.move(self.current_direction * self.speed, 0)
+            self.move_counter += 1
+            self.frame_counter += 0.5
+        else:
+            self.image = self.on_ground_img
+
+
+class ShockWave(Bullet):
+    """
+    ShockWave class
+    """
+    def __init__(self, speed, stays_on_the_map, x_loc, y_loc, direction):
+        Bullet.__init__(self, speed, 0, stays_on_the_map)
+        self.current_direction = direction
+        path = "images/enemies/boss"
+        self.images.append(pygame.image.load(os.path.join(path, "shockwave.png")))
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
+        self.set_start_position(x_loc, 780 - 128)
+
+    def controller(self):
+        self.update()
+        if self.frame_counter % len(self.images) == 0:
+            self.move(self.current_direction * self.speed, 0)
+        else:
+            self.move(self.current_direction * self.speed, 0)
+        self.move_counter += 1
+        self.frame_counter += 1
+
+
 class Trap(pygame.sprite.Sprite):
     """
     Traps class
