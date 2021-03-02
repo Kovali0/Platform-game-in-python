@@ -104,8 +104,9 @@ class ShockWave(Bullet):
     """
     ShockWave class
     """
-    def __init__(self, speed, stays_on_the_map, x_loc, y_loc, direction):
+    def __init__(self, speed, stays_on_the_map, x_loc, distance, direction):
         Bullet.__init__(self, speed, 0, stays_on_the_map)
+        self.distance = distance
         self.current_direction = direction
         path = "images/enemies/boss"
         self.images.append(pygame.image.load(os.path.join(path, "shockwave.png")))
@@ -121,6 +122,8 @@ class ShockWave(Bullet):
             self.move(self.current_direction * self.speed, 0)
         self.move_counter += 1
         self.frame_counter += 1
+        if self.move_counter == self.distance:
+            self.kill()
 
 
 class Trap(pygame.sprite.Sprite):

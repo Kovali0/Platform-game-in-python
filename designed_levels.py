@@ -1242,7 +1242,7 @@ def design_sixth_level(enemies, armament) -> Level:
     sixth_level.buildings.append(boss_hall)
 
     boss = BossViking(boss_img, boss_action_img, boss_action_img, boss_action_img, 10)
-    boss.set_enemy_location(TX * 18, WORLD_Y - TY * 3.3, 50)
+    boss.set_enemy_location(TX * 18, WORLD_Y - TY * 3.3, 150)
     enemies.add(boss)
 
     return sixth_level

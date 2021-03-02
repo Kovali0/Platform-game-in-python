@@ -2,6 +2,8 @@
 File with enemies. Contain main Enemy interface and detailed enemies classes. Slime, Fish.
 """
 import os
+
+import numpy as np
 import pygame
 from math import copysign
 from armament import Axe, HeavyAxe, ShockWave
@@ -248,7 +250,8 @@ class BossViking(Viking):
             self.attack_update()
             if self.attack_counter == 0:
                 self.attack_cooldown = 120
-            return ShockWave(8, True, self.rect.x, self.rect.y, copysign(1, self.current_direction))
+            if self.attack_counter == 8:
+                return ShockWave(8, True, self.rect.x, 50, copysign(1, self.current_direction))
         else:
             self.update_sprite()
             self.move(self.current_direction, 0)
@@ -280,11 +283,21 @@ class BossViking(Viking):
                     self.in_charge = True
 
     def find_y_mod(self, player_loc):
-        rev_x = self.rect.x - player_loc[0]
-        rev_y = self.rect.y - player_loc[1]
-        if rev_x:
-            m = rev_y/rev_x
-            self.mod_y = player_loc[1] - m * player_loc[0]
+        #rev_x = self.rect.x - player_loc[0]
+        #rev_y = self.rect.y - player_loc[1]
+        #rev_x = player_loc[0] - self.rect.x
+        #rev_y = self.rect.y - player_loc[1]
+        #if rev_x:
+        #    m = rev_y/rev_x
+        #    self.mod_y = player_loc[1] - m * player_loc[0]
+        boss_pos = np.array([self.rect.centerx, self.rect.centery])
+        player_pos = np.array(player_loc)
+        delta_pos = player_pos - boss_pos
+        speed = 1.0
+        normalized = delta_pos / np.linalg.norm(delta_pos)
+        speed_vector = normalized * speed
+        axe_pos = boss_pos
+        next_axe_pos = axe_pos + speed_vector
 
     def throw_axe(self):
         return HeavyAxe(5, True, self.rect.x, self.rect.y, copysign(1, self.current_direction), -1 * self.mod_y)
