@@ -2,6 +2,8 @@
 File with class for armament, weapons and traps.
 """
 import os
+
+import numpy as np
 import pygame
 
 
@@ -77,27 +79,44 @@ class HeavyAxe(Bullet):
     """
     Heavy Axe class
     """
-    def __init__(self, speed, stays_on_the_map, x_loc, y_loc, direction, mod_y=-1):
+    def __init__(self, speed, stays_on_the_map, x_loc, y_loc, direction, player_location):
         Bullet.__init__(self, speed, 0, stays_on_the_map)
+        self.player_loc = player_location
         self.current_direction = direction
-        self.mod_y = mod_y
+        self.mod_y = -1
         path = "images/enemies/boss/axe"
         self.on_ground_img = pygame.image.load(os.path.join(path, "axe_in_ground.png"))
         self.set_images(path, 10)
         self.destroy_platforms = True
+        self.boss_pos = np.array([x_loc, y_loc])
+        self.position = self.boss_pos
         self.set_start_position(x_loc, y_loc)
 
     def controller(self):
         if self.is_moving:
             self.update()
             if self.frame_counter % len(self.images) == 0:
-                self.move(self.current_direction * self.speed, self.mod_y)
+                #self.move(self.current_direction * self.speed, self.mod_y)
+                self.rect.centerx, self.rect.centery = self.find_next_position()
             else:
-                self.move(self.current_direction * self.speed, 0)
+                #self.move(self.current_direction * self.speed, 0)
+                self.rect.centerx, self.rect.centery = self.find_next_position()
             self.move_counter += 1
             self.frame_counter += 0.5
         else:
             self.image = self.on_ground_img
+
+    def find_next_position(self):
+        #boss_pos = np.array([self.rect.centerx, self.rect.centery])
+        #player_pos = np.array([self.player_location.rect.centerx, self.player_location.rect.centery])
+        player_pos = np.array([self.player_loc[0], self.player_loc[1]])
+        delta_pos = player_pos - self.boss_pos
+        speed = 3.0
+        normalized = delta_pos / np.linalg.norm(delta_pos)
+        speed_vector = normalized * speed
+        next_axe_pos = self.position + speed_vector
+        self.position = self.position + speed_vector
+        return next_axe_pos
 
 
 class ShockWave(Bullet):

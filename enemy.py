@@ -207,7 +207,7 @@ class BossViking(Viking):
 
     def __init__(self, img_list, attack_sprites, death_sprites, charge_sprites, sight_range):
         Viking.__init__(self, img_list, attack_sprites, sight_range)
-        self.mod_y = 0
+        self.player_loc = ()
         self.sight_range = sight_range
         self.current_direction = 2
         self.health_points = 5
@@ -219,6 +219,7 @@ class BossViking(Viking):
         self.attack_speed = 0.5
         self.attack_cooldown = 0
         self.axe_throw_cooldown = 0
+        self.charge_throw_cooldown = 0
         self.attack = []
         self.attack_sprites_len = len(attack_sprites)
         for img in attack_sprites:
@@ -244,7 +245,15 @@ class BossViking(Viking):
                 self.axe_throw_cooldown = 80
             if self.attack_counter == 5:
                 return self.throw_axe()
-        if self.attack_cooldown > 0:
+        if self.charge_throw_cooldown > 0:
+            self.charge_throw_cooldown -= 1
+        elif self.in_charge:
+            self.charge_update()
+            self.move(self.current_direction * 4, 0)
+            self.move_counter += 4
+            if self.attack_counter == 0:
+                self.charge_throw_cooldown = 60
+        elif self.attack_cooldown > 0:
             self.attack_cooldown -= 1
         elif self.in_attack:
             self.attack_update()
@@ -266,7 +275,7 @@ class BossViking(Viking):
         :param player_loc: current player location
         :param sight_range: sight_range for 64 tiles on the X axis
         """
-        self.find_y_mod(player_loc)
+        self.player_loc = player_loc
         if self.rect.y - 128 > player_loc[1]:
             self.can_throw_axe = True
         if self.current_direction > 0:
@@ -282,25 +291,22 @@ class BossViking(Viking):
                 if self.rect.x > player_loc[0] > self.rect.x - 64 * sight_range:
                     self.in_charge = True
 
-    def find_y_mod(self, player_loc):
-        #rev_x = self.rect.x - player_loc[0]
-        #rev_y = self.rect.y - player_loc[1]
-        #rev_x = player_loc[0] - self.rect.x
-        #rev_y = self.rect.y - player_loc[1]
-        #if rev_x:
-        #    m = rev_y/rev_x
-        #    self.mod_y = player_loc[1] - m * player_loc[0]
-        boss_pos = np.array([self.rect.centerx, self.rect.centery])
-        player_pos = np.array(player_loc)
-        delta_pos = player_pos - boss_pos
-        speed = 1.0
-        normalized = delta_pos / np.linalg.norm(delta_pos)
-        speed_vector = normalized * speed
-        axe_pos = boss_pos
-        next_axe_pos = axe_pos + speed_vector
+    def charge_update(self):
+        """
+        Method for charge animation.
+        """
+        self.attack_counter += 0.5
+        if self.current_direction < 0:
+            self.image = self.charge[int(self.attack_counter) % self.attack_sprites_len]
+        else:
+            self.image = pygame.transform.flip(self.charge[int(self.attack_counter) % self.attack_sprites_len], True, False)
+        if self.attack_counter >= self.attack_sprites_len:
+            self.attack_counter = 0
+            self.in_attack = False
+            self.in_charge = False
 
     def throw_axe(self):
-        return HeavyAxe(5, True, self.rect.x, self.rect.y, copysign(1, self.current_direction), -1 * self.mod_y)
+        return HeavyAxe(5, True, self.rect.centerx, self.rect.centery, copysign(1, self.current_direction), self.player_loc)
 
     def get_hit(self, pts):
         if self.health_points - pts <= 0:
