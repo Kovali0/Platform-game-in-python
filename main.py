@@ -177,6 +177,9 @@ def main():
                 react = enemy.controller()
                 if react:
                     armament_list.add(react)
+                if current_level == 6 and enemy.drop_key:
+                    level.set_key((enemy.rect.centerx / 64, enemy.rect.centery - 32))
+                    enemy.drop_key = False
 
             for item in armament_list:
                 item.controller(scroll)

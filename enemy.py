@@ -210,11 +210,12 @@ class BossViking(Viking):
         self.player_loc = ()
         self.sight_range = sight_range
         self.current_direction = 2
-        self.health_points = 5
+        self.health_points = 1
         self.in_attack = False
         self.in_charge = False
         self.is_death = False
         self.can_throw_axe = False
+        self.drop_key = False
         self.immortal = 0
         self.attack_counter = 0
         self.attack_speed = 0.5
@@ -231,6 +232,7 @@ class BossViking(Viking):
             self.charge.append(pygame.image.load(os.path.join('images', 'enemies', 'boss', 'charge', str(img))).convert_alpha())
         self.death = []
         self.death_sprites_len = len(death_sprites)
+        self.death_counter = 0
         for img in death_sprites:
             self.death.append(pygame.image.load(os.path.join('images', 'enemies', 'boss', 'death', str(img))).convert_alpha())
 
@@ -238,42 +240,50 @@ class BossViking(Viking):
         """
         Boss controller.
         """
-        if self.immortal > 0:
-            self.immortal -= 1
+        if not self.is_death:
+            if self.immortal > 0:
+                self.immortal -= 1
 
-        if self.axe_throw_cooldown > 0:
-            self.axe_throw_cooldown -= 1
-        elif self.can_throw_axe:
-            self.attack_update()
-            if self.attack_counter == 5:
-                self.axe_throw_cooldown = 180
-                self.can_throw_axe = False
-                return self.throw_axe()
+            if self.axe_throw_cooldown > 0:
+                self.axe_throw_cooldown -= 1
+            elif self.can_throw_axe:
+                self.attack_update()
+                if self.attack_counter == 5:
+                    self.axe_throw_cooldown = 180
+                    self.can_throw_axe = False
+                    return self.throw_axe()
 
-        if self.charge_cooldown > 0:
-            self.charge_cooldown -= 1
-        elif self.in_charge:
-            self.charge_update()
-            self.move(self.current_direction * 4, 0)
-            self.move_counter += 4
-            if self.attack_counter == 0:
-                self.charge_cooldown = 120
-        elif self.attack_cooldown > 0:
-            self.attack_cooldown -= 1
-        elif self.in_attack and not self.can_throw_axe:
-            self.attack_update()
-            if self.attack_counter == 8:
-                self.attack_cooldown = 120
-                return ShockWave(8, True, self.rect.x, 50, copysign(1, self.current_direction))
+            if self.charge_cooldown > 0:
+                self.charge_cooldown -= 1
+            elif self.in_charge:
+                self.charge_update()
+                self.move(self.current_direction * 4, 0)
+                self.move_counter += 4
+                if self.attack_counter == 0:
+                    self.charge_cooldown = 120
+            elif self.attack_cooldown > 0:
+                self.attack_cooldown -= 1
+            elif self.in_attack and not self.can_throw_axe:
+                self.attack_update()
+                if self.attack_counter == 8:
+                    self.attack_cooldown = 120
+                    return ShockWave(8, True, self.rect.x, 50, copysign(1, self.current_direction))
+            else:
+                self.update_sprite()
+                self.move(self.current_direction, 0)
+                self.move_counter += 1
+
+            if self.move_counter >= self.distance:
+                self.current_direction *= -1
+                self.move_counter *= -1
+                self.in_charge = False
         else:
-            self.update_sprite()
-            self.move(self.current_direction, 0)
-            self.move_counter += 1
-
-        if self.move_counter >= self.distance:
-            self.current_direction *= -1
-            self.move_counter *= -1
-            self.in_charge = False
+            if self.death_counter < 9:
+                self.death_counter += 0.25
+            if self.current_direction < 0:
+                self.image = self.death[int(self.death_counter) % len(self.death)]
+            else:
+                self.image = pygame.transform.flip(self.death[int(self.death_counter) % len(self.death)], True, False)
 
     def can_see_player(self, player_loc, sight_range):
         """
@@ -318,6 +328,7 @@ class BossViking(Viking):
     def get_hit(self, pts):
         if self.health_points - pts <= 0:
             self.is_death = True
+            self.drop_key = True
         else:
             self.health_points -= pts
             self.immortal = 120

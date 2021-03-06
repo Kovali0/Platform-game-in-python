@@ -167,15 +167,17 @@ class Player(pygame.sprite.Sprite):
             for enemy in enemies_hit:
                 if type(enemy) == Viking and enemy.in_attack:
                     self.life -= 2
-                else:
-                    if type(enemy) != BossViking:
-                        self.life -= 1
+                    self.immortal_time = 80
+                    self.reset()
+                elif type(enemy) != BossViking:
+                    self.life -= 1
+                    self.immortal_time = 40
+                    self.reset()
+
                 if type(enemy) == BossViking and enemy.in_charge:
                         self.life -= 1
                         self.immortal_time = 80
-                else:
-                    self.immortal_time = 20
-                    self.reset()
+                        self.reset()
 
         return False
 
