@@ -4,6 +4,8 @@ Main file
 import os
 import sys
 
+from armament import HeavyAxe
+
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 import pygame as pg
 from player import Player
@@ -19,13 +21,13 @@ WORLD_Y = 780
 WORLD = pg.display.set_mode([WORLD_X, WORLD_Y])
 LEVELS_NUMBER = 5
 FORWARD_X = 600
-BACKWARD_X = 120
+BACKWARD_X = 300
 # Tiles size x-width y-high
 TX = 64
 TY = 64
 
 
-def scroll_elements(elements_list, forward, scroller):
+def scroll_elements(elements_list, scroller):
     """
     Method which scroll items, tiles and rest things coordinates when player move on screen.
     :param elements_list: list of objects that need to be changed
@@ -33,10 +35,7 @@ def scroll_elements(elements_list, forward, scroller):
     :param scroller:
     """
     for element in elements_list:
-        if forward:
-            element.rect.x -= scroller
-        else:
-            element.rect.x += scroller
+        element.rect.x += scroller
 
 
 def screen_loop(condition, screen, clock):
@@ -86,6 +85,7 @@ def main():
     run = True
     in_menu = True
     in_game = False
+    scroll = 0
     current_level = 6
     menu = Menu(WORLD)
 
@@ -179,16 +179,17 @@ def main():
                     armament_list.add(react)
 
             for item in armament_list:
-                item.controller()
+                item.controller(scroll)
                 if not item.is_moving:
                     pg.sprite.spritecollide(item, pg.sprite.Group([x for x in armament_list if x != item]), True)
-                if pg.sprite.spritecollide(item, ground_list, False) or pg.sprite.spritecollide(item, plat_list, False):
+                if pg.sprite.spritecollide(item, ground_list, False):
                     item.is_moving = False
-                # TODO add armament collisions with buildings
-                # for building in level.buildings:
-                #     if pg.sprite.spritecollide(item, building.walls_list, False)\
-                #             or pg.sprite.spritecollide(item, building.front_elements_list, False):
-                #         item.is_moving = False
+                if type(item) != HeavyAxe and pg.sprite.spritecollide(item, plat_list, False):
+                    item.is_moving = False
+                else:
+                    for building in level.buildings:
+                        if pg.sprite.spritecollide(item, building.walls_list, False):
+                            item.is_moving = False
 
             if game_pad := connect_controller():
                 js = {"L": game_pad.get_axis(0),
@@ -225,45 +226,32 @@ def main():
 
             player.attack_update()
 
-            if player.rect.x >= FORWARD_X:
-                scroll = player.rect.x - FORWARD_X
-                player.rect.x = FORWARD_X
-                player.start_location[0] -= scroll
-                scroll_elements(plat_list, True, scroll)
-                scroll_elements(ground_list, True, scroll)
-                scroll_elements(water_list, True, scroll)
-                scroll_elements(coins, True, scroll)
-                scroll_elements(gold_key, True, scroll)
-                scroll_elements(doors, True, scroll)
-                scroll_elements(enemies_list, True, scroll)
-                scroll_elements(armament_list, True, scroll)
-                scroll_elements(back_decorations, True, scroll)
-                scroll_elements(front_decorations, True, scroll)
-                for building in level.buildings:
-                    scroll_elements(building.walls_list, True, scroll)
-                    scroll_elements(building.back_list, True, scroll)
-                    scroll_elements(building.decorations_list, True, scroll)
-                    scroll_elements(building.front_elements_list, True, scroll)
-
             if player.rect.x <= BACKWARD_X:
                 scroll = BACKWARD_X - player.rect.x
                 player.rect.x = BACKWARD_X
                 player.start_location[0] += scroll
-                scroll_elements(plat_list, False, scroll)
-                scroll_elements(ground_list, False, scroll)
-                scroll_elements(water_list, False, scroll)
-                scroll_elements(coins, False, scroll)
-                scroll_elements(gold_key, False, scroll)
-                scroll_elements(doors, False, scroll)
-                scroll_elements(enemies_list, False, scroll)
-                scroll_elements(armament_list, False, scroll)
-                scroll_elements(back_decorations, False, scroll)
-                scroll_elements(front_decorations, False, scroll)
-                for building in level.buildings:
-                    scroll_elements(building.walls_list, False, scroll)
-                    scroll_elements(building.back_list, False, scroll)
-                    scroll_elements(building.decorations_list, False, scroll)
-                    scroll_elements(building.front_elements_list, False, scroll)
+            elif player.rect.x >= FORWARD_X:
+                scroll = FORWARD_X - player.rect.x
+                player.rect.x = FORWARD_X
+                player.start_location[0] += scroll
+            else:
+                scroll = 0
+
+            scroll_elements(plat_list, scroll)
+            scroll_elements(ground_list, scroll)
+            scroll_elements(water_list, scroll)
+            scroll_elements(coins, scroll)
+            scroll_elements(gold_key, scroll)
+            scroll_elements(doors, scroll)
+            scroll_elements(enemies_list, scroll)
+            scroll_elements(armament_list, scroll)
+            scroll_elements(back_decorations, scroll)
+            scroll_elements(front_decorations, scroll)
+            for building in level.buildings:
+                scroll_elements(building.walls_list, scroll)
+                scroll_elements(building.back_list, scroll)
+                scroll_elements(building.decorations_list, scroll)
+                scroll_elements(building.front_elements_list, scroll)
 
             key_status = 1 if player.has_key else 0
             WORLD.blit(background, WORLD.get_rect())

@@ -215,11 +215,12 @@ class BossViking(Viking):
         self.in_charge = False
         self.is_death = False
         self.can_throw_axe = False
+        self.immortal = 0
         self.attack_counter = 0
         self.attack_speed = 0.5
         self.attack_cooldown = 0
         self.axe_throw_cooldown = 0
-        self.charge_throw_cooldown = 0
+        self.charge_cooldown = 0
         self.attack = []
         self.attack_sprites_len = len(attack_sprites)
         for img in attack_sprites:
@@ -237,37 +238,42 @@ class BossViking(Viking):
         """
         Boss controller.
         """
+        if self.immortal > 0:
+            self.immortal -= 1
+
         if self.axe_throw_cooldown > 0:
             self.axe_throw_cooldown -= 1
         elif self.can_throw_axe:
             self.attack_update()
-            if self.attack_counter == 0:
-                self.axe_throw_cooldown = 80
             if self.attack_counter == 5:
+                self.axe_throw_cooldown = 180
+                self.can_throw_axe = False
                 return self.throw_axe()
-        if self.charge_throw_cooldown > 0:
-            self.charge_throw_cooldown -= 1
+
+        if self.charge_cooldown > 0:
+            self.charge_cooldown -= 1
         elif self.in_charge:
             self.charge_update()
             self.move(self.current_direction * 4, 0)
             self.move_counter += 4
             if self.attack_counter == 0:
-                self.charge_throw_cooldown = 60
+                self.charge_cooldown = 120
         elif self.attack_cooldown > 0:
             self.attack_cooldown -= 1
-        elif self.in_attack:
+        elif self.in_attack and not self.can_throw_axe:
             self.attack_update()
-            if self.attack_counter == 0:
-                self.attack_cooldown = 120
             if self.attack_counter == 8:
+                self.attack_cooldown = 120
                 return ShockWave(8, True, self.rect.x, 50, copysign(1, self.current_direction))
         else:
             self.update_sprite()
             self.move(self.current_direction, 0)
             self.move_counter += 1
+
         if self.move_counter >= self.distance:
             self.current_direction *= -1
             self.move_counter *= -1
+            self.in_charge = False
 
     def can_see_player(self, player_loc, sight_range):
         """
@@ -276,19 +282,20 @@ class BossViking(Viking):
         :param sight_range: sight_range for 64 tiles on the X axis
         """
         self.player_loc = player_loc
-        if self.rect.y - 128 > player_loc[1]:
+        if self.rect.y - 192 > player_loc[1]:
             self.can_throw_axe = True
+            self.in_attack = True
         if self.current_direction > 0:
             if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2:
-                if self.rect.x < player_loc[0] < self.rect.x + 64 * (sight_range/2):
+                if self.rect.x < player_loc[0] < self.rect.x + 64 * (sight_range/3):
                     self.in_attack = True
-                if self.rect.x < player_loc[0] < self.rect.x + 64 * sight_range:
+                elif self.rect.x < player_loc[0] < self.rect.x + 64 * sight_range:
                     self.in_charge = True
         if self.current_direction < 0:
             if self.rect.y - 50 <= player_loc[1] <= self.rect.y + 64 * 2:
-                if self.rect.x > player_loc[0] > self.rect.x - 64 * (sight_range/2):
+                if self.rect.x > player_loc[0] > self.rect.x - 64 * (sight_range/3):
                     self.in_attack = True
-                if self.rect.x > player_loc[0] > self.rect.x - 64 * sight_range:
+                elif self.rect.x > player_loc[0] > self.rect.x - 64 * sight_range:
                     self.in_charge = True
 
     def charge_update(self):
@@ -300,7 +307,7 @@ class BossViking(Viking):
             self.image = self.charge[int(self.attack_counter) % self.attack_sprites_len]
         else:
             self.image = pygame.transform.flip(self.charge[int(self.attack_counter) % self.attack_sprites_len], True, False)
-        if self.attack_counter >= self.attack_sprites_len:
+        if self.attack_counter >= self.attack_sprites_len * 4:
             self.attack_counter = 0
             self.in_attack = False
             self.in_charge = False
@@ -313,3 +320,4 @@ class BossViking(Viking):
             self.is_death = True
         else:
             self.health_points -= pts
+            self.immortal = 120

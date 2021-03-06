@@ -49,6 +49,9 @@ class Bullet(pygame.sprite.Sprite):
             else:
                 self.image = pygame.transform.flip(self.images[int(self.frame_counter) % len(self.images) - 1], True, False)
 
+    def controller(self, scroll=0):
+        pass
+
 
 class Axe(Bullet):
     """
@@ -62,7 +65,7 @@ class Axe(Bullet):
         self.set_images(path, 9)
         self.set_start_position(x_loc, y_loc)
 
-    def controller(self):
+    def controller(self, scroll=0):
         if self.is_moving:
             self.update()
             if self.frame_counter % len(self.images) == 0:
@@ -81,9 +84,9 @@ class HeavyAxe(Bullet):
     """
     def __init__(self, speed, stays_on_the_map, x_loc, y_loc, direction, player_location):
         Bullet.__init__(self, speed, 0, stays_on_the_map)
-        self.player_loc = player_location
+        self.player_loc = list(player_location)
         self.current_direction = direction
-        self.mod_y = -1
+        self.speed = 3.0
         path = "images/enemies/boss/axe"
         self.on_ground_img = pygame.image.load(os.path.join(path, "axe_in_ground.png"))
         self.set_images(path, 10)
@@ -92,28 +95,23 @@ class HeavyAxe(Bullet):
         self.position = self.boss_pos
         self.set_start_position(x_loc, y_loc)
 
-    def controller(self):
+    def controller(self, scroll=0):
         if self.is_moving:
             self.update()
-            if self.frame_counter % len(self.images) == 0:
-                #self.move(self.current_direction * self.speed, self.mod_y)
-                self.rect.centerx, self.rect.centery = self.find_next_position()
-            else:
-                #self.move(self.current_direction * self.speed, 0)
-                self.rect.centerx, self.rect.centery = self.find_next_position()
+            self.player_loc[0] += scroll
+            self.boss_pos[0] += scroll
+            self.position[0] += scroll
+            self.rect.centerx, self.rect.centery = self.find_next_position()
             self.move_counter += 1
             self.frame_counter += 0.5
         else:
             self.image = self.on_ground_img
 
     def find_next_position(self):
-        #boss_pos = np.array([self.rect.centerx, self.rect.centery])
-        #player_pos = np.array([self.player_location.rect.centerx, self.player_location.rect.centery])
         player_pos = np.array([self.player_loc[0], self.player_loc[1]])
         delta_pos = player_pos - self.boss_pos
-        speed = 3.0
         normalized = delta_pos / np.linalg.norm(delta_pos)
-        speed_vector = normalized * speed
+        speed_vector = normalized * self.speed
         next_axe_pos = self.position + speed_vector
         self.position = self.position + speed_vector
         return next_axe_pos
@@ -133,7 +131,7 @@ class ShockWave(Bullet):
         self.rect = self.image.get_rect()
         self.set_start_position(x_loc, 780 - 128)
 
-    def controller(self):
+    def controller(self, scroll=0):
         self.update()
         if self.frame_counter % len(self.images) == 0:
             self.move(self.current_direction * self.speed, 0)
@@ -158,6 +156,3 @@ class Trap(pygame.sprite.Sprite):
         self.rect.y = y_loc
         self.damage = dmg
         self.is_moving = False
-
-    def controller(self):
-        pass

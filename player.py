@@ -4,8 +4,8 @@ File with player class
 import os
 import pygame
 
-from armament import Axe, Trap
-from enemy import Viking
+from armament import Axe, Trap, HeavyAxe, ShockWave
+from enemy import Viking, BossViking
 
 # Global Variables
 PLA_ANIMATIONS = 10
@@ -152,20 +152,30 @@ class Player(pygame.sprite.Sprite):
             return False
 
         if self.in_attack:
-            enemies_hit = pygame.sprite.spritecollide(self, enemies_list, True)
+            enemies_hit = pygame.sprite.spritecollide(self, enemies_list, False)
             for enemy in enemies_hit:
-                if type(enemy) == Viking and enemy.in_attack:
-                    self.life -= 1
-                    self.immortal_time = 20
+                if type(enemy) != BossViking:
+                    if type(enemy) == Viking and enemy.in_attack:
+                        self.life -= 1
+                        self.immortal_time = 20
+                    enemy.kill()
+                else:
+                    if enemy.immortal == 0:
+                        enemy.get_hit(1)
         else:
             enemies_hit = pygame.sprite.spritecollide(self, enemies_list, False)
             for enemy in enemies_hit:
                 if type(enemy) == Viking and enemy.in_attack:
                     self.life -= 2
                 else:
-                    self.life -= 1
-                self.immortal_time = 20
-                self.reset()
+                    if type(enemy) != BossViking:
+                        self.life -= 1
+                if type(enemy) == BossViking and enemy.in_charge:
+                        self.life -= 1
+                        self.immortal_time = 80
+                else:
+                    self.immortal_time = 20
+                    self.reset()
 
         return False
 
@@ -180,9 +190,19 @@ class Player(pygame.sprite.Sprite):
         for item in armament_hit_list:
             if type(item) == Axe and item.is_moving:
                 self.life -= 2
+                self.immortal_time = 200
+                self.reset()
+            if type(item) == HeavyAxe and item.is_moving:
+                self.life -= 1
+                self.immortal_time = 1200
                 self.reset()
             if type(item) == Trap:
                 self.life -= item.damage
+                self.immortal_time = 200
+                self.reset()
+            if type(item) == ShockWave:
+                self.life -= 1
+                self.immortal_time = 200
                 self.reset()
 
     def buildings_collision_checker(self, buildings_list):

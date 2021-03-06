@@ -1241,8 +1241,8 @@ def design_sixth_level(enemies, armament) -> Level:
     boss_hall = Building(WORLD_Y, 8, boss_hall_struct, boss_hall_back_img, boss_hall_walls_img)
     sixth_level.buildings.append(boss_hall)
 
-    boss = BossViking(boss_img, boss_action_img, boss_action_img, boss_action_img, 12)
-    boss.set_enemy_location(TX * 18, WORLD_Y - TY * 3.3, 150)
+    boss = BossViking(boss_img, boss_action_img, boss_action_img, boss_action_img, 15)
+    boss.set_enemy_location(TX * 17, WORLD_Y - TY * 3.3, 280)
     enemies.add(boss)
 
     return sixth_level
@@ -1343,7 +1343,7 @@ def design_level(level_id, enemies, armament):
     if level_id == 2:
         background = pygame.image.load(os.path.join('images', 'backgrounds', 'green_lands_background.png'))
         second_level = design_second_level(enemies, armament)
-        back_decorations, front_decorations = decoration_level_5()
+        back_decorations, front_decorations = decoration_level_2()
         return second_level, background, back_decorations, front_decorations
 
     if level_id == 3:
