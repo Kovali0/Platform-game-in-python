@@ -31,7 +31,6 @@ def scroll_elements(elements_list, scroller):
     """
     Method which scroll items, tiles and rest things coordinates when player move on screen.
     :param elements_list: list of objects that need to be changed
-    :param forward: bool if change location forward or backward
     :param scroller:
     """
     for element in elements_list:

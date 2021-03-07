@@ -198,18 +198,41 @@ class Building:
                     self.walls_list.add(Platform((self.x + j) * 64, self.world_y - i * 64, walls_images[cell - 1]))
 
     def add_decoration(self, x_idx, y_iter, img_path):
+        """
+        Add to building object decoration, small objects, which will be draw on first plan
+        :param x_idx: which tile on width
+        :param y_iter: which tile on high
+        :param img_path: path to the image file
+        :return:
+        """
         y_iter = len(self.building_struct) - y_iter + 1
         self.decorations_list.add(Decoration((self.x + x_idx), self.world_y - y_iter * 64, os.path.join(str(img_path))))
 
     def add_front(self, x_idx, y_iter, img_path, to_flip=False, to_y_flip=False):
+        """
+        Add front blocks, which will be draw on the front of building
+        :param x_idx: which tile on width
+        :param y_iter: which tile on high
+        :param img_path: path to the image file
+        :param to_flip: bool to flip for X axis
+        :param to_y_flip: bool to flip for Y axis
+        """
         y_iter = len(self.building_struct) - y_iter + 1
         self.front_elements_list.add(Decoration((self.x + x_idx), self.world_y - y_iter * 64,
                                                 os.path.join(str(img_path)), to_flip, to_y_flip))
 
     def build_fundaments(self, world):
+        """
+        Draw on world param back side of building
+        :param world: game world
+        """
         self.back_list.draw(world)
         self.decorations_list.draw(world)
 
     def build_front(self, world):
+        """
+        Draw on world param front side of building
+        :param world: game world
+        """
         self.walls_list.draw(world)
         self.front_elements_list.draw(world)

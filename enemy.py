@@ -96,11 +96,6 @@ class Fish(Enemy):
         self.update_sprite(True)
         self.move(0, self.current_direction)
         self.move_counter += 2
-        #TODO add gravity
-        #if self.current_direction < 0 or self.rect.y > self.world_y:
-        #    self.gravity = 0
-        #else:
-        #    self.gravity = 2
         if self.move_counter == self.distance:
             self.current_direction *= -1
             self.move_counter *= -1
@@ -197,6 +192,10 @@ class VikingAxeThrower(Viking):
             self.frame_counter += 1
 
     def throw_axe(self):
+        """
+        Spawn armament object - axe
+        :return Axe armament object.
+        """
         return Axe(self.throw_strength, True, self.rect.x, self.rect.y, copysign(1, self.current_direction))
 
 
@@ -323,9 +322,17 @@ class BossViking(Viking):
             self.in_charge = False
 
     def throw_axe(self):
+        """
+        Spawn armament object - heavy axe, when Boss is using throw attack.
+        :return HeavyAxe object.
+        """
         return HeavyAxe(5, True, self.rect.centerx, self.rect.centery, copysign(1, self.current_direction), self.player_loc)
 
     def get_hit(self, pts):
+        """
+        Method handling boss taken dmg.
+        :param pts: damage points
+        """
         if self.health_points - pts <= 0:
             self.is_death = True
             self.drop_key = True

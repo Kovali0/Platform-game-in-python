@@ -24,16 +24,31 @@ class Bullet(pygame.sprite.Sprite):
         self.is_moving = True
 
     def set_images(self, path, sprites_number):
+        """
+        Method for setting image for armament object.
+        :param path: disc directory with image
+        :param sprites_number: number od images to load
+        """
         for i in range(1, sprites_number):
             self.images.append(pygame.image.load(os.path.join(path, str(i) + ".png")))
         self.image = self.images[0]
         self.rect = self.image.get_rect()
 
     def set_start_position(self, x_loc, y_loc):
+        """
+        Set the bullet position, when it will be spawned
+        :param x_loc: x coordinate
+        :param y_loc: y coordinate
+        """
         self.rect.x = x_loc
         self.rect.y = y_loc
 
     def move(self, x_interval, y_interval):
+        """
+        Move bullet with x and y coordinates interval
+        :param x_interval: x coordinate interval
+        :param y_interval: y coordinate interval
+        """
         self.rect.x += x_interval
         self.rect.y += y_interval
 
@@ -50,6 +65,9 @@ class Bullet(pygame.sprite.Sprite):
                 self.image = pygame.transform.flip(self.images[int(self.frame_counter) % len(self.images) - 1], True, False)
 
     def controller(self, scroll=0):
+        """
+        Virtual method, which need to be implemented for movable bullet objects.
+        """
         pass
 
 
@@ -66,6 +84,10 @@ class Axe(Bullet):
         self.set_start_position(x_loc, y_loc)
 
     def controller(self, scroll=0):
+        """
+        Controller for movement and mechanics of axe.
+        :param scroll: x scroll distance when screen is scrolled to left or right.
+        """
         if self.is_moving:
             self.update()
             if self.frame_counter % len(self.images) == 0:
@@ -96,6 +118,10 @@ class HeavyAxe(Bullet):
         self.set_start_position(x_loc, y_loc)
 
     def controller(self, scroll=0):
+        """
+        Controller for movement and mechanics of heavy axe.
+        :param scroll: x scroll distance when screen is scrolled to left or right.
+        """
         if self.is_moving:
             self.update()
             self.player_loc[0] += scroll
@@ -108,6 +134,10 @@ class HeavyAxe(Bullet):
             self.image = self.on_ground_img
 
     def find_next_position(self):
+        """
+        Special method for calculating next heavy axe position.
+        :return: next position tuple in x and y coordinates
+        """
         player_pos = np.array([self.player_loc[0], self.player_loc[1]])
         delta_pos = player_pos - self.boss_pos
         normalized = delta_pos / np.linalg.norm(delta_pos)
@@ -132,6 +162,10 @@ class ShockWave(Bullet):
         self.set_start_position(x_loc, 780 - 128)
 
     def controller(self, scroll=0):
+        """
+        Shockwave mechanic controll funtion.
+        :param scroll: x scroll distance when screen is scrolled to left or right.
+        """
         self.update()
         if self.frame_counter % len(self.images) == 0:
             self.move(self.current_direction * self.speed, 0)
