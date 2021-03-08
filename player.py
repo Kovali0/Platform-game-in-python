@@ -9,6 +9,7 @@ from enemy import Viking, BossViking
 
 # Global Variables
 PLA_ANIMATIONS = 10
+pygame.mixer.init()
 
 
 class Player(pygame.sprite.Sprite):
@@ -137,6 +138,7 @@ class Player(pygame.sprite.Sprite):
 
         if pygame.sprite.spritecollide(self, coins, True):
             self.score += 1
+            pygame.mixer.Channel(2).play(pygame.mixer.Sound(os.path.join('music', 'coin_sound.mp3')))
 
         if pygame.sprite.spritecollide(self, key, True):
             self.has_key = True
@@ -157,6 +159,7 @@ class Player(pygame.sprite.Sprite):
                 if type(enemy) != BossViking:
                     if type(enemy) == Viking and enemy.in_attack:
                         self.life -= 1
+                        pygame.mixer.Channel(3).play(pygame.mixer.Sound(os.path.join('music', 'hurt_sound_2.mp3')))
                         self.immortal_time = 20
                     enemy.kill()
                 else:
@@ -167,15 +170,18 @@ class Player(pygame.sprite.Sprite):
             for enemy in enemies_hit:
                 if type(enemy) == Viking and enemy.in_attack:
                     self.life -= 2
+                    pygame.mixer.Channel(3).play(pygame.mixer.Sound(os.path.join('music', 'hurt_sound_1.mp3')))
                     self.immortal_time = 80
                     self.reset()
                 elif type(enemy) != BossViking:
                     self.life -= 1
+                    pygame.mixer.Channel(3).play(pygame.mixer.Sound(os.path.join('music', 'hurt_sound_1.mp3')))
                     self.immortal_time = 40
                     self.reset()
 
                 if type(enemy) == BossViking and enemy.in_charge:
                         self.life -= 1
+                        pygame.mixer.Channel(3).play(pygame.mixer.Sound(os.path.join('music', 'hurt_sound_1.mp3')))
                         self.immortal_time = 80
                         self.reset()
 
@@ -190,6 +196,7 @@ class Player(pygame.sprite.Sprite):
             return
         armament_hit_list = pygame.sprite.spritecollide(self, armament_list, False)
         for item in armament_hit_list:
+            pygame.mixer.Channel(3).play(pygame.mixer.Sound(os.path.join('music', 'hurt_sound_2.mp3')))
             if type(item) == Axe and item.is_moving:
                 self.life -= 2
                 self.immortal_time = 200
@@ -240,6 +247,7 @@ class Player(pygame.sprite.Sprite):
         Method to run when player fall fo the world and lose hp.
         """
         self.life -= 1
+        pygame.mixer.Channel(3).play(pygame.mixer.Sound(os.path.join('music', 'hurt_sound_1.mp3')))
         self.reset()
 
     def reset(self):

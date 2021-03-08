@@ -19,7 +19,7 @@ FPS = 50
 WORLD_X = 960
 WORLD_Y = 780
 WORLD = pg.display.set_mode([WORLD_X, WORLD_Y])
-LEVELS_NUMBER = 5
+LEVELS_NUMBER = 6
 FORWARD_X = 600
 BACKWARD_X = 300
 # Tiles size x-width y-high
@@ -81,6 +81,7 @@ def main():
     pg.mixer.init()
     pg.mixer.music.load(os.path.join('music', 'music.mp3'))
     pg.mixer.music.play(-1, 0.0)
+    pg.mixer.music.set_volume(0.3)
     run = True
     in_menu = True
     in_game = False
@@ -138,6 +139,15 @@ def main():
         coins = level.coins_list
         gold_key = level.key
         doors = level.doors
+
+        if current_level >= 5:
+            pg.mixer.music.load(os.path.join('music', 'vikings_music.mp3'))
+            pg.mixer.music.play(-1, 0.0)
+            pg.mixer.music.set_volume(0.3)
+        else:
+            pg.mixer.music.load(os.path.join('music', 'music.mp3'))
+            pg.mixer.music.play(-1, 0.0)
+            pg.mixer.music.set_volume(0.3)
 
         # Game Loop
         while in_game:
@@ -222,6 +232,7 @@ def main():
                 if player.stamina >= 100 and not player.in_attack:
                     player.stamina -= 100
                     player.in_attack = True
+                    pg.mixer.Channel(1).play(pg.mixer.Sound(os.path.join('music', 'sword_slash.mp3')))
 
             if not player.is_moving:
                 player.frame_counter += 0.5
@@ -279,6 +290,7 @@ def main():
             clock.tick(FPS)
 
             if lose:
+                pg.mixer.Channel(4).play(pg.mixer.Sound(os.path.join('music', 'lose_in_level.mp3')))
                 screen_loop(lose, game_over_screen, clock)
                 in_game = False
                 in_menu = True

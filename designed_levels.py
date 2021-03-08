@@ -1306,7 +1306,7 @@ def decoration_level_6():
         for y in range(6):
             front_decorations.add(Decoration(x, WORLD_Y - TY * (y+2), "stone_tile_1.png"))
     front_decorations.add(Decoration(-4.55, WORLD_Y - TY * 5, "pennant_swords.png"))
-    front_decorations.add(Decoration(2.45, WORLD_Y - TY * 5, "pennant_swords.png"))
+    front_decorations.add(Decoration(2.5, WORLD_Y - TY * 5, "pennant_swords.png"))
     front_decorations.add(Decoration(-7, WORLD_Y - TY * 2.05, "wooden_stick_1.png"))
     front_decorations.add(Decoration(-7, WORLD_Y - TY * 3, "wooden_stick_2.png"))
     front_decorations.add(Decoration(-7, WORLD_Y - TY * 4, "torch_2.png"))
