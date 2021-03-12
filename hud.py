@@ -35,6 +35,7 @@ class Hud(pygame.sprite.Sprite):
         self.rect = self.coin_image.get_rect()
         self.rect.x = x_loc
         self.rect.y = y_loc
+        self.blue_heart = pygame.image.load(os.path.join('images', 'hud', 'full_heart_blue.png')).convert_alpha()
 
     def print_status(self, world, score, life, key_status, player_stamina):
         """
@@ -58,3 +59,16 @@ class Hud(pygame.sprite.Sprite):
         world.blit(self.blue_images[stamina_3], (self.rect.x + 100, self.rect.y + 50))
         world.blit(self.heart_images[life], (self.rect.x, self.rect.y + 100))
         world.blit(self.key_images[key_status], (self.rect.x, self.rect.y + 150))
+
+    def print_boss_status(self, world, boss):
+        """
+        Printer additional hud, which show boss health points.
+        :param world: game world
+        :param boss: boss object
+        """
+        for x in range(5):
+            if x < boss.health_points:
+                world.blit(self.blue_heart, (self.rect.x + 350 + (x * 50), self.rect.y))
+            else:
+                world.blit(self.heart_images[0], (self.rect.x + 350 + (x * 50), self.rect.y))
+

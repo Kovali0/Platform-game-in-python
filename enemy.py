@@ -209,7 +209,7 @@ class BossViking(Viking):
         self.player_loc = ()
         self.sight_range = sight_range
         self.current_direction = 2
-        self.health_points = 1
+        self.health_points = 5
         self.in_attack = False
         self.in_charge = False
         self.is_death = False

@@ -190,3 +190,6 @@ class Trap(pygame.sprite.Sprite):
         self.rect.y = y_loc
         self.damage = dmg
         self.is_moving = False
+
+    def controller(self, scroll=0):
+        pass
