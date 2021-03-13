@@ -86,7 +86,7 @@ def main():
     in_menu = True
     in_game = False
     scroll = 0
-    current_level = 6
+    current_level = 1
     menu = Menu(WORLD)
 
     while run:
@@ -161,9 +161,6 @@ def main():
                     finally:
                         in_game = False
                         run = False
-
-            if current_level == 6:
-                hud.print_boss_status(WORLD, enemies_list.sprites()[0])
 
             player.buildings_collision_checker(level.buildings)
             win = player.collision_checker(ground_list, plat_list, coins, gold_key, doors, enemies_list)
@@ -289,6 +286,8 @@ def main():
             front_decorations.draw(WORLD)
             water_list.draw(WORLD)
             hud.print_status(WORLD, player.score, player.life, key_status, player.stamina)
+            if current_level == 6:
+                hud.print_boss_status(WORLD, enemies_list.sprites()[0])
             pg.display.flip()
             clock.tick(FPS)
 

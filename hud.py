@@ -67,7 +67,7 @@ class Hud(pygame.sprite.Sprite):
         :param boss: boss object
         """
         for x in range(5):
-            if x < boss.health_points:
+            if x < boss.health_points and not boss.is_death:
                 world.blit(self.blue_heart, (self.rect.x + 350 + (x * 50), self.rect.y))
             else:
                 world.blit(self.heart_images[0], (self.rect.x + 350 + (x * 50), self.rect.y))
