@@ -15,21 +15,28 @@ The game can be started in two ways:
 1. Run code: 
    - Download repository
    - Install required modules
-   - Run file: main.py, by open repository folder with PyCharm or using commend in console
+   - Run file: main.py, by open repository folder with PyCharm or using *python main.py* commend in console
 2. Run build with exe file
-   - Download the folder KnightAdventures
-   - Go to subfolder KnightAdventures\dist\main 
-   - Run main.exe file
+   - Download the folder */output*
+   - Go to subfolder */KnightAdventures* 
+   - Run *KnightAdventures.exe* file
+3. Install game
+   - Download the folder */output*
+   - In this folder you can find *KAInstaller.exe*, use it to install the game
+   - During installation you can make shortcut on desktop, then run game by double click on the shortcut
+   - You can find *KnightAdventures.exe* file in the directory, which was used in setup.
 
 ## Controls
 
-[a] / [d] - left / right move
+PC - keyboard and mouse						 |		Game Pad controls for PS/XBOX
 
-[space] - jump
+[a] / [d] - left / right move							|		L - left / right move
 
-[mouse left click] - attack
+[space] - jump											|		X/A - jump
 
-[esc] - quit game
+[mouse left click] - attack					   	|		O/B - attack
+
+[esc] - quit game					            		|		touchpad - mouse
 
 ## Requirements
 

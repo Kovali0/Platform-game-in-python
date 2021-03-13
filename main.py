@@ -18,6 +18,9 @@ from enemy import Viking, VikingAxeThrower, BossViking
 FPS = 50
 WORLD_X = 960
 WORLD_Y = 780
+pg.display.set_caption('Knight Adventures')
+program_icon = pg.image.load(os.path.join('images', 'gameicon.png'))
+pg.display.set_icon(program_icon)
 WORLD = pg.display.set_mode([WORLD_X, WORLD_Y])
 LEVELS_NUMBER = 6
 FORWARD_X = 600
@@ -77,7 +80,6 @@ def main():
     """
     clock = pg.time.Clock()
     pg.init()
-    pg.display.set_caption('Knight Adventures')
     pg.mixer.init()
     pg.mixer.music.load(os.path.join('music', 'music.mp3'))
     pg.mixer.music.play(-1, 0.0)
